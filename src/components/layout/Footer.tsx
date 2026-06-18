@@ -16,13 +16,13 @@ export default function Footer() {
                 </svg>
                 hello@vedilclothing.com
               </a>
-              <a href="tel:+2348012345678">
+              <a href="tel:+2348138683171">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.94.36 1.86.7 2.73a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.35-1.35a2 2 0 012.11-.45c.87.34 1.79.57 2.73.7A2 2 0 0122 16.92z" />
                 </svg>
-                +234 801 234 5678
+                +234 813 868 3171
               </a>
-              <a href="https://wa.me/2348012345678" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/2348138683171" target="_blank" rel="noopener noreferrer">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.739-.981z" />
                 </svg>
@@ -74,10 +74,10 @@ export default function Footer() {
           <div className="foot-col">
             <h4>Company</h4>
             <ul>
+              <li><Link href="/about">About Us</Link></li>
               <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/faq">FAQ</Link></li>
               <li><Link href="/garment-factory#quote">Request a Quote</Link></li>
-              <li><Link href="/shipping">Shipping &amp; Returns</Link></li>
             </ul>
           </div>
         </div>
