@@ -1,70 +1,68 @@
 # Vedil Clothing — Project Guide
 
-## What this is
-A multi-page Next.js website for **Vedil Clothing**, a Lagos-based fashion house with three distinct verticals:
-1. **Shop** — Ready-to-wear for men, women, and children (+ accessories, new arrivals)
-2. **It's Fun to Sew Academy** — In-person and online sewing courses
-3. **Garment Factory** — Custom and bulk manufacturing for brands and events
+> **See `DESIGN.md` for business details** (confirmed contacts, all course fees, product names, e-commerce model, page-by-page content notes). Read it before starting any new page.
 
-The home page introduces all three verticals with teaser sections and CTAs. Each vertical has (or will have) its own dedicated page with full detail.
+## What this is
+A multi-page Next.js website for **Vedil Clothing**, a Lagos-based fashion house with three verticals:
+1. **Shop** — Ready-to-wear (retail + wholesale) for men, women, children + accessories
+2. **It's Fun to Sew Academy** — In-person sewing classes (online cohort model planned, not yet live)
+3. **Garment Factory** — Bulk production, custom orders, wholesale for brands and individuals
 
 ## Tech stack
 - **Next.js** (latest, App Router, TypeScript)
-- **Tailwind CSS v4** — used for utility classes; design-system tokens live in CSS variables
-- **Fonts** — `Fraunces` (serif display, via `next/font/google`) + `Hanken Grotesk` (sans body)
+- **Tailwind CSS v4** — utility classes only for one-off spacing/layout; all design lives in CSS variables
+- **Fonts** — `Fraunces` (serif display) + `Hanken Grotesk` (sans body) via `next/font/google`
 - No component library — all UI is custom
 
-## Design language
-All tokens are defined as CSS custom properties in `src/app/globals.css`:
+## Design tokens (`src/app/globals.css`)
 
 | Token | Value | Use |
 |---|---|---|
 | `--cream` | `#FBF6EE` | Page background |
-| `--paper` | `#F4ECDF` | Section backgrounds (academy) |
+| `--paper` | `#F4ECDF` | Section backgrounds |
 | `--ink` | `#2A211B` | Body text, footer bg |
 | `--ink-soft` | `#6B5D52` | Secondary text |
 | `--burgundy` | `#6E1F2A` | Primary accent, CTAs |
 | `--gold` | `#B07A3C` | Secondary accent |
 | `--line` | `rgba(42,33,27,.12)` | Borders, dividers |
 
-The body has a fixed warm paper-grain gradient (radial gradients on `background-attachment: fixed`).
+Body uses a warm paper-grain gradient on `background-attachment: fixed`.
 
 ## Component architecture
-Reusable layout components (written once, used everywhere):
-- `src/components/layout/Header.tsx` — sticky nav with desktop dropdown + mobile slide-in menu (client component for scroll + toggle state)
-- `src/components/layout/Footer.tsx` — full footer with contact, links, socials
-- `src/components/layout/WhatsAppFloat.tsx` — global fixed floating WhatsApp button (bottom-right, pulsing)
+- `src/components/layout/Header.tsx` — sticky nav, desktop dropdown, mobile slide-in
+- `src/components/layout/Footer.tsx` — full footer (contact, links, socials)
+- `src/components/layout/WhatsAppFloat.tsx` — global fixed WhatsApp button (bottom-right)
+- `src/components/home/ScrollRevealInit.tsx` — client component; add at top of every page that uses `.reveal`
 
-Home page sections live in `src/components/home/`. New pages get their own folder under `src/components/`.
+Home page sections live in `src/components/home/`. New pages get their own folder under `src/components/` if they have reusable sub-components; otherwise self-contained `page.tsx` is fine.
 
-## Global floating WhatsApp button
-There is **one global floating WhatsApp button** rendered in the root layout (`WhatsAppFloat`). Do **not** add a WhatsApp button inside the mobile menu or any other nav element — it duplicates the global one.
+## Global WhatsApp button
+One global `WhatsAppFloat` in the root layout. Do **not** add another WhatsApp button anywhere else.
 
-## Scroll reveal animation
-`.reveal` CSS class + `.in` toggled by `IntersectionObserver`. The observer is initialised in `ScrollRevealInit` (client component, rendered at the top of each page that needs it). Elements stagger by 80ms per sibling within the same parent.
+## Scroll reveal
+`.reveal` + `.in` toggled by IntersectionObserver in `ScrollRevealInit`. Siblings stagger 80ms each.
 
-## Page structure (planned)
-| Route | Status | Notes |
-|---|---|---|
-| `/` | Done | Home — introduces all three verticals |
-| `/shop` | Next | Shop landing / category overview |
-| `/shop/[category]` | Planned | Men / Women / Children / Accessories |
-| `/academy` | Planned | Full course listing + enrollment |
-| `/garment-factory` | Planned | Factory detail + quote request form |
-| `/about` | Planned | Brand story |
-| `/contact` | Planned | Contact form + map |
-| `/faq` | Planned | FAQ |
+## Page status
 
-When building new pages: add the relevant teaser section on the home page, then build the full dedicated page. Home page sections are intros that link to full pages — they don't replace them.
+| Route | Status |
+|---|---|
+| `/` | ✅ Done |
+| `/about` | ✅ Done |
+| `/academy` | ✅ Done |
+| `/garment-factory` | ✅ Done |
+| `/contact` | ✅ Done |
+| `/shop` | 🔜 Next |
+| `/shop/[category]` | 🔜 Planned |
+| `/faq` | 🔜 Planned |
 
 ## Working conventions
-- **Reuse before creating** — check if the required component already exists before making a new one
-- **CSS class names, not Tailwind utilities, for complex components** — the design uses named CSS classes (`.btn`, `.eyebrow`, `.cat-card`, etc.) defined in `globals.css`. Use Tailwind utilities only for simple, one-off spacing/layout needs on new pages
-- **Server components by default** — only add `"use client"` when the component needs state, effects, or browser APIs (Header, ScrollRevealInit, interactive forms)
-- **Image placeholders** — use the `.ph` class with `.ph-tag` and `.ph-mono` children until real product photography is available. Real images will use `next/image`
-- **Links** — always use `next/link` (`Link`) not `<a>` for internal navigation
-- **Phone / WhatsApp number** — `+234 801 234 5678` / `https://wa.me/2348012345678` (update when confirmed)
-- **Email** — `hello@vedilclothing.com` (update when confirmed)
+- **Reuse before creating** — check `globals.css` for an existing class before adding one
+- **Named CSS classes over utilities** for anything more than one-off spacing
+- **Server components by default** — `"use client"` only for state/effects/browser APIs
+- **Image placeholders** — `.ph` + `.ph-tag` + `.ph-mono` until real photos arrive; real images use `next/image`
+- **Internal links** — always `next/link` (`Link`), never raw `<a>` for internal navigation
+- **Confirmed phone:** `+234 813 868 3171` / WhatsApp: `https://wa.me/2348138683171`
+- **Email:** `hello@vedilclothing.com` *(confirm with owner before launch)*
 
 ## Running locally
 ```bash
