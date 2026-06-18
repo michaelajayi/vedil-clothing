@@ -13,7 +13,7 @@ export default function FactorySection() {
             <h2>Custom orders &amp; <em>bulk manufacturing.</em></h2>
             <p>
               From staff uniforms and event aso-ebi to full production runs for growing fashion
-              brands — our factory delivers consistent quality at scale. Share your specs and
+              brands. Our factory delivers consistent quality at scale. Share your specs and
               we&apos;ll handle sampling, sourcing and finishing, on time.
             </p>
             <Link href="/contact#quote" className="btn">

@@ -3,7 +3,7 @@ import Link from "next/link";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 
 export const metadata: Metadata = {
-  title: "About Us — Vedil Clothing",
+  title: "About Us | Vedil Clothing",
   description:
     "Founded in 2012 by Vivian Duru, VEDIL Clothing is a Nigerian fashion brand that thrives on creativity, collaboration, and a deep love for the art of fashion.",
 };
@@ -35,7 +35,7 @@ export default function AboutPage() {
           <div className="about-story">
             <div className="about-photos reveal">
               <div className="ph about-photo-main">
-                <span className="ph-tag">Founder — Vivian Duru</span>
+                <span className="ph-tag">Founder, Vivian Duru</span>
                 <span className="ph-mono">V</span>
               </div>
               <div className="ph about-photo-float">
@@ -89,7 +89,7 @@ export default function AboutPage() {
               <h3>What we do</h3>
               <p>
                 To creatively and passionately create and make timeless fashion items that
-                meet our clients&apos; unique preferences — one garment at a time.
+                meet our clients&apos; unique preferences, one garment at a time.
               </p>
             </div>
             <div className="mv-card reveal">
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <h2 className="reveal">Three ways we serve you</h2>
             <p className="reveal">
               Whether you want to buy, learn to sew, or have your designs manufactured at
-              scale — Vedil has a home for you.
+              scale. Vedil has a home for you.
             </p>
           </div>
           <div className="offer-grid">

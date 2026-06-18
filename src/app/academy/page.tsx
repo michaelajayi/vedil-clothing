@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 
 export const metadata: Metadata = {
-  title: "It's Fun to Sew Academy — Vedil Clothing",
+  title: "It's Fun to Sew Academy | Vedil Clothing",
   description:
-    "Join hundreds of fashion enthusiasts at the It's Fun to Sew Academy. In-person sewing classes in Lagos from basic to advanced — each with certificate on completion.",
+    "Join hundreds of fashion enthusiasts at the It's Fun to Sew Academy. In-person sewing classes in Lagos from basic to advanced, each with certificate on completion.",
 };
 
 const courses = [
@@ -15,7 +14,7 @@ const courses = [
     duration: "3 months",
     format: "In-person · Lagos",
     description:
-      "This is the best place to start — it covers the fundamentals of sewing, providing a strong foundation for every course that follows. By the end you will have mastered the machine and produced your first garments.",
+      "This is the best place to start as it covers fundamentals of sewing, providing a strong foundation.",
     registration: "₦10,000",
     tuition: "₦300,000",
     certificate: "₦20,000",
@@ -27,7 +26,7 @@ const courses = [
     duration: "3 months",
     format: "In-person · Lagos",
     description:
-      "Suitable for those who have mastered the Basic Sewing Class course outline and are ready to be introduced to more complex techniques, projects, and garment construction.",
+      "Suitable for those that have mastered Basic Sewing class course outline and are ready to be introduced to more complex techniques and projects.",
     registration: "₦10,000",
     tuition: "₦400,000",
     certificate: "₦20,000",
@@ -39,7 +38,7 @@ const courses = [
     duration: "3 months",
     format: "In-person · Lagos",
     description:
-      "Designed for experienced sewists, this class focuses on mastering advanced techniques and perfecting your craft — tailored couture, structural garments, and finishing at a professional standard.",
+      "Designed for experienced sewists, this class focuses on mastering advanced techniques and perfecting your craft.",
     registration: "₦10,000",
     tuition: "₦500,000",
     certificate: "₦20,000",
@@ -47,11 +46,11 @@ const courses = [
   },
   {
     id: "general-upgrade",
-    title: "General Upgrade — Women's Wear",
+    title: "General Upgrade: Women's Wear",
     duration: "3 months",
     format: "In-person · Lagos",
     description:
-      "Suitable for fashion designers and tailors who want to gain up-to-date sewing techniques and practices. It captures topics in Basic, Intermediate, and Advanced classes on womenswear.",
+      "Suitable for fashion designers/tailors who wants to gain up-to-date sewing techniques and practices. It captures topics in Basic, Intermediate and Advanced Sewing classes on womenswear.",
     registration: "₦10,000",
     tuition: "₦800,000",
     certificate: "₦20,000",
@@ -63,7 +62,7 @@ const courses = [
     duration: "8 weeks",
     format: "In-person · Lagos",
     description:
-      "For students who wish to gain hands-on experience in ready-to-wear production. You will understand the complete lifecycle of garment production — from concept to finished product.",
+      "For students who wish to gain hands-on experience in rtw production. You will understand the complete lifecycle of garment production from concept to finished product.",
     registration: "₦10,000",
     tuition: "₦300,000",
     certificate: "₦20,000",
@@ -75,7 +74,7 @@ const courses = [
     duration: "2 months",
     format: "In-person · Lagos",
     description:
-      "Designed to provide students with the knowledge and skills necessary to design, produce, and market children's clothing. Intending students should already have basic sewing skills before registering.",
+      "Designed to provide students with the knowledge and skills necessary to design, produce and market children's clothing. Intending students should already have basic sewing skills before registering.",
     registration: "₦10,000",
     tuition: "₦300,000",
     certificate: "₦20,000",
@@ -87,7 +86,7 @@ const courses = [
     duration: "8 weeks",
     format: "In-person · Lagos",
     description:
-      "Learn the fundamentals of designing and constructing tailored menswear — from shirts and trousers to native and formal pieces. Perfect for tailors wanting to serve male clientele professionally.",
+      "Learn the fundamentals of designing and constructing tailored menswear, from shirts and trousers to native and formal pieces.",
     registration: "₦10,000",
     tuition: "₦300,000",
     certificate: "₦20,000",
@@ -99,7 +98,7 @@ const courses = [
     duration: "2 months",
     format: "In-person · Lagos",
     description:
-      "A practical, industry-focused class that offers real workshop experience and hands-on training for aspiring fashion professionals who want to work in a production environment.",
+      "A practical, industry-focused class that offers real workshop experience and hands-on training for aspiring fashion professionals.",
     registration: "₦10,000",
     tuition: "₦400,000",
     certificate: "₦20,000",
@@ -123,7 +122,7 @@ export default function AcademyPage() {
           </h1>
           <p className="reveal">
             Join hundreds of fashion enthusiasts and upgrade your skills to another level.
-            Learning how to sew at Vedil Clothing is always fun — attention is paid to every
+            Learning how to sew at Vedil Clothing is always fun; attention is paid to every
             student&apos;s unique learning needs. We have a conducive learning environment and
             a sewing machine for each student.
           </p>
@@ -140,10 +139,10 @@ export default function AcademyPage() {
                 Our training places emphasis on <em>practical hands-on</em> sewing skills.
               </h2>
               <p className="reveal">
-                Our courses are structured in a way to help participants learn and master the
-                craft. Intending students are advised to take them in order to avoid difficulty
-                in catching up. We have a Foundation course to give participants understanding
-                before proceeding to Intermediate.
+                They are structured in a way to help participants learn and master the craft.
+                Intending students are advised to take the courses in that order to avoid
+                difficulty in catching up. We however have a foundation course to enable
+                intending participants gain understanding before proceeding to Intermediate class.
               </p>
               <div className="academy-feats reveal">
                 <span className="chip">Certificate on completion</span>
@@ -232,7 +231,7 @@ export default function AcademyPage() {
             <span className="eyebrow reveal">Ready to start?</span>
             <h2 className="reveal">Not sure which class to take?</h2>
             <p className="reveal">
-              Reach out to us on WhatsApp — we&apos;ll help you pick the right course for your
+              Reach out to us on WhatsApp, we&apos;ll help you pick the right course for your
               current skill level and goals.
             </p>
           </div>

@@ -11,7 +11,7 @@ export default function AcademySection() {
             <p className="reveal">
               Whether you dream of sewing for your family or starting a label of your own, our
               classes meet you exactly where you are. Learn from master tailors in our Lagos studio,
-              or follow along at your own pace online — with real feedback, warm guidance, and a
+              or follow along at your own pace online, with real feedback, warm guidance, and a
               community that cheers you on.
             </p>
             <div className="academy-feats reveal">
@@ -62,7 +62,7 @@ export default function AcademySection() {
             <div className="course-body">
               <span className="course-format">Online · Self-paced</span>
               <h3>Start Your Fashion Label</h3>
-              <p>The business of sewing — pricing, sourcing in Lagos, branding and selling. Lifetime access to every lesson and template.</p>
+              <p>The business of sewing: pricing, sourcing in Lagos, branding and selling. Lifetime access to every lesson and template.</p>
               <div className="course-foot">
                 <div className="price">₦45,000<small>Lifetime access</small></div>
                 <Link href="/academy/fashion-label" className="btn btn--enroll">Enroll</Link>

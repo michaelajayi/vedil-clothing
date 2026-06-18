@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Script from "next/script";
 import { useCart, effectivePrice, fmtPrice } from "@/contexts/CartContext";
+import Combobox from "@/components/ui/Combobox";
+import { NIGERIA_STATES } from "@/lib/nigeria-states";
 
 // Delivery fee map (NGN)
 const DELIVERY_FEES: Record<string, number> = {
@@ -13,9 +15,9 @@ const DELIVERY_FEES: Record<string, number> = {
 };
 
 const DELIVERY_LABELS: Record<string, string> = {
-  pickup: "Self Pick-up — No. 95 Ago Palace Way, Okota (Free)",
-  dispatch: "Your Dispatch Rider — ₦3,500",
-  dhl: "Vedil Ships via DHL — ₦7,500",
+  pickup: "Self Pick-up: No. 95 Ago Palace Way, Okota (Free)",
+  dispatch: "Your Dispatch Rider · ₦3,500",
+  dhl: "Vedil Ships via DHL · ₦7,500",
 };
 
 type FormData = {
@@ -275,12 +277,13 @@ export default function CheckoutPage() {
                       </div>
                       <div className="field">
                         <label htmlFor="state">State *</label>
-                        <input
-                          id="state" name="state" type="text"
-                          value={form.state} onChange={handleChange}
-                          required
-                          autoComplete="address-level1"
-                          placeholder="Lagos"
+                        <Combobox
+                          id="state"
+                          options={NIGERIA_STATES}
+                          placeholder="Select state…"
+                          searchPlaceholder="Search states…"
+                          value={form.state}
+                          onValueChange={(v) => setForm((prev) => ({ ...prev, state: v }))}
                         />
                       </div>
                     </div>

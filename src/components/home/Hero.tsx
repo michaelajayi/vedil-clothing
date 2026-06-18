@@ -18,7 +18,7 @@ export default function Hero() {
           </h1>
           <p className="reveal">
             Ready-to-wear for the whole family, a sewing school for the curious, and a garment
-            factory built for brands. This is Vedil — where craft meets everyday elegance.
+            factory built for brands. This is Vedil, where craft meets everyday elegance.
           </p>
           <div className="hero-cta reveal">
             <Link href="/shop" className="btn">

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
+import FactoryForm from "@/components/factory/FactoryForm";
 
 export const metadata: Metadata = {
-  title: "Garment Factory — Vedil Clothing",
+  title: "Garment Factory | Vedil Clothing",
   description:
-    "High-volume bulk production, custom orders, and wholesale — Vedil Clothing's garment factory serves brands, retailers, organisations, and individuals. Minimum 40 pieces for production runs.",
+    "High-volume bulk production, custom orders, and wholesale. Vedil Clothing's garment factory serves brands, retailers, organisations, and individuals. Minimum 40 pieces for production runs.",
 };
 
 export default function GarmentFactoryPage() {
@@ -21,7 +22,7 @@ export default function GarmentFactoryPage() {
           </h1>
           <p className="reveal">
             From bulk production for brands and corporates to bespoke custom orders and
-            wholesale catalogues — Vedil Clothing&apos;s factory delivers exceptional quality
+            wholesale catalogues. Vedil Clothing&apos;s factory delivers exceptional quality
             and craftsmanship at every scale.
           </p>
         </div>
@@ -47,7 +48,7 @@ export default function GarmentFactoryPage() {
                 <li>Competitive pricing with both wholesale and retail margins</li>
                 <li>Versatile styles appealing to diverse customer bases</li>
                 <li>Fast and reliable production turnaround</li>
-                <li>Custom branding — embroidery, labels, etc. (additional cost)</li>
+                <li>Custom branding: embroidery, labels, etc. (additional cost)</li>
                 <li>Color and size variety</li>
                 <li>Flexible payment options</li>
                 <li>Mix designs to reach the 40-piece minimum on your first order</li>
@@ -77,8 +78,9 @@ export default function GarmentFactoryPage() {
           <div className="why-grid">
             <div className="why-card reveal">
               <div className="why-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="5.5" />
+                  <path d="M9 13.5L7 21l5-2.5 5 2.5-2-7.5" />
                 </svg>
               </div>
               <h3>Quality Assured</h3>
@@ -86,9 +88,10 @@ export default function GarmentFactoryPage() {
             </div>
             <div className="why-card reveal">
               <div className="why-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 3h14M5 21h14" />
+                  <path d="M7 3c0 5 5 7 5 9s-5 4-5 9" />
+                  <path d="M17 3c0 5-5 7-5 9s5 4 5 9" />
                 </svg>
               </div>
               <h3>Reliable Turnaround</h3>
@@ -96,10 +99,11 @@ export default function GarmentFactoryPage() {
             </div>
             <div className="why-card reveal">
               <div className="why-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="6" cy="6" r="3" />
+                  <circle cx="6" cy="18" r="3" />
+                  <line x1="9" y1="7.5" x2="21" y2="19.5" />
+                  <line x1="9" y1="16.5" x2="21" y2="4.5" />
                 </svg>
               </div>
               <h3>Skilled Artisans</h3>
@@ -121,7 +125,7 @@ export default function GarmentFactoryPage() {
               <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "1.4rem" }}>
                 Our custom order service offers bespoke fashion solutions tailored to your
                 unique style. Whether you have a reference photo, a fabric you love, or just
-                an idea — collaborate with our talented designers and artisans to create pieces
+                an idea, collaborate with our talented designers and artisans to create pieces
                 that reflect your personal taste and elegance.
               </p>
               <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "2rem" }}>
@@ -153,7 +157,7 @@ export default function GarmentFactoryPage() {
           <div className="why-grid">
             <div className="why-card reveal">
               <div className="why-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
                 </svg>
               </div>
@@ -162,7 +166,7 @@ export default function GarmentFactoryPage() {
             </div>
             <div className="why-card reveal">
               <div className="why-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
               </div>
@@ -171,8 +175,9 @@ export default function GarmentFactoryPage() {
             </div>
             <div className="why-card reveal">
               <div className="why-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21l-4.35-4.35" />
                 </svg>
               </div>
               <h3>Attention to Detail</h3>
@@ -198,7 +203,7 @@ export default function GarmentFactoryPage() {
               <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "1.4rem" }}>
                 Vedil Clothing&apos;s wholesale programme offers boutiques, department stores,
                 and online retailers high-quality, timeless apparel and accessories. Our
-                catalogue — available with a minimum order of 40 pieces — features outfits
+                catalogue, available with a minimum order of 40 pieces, featuring outfits
                 offering great fit, comfort, durability, and versatility, with both wholesale
                 and retail prices listed for profitable margins.
               </p>
@@ -235,45 +240,7 @@ export default function GarmentFactoryPage() {
                 </a>
                 .
               </p>
-              <form>
-                <div className="field-row">
-                  <div className="field">
-                    <label htmlFor="gf-name">Full name</label>
-                    <input id="gf-name" type="text" placeholder="Your name" autoComplete="name" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="gf-phone">Phone / WhatsApp</label>
-                    <input id="gf-phone" type="tel" placeholder="+234 …" autoComplete="tel" />
-                  </div>
-                </div>
-                <div className="field">
-                  <label htmlFor="gf-email">Email address</label>
-                  <input id="gf-email" type="email" placeholder="you@example.com" autoComplete="email" />
-                </div>
-                <div className="field">
-                  <label htmlFor="gf-service">Service needed</label>
-                  <select id="gf-service">
-                    <option value="">Select a service…</option>
-                    <option value="bulk">Bulk production (40+ pieces)</option>
-                    <option value="custom">Custom order (personal / small group)</option>
-                    <option value="wholesale">Wholesale partnership</option>
-                  </select>
-                </div>
-                <div className="field">
-                  <label htmlFor="gf-details">Tell us more</label>
-                  <textarea
-                    id="gf-details"
-                    rows={5}
-                    placeholder="Describe your design, quantity, timeline, fabric preferences…"
-                  />
-                </div>
-                <button type="submit" className="btn">
-                  Send Enquiry
-                  <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M13 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </form>
+              <FactoryForm />
             </div>
           </div>
         </div>

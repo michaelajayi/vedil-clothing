@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="foot-top">
           <div className="foot-brand">
             <div className="logo">Ve<b>dil</b><span className="dot" style={{ color: "var(--gold)" }}>.</span></div>
-            <p>A Lagos fashion house — ready-to-wear, the It&apos;s Fun to Sew Academy, and a garment factory for brands that mean business.</p>
+            <p>A Lagos fashion house: ready-to-wear, the It&apos;s Fun to Sew Academy, and a garment factory for brands that mean business.</p>
             <div className="foot-contact">
               <a href="mailto:hello@vedilclothing.com">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">

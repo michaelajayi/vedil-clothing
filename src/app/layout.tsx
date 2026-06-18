@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import CartDrawer from "@/components/layout/CartDrawer";
 import { CartProvider } from "@/contexts/CartContext";
+import { ToastProvider } from "@/components/ui/Toast";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -22,9 +23,9 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Vedil Clothing — Ready-to-Wear, Sewing Academy & Garment Factory · Lagos",
+  title: "Vedil Clothing | Ready-to-Wear, Sewing Academy & Garment Factory · Lagos",
   description:
-    "Vedil Clothing is a Lagos fashion house — ready-to-wear for men, women and children, the It's Fun to Sew Academy, and a garment factory for custom and bulk orders.",
+    "Vedil Clothing is a Lagos fashion house: ready-to-wear for men, women and children, the It's Fun to Sew Academy, and a garment factory for custom and bulk orders.",
 };
 
 export default function RootLayout({
@@ -36,11 +37,13 @@ export default function RootLayout({
     <html lang="en" className={`${fraunces.variable} ${hankenGrotesk.variable}`}>
       <body>
         <CartProvider>
-          <Header />
-          {children}
-          <Footer />
-          <WhatsAppFloat />
-          <CartDrawer />
+          <ToastProvider>
+            <Header />
+            {children}
+            <Footer />
+            <WhatsAppFloat />
+            <CartDrawer />
+          </ToastProvider>
         </CartProvider>
       </body>
     </html>
