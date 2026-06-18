@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useCart } from "@/contexts/CartContext";
 
 export default function Header() {
   const headerRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { itemCount, openCart } = useCart();
 
   useEffect(() => {
     const header = headerRef.current;
@@ -49,13 +51,15 @@ export default function Header() {
           </ul>
 
           <div className="nav-actions">
-            <button className="icon-btn" aria-label="View cart">
+            <button className="icon-btn" aria-label="View cart" onClick={openCart}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <path d="M3 6h18" />
                 <path d="M16 10a4 4 0 01-8 0" />
               </svg>
-              <span className="cart-count">2</span>
+              {itemCount > 0 && (
+                <span className="cart-count">{itemCount}</span>
+              )}
             </button>
             <button
               className="icon-btn menu-toggle"

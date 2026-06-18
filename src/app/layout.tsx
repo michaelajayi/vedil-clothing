@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
+import CartDrawer from "@/components/layout/CartDrawer";
+import { CartProvider } from "@/contexts/CartContext";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -33,10 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${hankenGrotesk.variable}`}>
       <body>
-        <Header />
-        {children}
-        <Footer />
-        <WhatsAppFloat />
+        <CartProvider>
+          <Header />
+          {children}
+          <Footer />
+          <WhatsAppFloat />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );
