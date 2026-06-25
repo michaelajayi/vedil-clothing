@@ -1,6 +1,7 @@
 "use client";
 
 import * as RadixSelect from "@radix-ui/react-select";
+import { ChevronDown, Check } from "lucide-react";
 import { forwardRef } from "react";
 
 interface SelectOption {
@@ -30,9 +31,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
         >
           <RadixSelect.Value placeholder={placeholder} />
           <RadixSelect.Icon className="select-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
+            <ChevronDown size={16} strokeWidth={1.8} />
           </RadixSelect.Icon>
         </RadixSelect.Trigger>
 
@@ -43,9 +42,7 @@ const Select = forwardRef<HTMLButtonElement, SelectProps>(
                 <RadixSelect.Item key={opt.value} value={opt.value} className="select-item">
                   <RadixSelect.ItemText>{opt.label}</RadixSelect.ItemText>
                   <RadixSelect.ItemIndicator className="select-item-check">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
+                    <Check size={14} strokeWidth={2.5} />
                   </RadixSelect.ItemIndicator>
                 </RadixSelect.Item>
               ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import * as RadixToast from "@radix-ui/react-toast";
+import { Check, X } from "lucide-react";
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
 type ToastVariant = "success" | "error";
@@ -42,9 +43,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             <div className="toast-body">
               <span className="toast-icon" aria-hidden>
                 {msg.variant === "success" ? (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+                  <Check size={16} strokeWidth={2.5} />
                 ) : (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+                  <X size={16} strokeWidth={2.5} />
                 )}
               </span>
               <div>
@@ -53,7 +54,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               </div>
             </div>
             <RadixToast.Close className="toast-close" aria-label="Dismiss">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              <X size={14} strokeWidth={2} />
             </RadixToast.Close>
           </RadixToast.Root>
         ))}
