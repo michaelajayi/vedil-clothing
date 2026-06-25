@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Script from "next/script";
+import { Check, ArrowRight } from "lucide-react";
+import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import { useCart, effectivePrice, fmtPrice } from "@/contexts/CartContext";
 import Combobox from "@/components/ui/Combobox";
 import { NIGERIA_STATES } from "@/lib/nigeria-states";
@@ -142,9 +144,7 @@ export default function CheckoutPage() {
             placeItems: "center", margin: "0 auto 1.6rem",
             color: "var(--burgundy)",
           }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M20 6L9 17l-5-5" />
-            </svg>
+            <Check size={32} strokeWidth={2} />
           </div>
           <h1 style={{ fontSize: "clamp(1.8rem,4vw,2.6rem)", marginBottom: ".8rem" }}>
             Order Confirmed!
@@ -159,6 +159,7 @@ export default function CheckoutPage() {
             <Link href="/shop" className="btn">Continue Shopping</Link>
             <a href="https://wa.me/2348138683171" target="_blank" rel="noopener noreferrer" className="btn btn--ghost">
               Chat on WhatsApp
+              <WhatsappIcon size={17} />
             </a>
           </div>
         </div>
@@ -345,9 +346,7 @@ export default function CheckoutPage() {
                 >
                   {loading ? "Processing…" : `Pay ${fmtPrice(total)}`}
                   {!loading && (
-                    <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M13 5l7 7-7 7" />
-                    </svg>
+                    <ArrowRight className="arw" size={16} strokeWidth={2} />
                   )}
                 </button>
 

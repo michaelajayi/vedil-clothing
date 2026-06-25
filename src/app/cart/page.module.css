@@ -1,0 +1,29 @@
+/* ─── Page layout ────────────────────────────────────────────── */
+.cartPageLayout { display: grid; grid-template-columns: 1fr 360px; gap: 2.5rem; align-items: start; }
+
+/* ─── Items table ────────────────────────────────────────────── */
+.cartTable { width: 100%; border-collapse: collapse; }
+.cartTable th {
+  font-size: .75rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700;
+  padding: .8rem 0; border-bottom: 2px solid var(--line); text-align: left;
+}
+.cartTable th:last-child, .cartTable td:last-child { text-align: right; }
+.cartTable td { padding: 1.2rem 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+
+.productCell { display: flex; align-items: center; gap: 1rem; }
+.productThumb { width: 76px; height: 76px; border-radius: 10px; background: var(--paper); overflow: hidden; flex-shrink: 0; }
+.productName { font-weight: 600; font-size: .95rem; }
+.productSize { font-size: .8rem; color: var(--ink-soft); }
+
+.cellPrice { font-family: var(--font-display, "Fraunces"), serif; font-size: 1rem; }
+.cellPrice.ws { color: var(--burgundy); }
+.wsLabel { font-size: .7rem; display: block; font-family: var(--font-body, sans-serif); font-weight: 400; color: var(--gold); }
+
+.removeBtn { color: var(--ink-soft); transition: color .2s; }
+.removeBtn:hover { color: var(--burgundy); }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .cartPageLayout { grid-template-columns: 1fr; }
+}

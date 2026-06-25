@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ShoppingBag, X, ArrowRight } from "lucide-react";
 import { useCart, effectivePrice, fmtPrice } from "@/contexts/CartContext";
 
 export default function CartPage() {
@@ -10,14 +11,11 @@ export default function CartPage() {
     return (
       <main style={{ paddingBlock: "clamp(4rem,10vw,8rem)", textAlign: "center" }}>
         <div className="wrap" style={{ maxWidth: 560 }}>
-          <svg
-            width="56" height="56" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" strokeWidth="1.4"
+          <ShoppingBag
+            size={56}
+            strokeWidth={1.4}
             style={{ margin: "0 auto 1.4rem", opacity: .3 }}
-          >
-            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-            <path d="M3 6h18M16 10a4 4 0 01-8 0" />
-          </svg>
+          />
           <h1 style={{ fontSize: "clamp(1.8rem,4vw,2.4rem)", marginBottom: ".8rem" }}>
             Your cart is empty
           </h1>
@@ -125,9 +123,7 @@ export default function CartPage() {
                           onClick={() => removeItem(item.id)}
                           aria-label={`Remove ${item.name}`}
                         >
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M18 6L6 18M6 6l12 12" />
-                          </svg>
+                          <X size={18} strokeWidth={2} />
                         </button>
                       </td>
                     </tr>
@@ -180,9 +176,7 @@ export default function CartPage() {
 
             <Link href="/checkout" className="btn" style={{ display: "flex", marginTop: "1.4rem" }}>
               Proceed to Checkout
-              <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
+              <ArrowRight className="arw" size={16} strokeWidth={2} />
             </Link>
 
             <p style={{ fontSize: ".78rem", color: "var(--ink-soft)", textAlign: "center", marginTop: ".8rem" }}>

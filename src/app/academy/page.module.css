@@ -1,0 +1,169 @@
+/* ─── Intro — type-only, no photo ───────────────────────────────── */
+
+.introSection {
+  padding-block: clamp(4rem, 8vw, 7rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.introHeading {
+  font-size: clamp(2.4rem, 5.5vw, 4.4rem);
+  max-width: 700px;
+  margin: 1.2rem 0 1.4rem;
+  line-height: .95;
+  letter-spacing: -.03em;
+}
+
+.introHeading em {
+  font-style: italic;
+  color: var(--burgundy);
+  font-weight: 500;
+}
+
+.introSub {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  max-width: 480px;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+}
+
+.introChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+/* ─── Course menu ────────────────────────────────────────────────── */
+
+.courseSection {
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.courseHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+  flex-wrap: wrap;
+}
+
+.courseHeaderNote {
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+
+/* Each course is a horizontal row — magazine contents style */
+.courseMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.courseRow {
+  display: grid;
+  grid-template-columns: 56px 1fr auto auto;
+  align-items: center;
+  gap: 2rem;
+  padding-block: 1.8rem;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background .22s, padding-inline .22s;
+}
+
+.courseRow:hover {
+  background: var(--paper);
+  padding-inline: 1.5rem;
+  margin-inline: -1.5rem;
+}
+
+.courseNum {
+  font-family: var(--font-display), serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -.04em;
+  color: var(--beige);
+  flex-shrink: 0;
+  transition: color .22s;
+}
+.courseRow:hover .courseNum { color: var(--ink-soft); }
+
+.courseInfo { min-width: 0; }
+
+.courseName {
+  font-size: clamp(1rem, 2vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  margin-bottom: .3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.courseMeta {
+  font-size: .73rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.courseFees {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.courseTuition {
+  display: block;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+
+.courseReg {
+  font-size: .73rem;
+  color: var(--ink-soft);
+}
+
+.courseArrow {
+  font-size: 1.2rem;
+  color: var(--beige);
+  transition: transform .28s, color .22s;
+  flex-shrink: 0;
+}
+.courseRow:hover .courseArrow {
+  transform: translateX(5px);
+  color: var(--burgundy);
+}
+
+.courseFootnote {
+  margin-top: 2.5rem;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  max-width: 520px;
+  line-height: 1.65;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  .courseRow {
+    grid-template-columns: 40px 1fr auto;
+    gap: 1rem;
+  }
+  .courseArrow { display: none; }
+  .courseName { white-space: normal; }
+  .courseHeader { flex-direction: column; gap: .5rem; }
+}
+
+@media (max-width: 480px) {
+  .courseRow { grid-template-columns: 1fr auto; }
+  .courseNum { display: none; }
+}

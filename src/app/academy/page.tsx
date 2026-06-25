@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ArrowRight } from "lucide-react";
+import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 
 export const metadata: Metadata = {
@@ -204,9 +206,7 @@ export default function AcademyPage() {
                       className="btn"
                     >
                       Register Now
-                      <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M5 12h14M13 5l7 7-7 7" />
-                      </svg>
+                      <ArrowRight className="arw" size={16} strokeWidth={2} />
                     </a>
                     <a
                       href="https://wa.me/2348138683171"
@@ -243,9 +243,7 @@ export default function AcademyPage() {
               className="btn reveal"
             >
               Chat with us on WhatsApp
-              <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
+              <WhatsappIcon size={17} />
             </a>
           </div>
         </div>

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { MapPin, Phone, Mail } from "lucide-react";
+import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 import ContactForm from "@/components/contact/ContactForm";
 
@@ -40,10 +42,7 @@ export default function ContactPage() {
               <div className="contact-info-list">
                 <div className="contact-info-item reveal">
                   <div className="contact-info-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                      <circle cx="12" cy="9" r="2.5" />
-                    </svg>
+                    <MapPin strokeWidth={1.5} />
                   </div>
                   <div>
                     <h4>Visit us</h4>
@@ -54,9 +53,7 @@ export default function ContactPage() {
 
                 <div className="contact-info-item reveal">
                   <div className="contact-info-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.94.36 1.86.7 2.73a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.35-1.35a2 2 0 012.11-.45c.87.34 1.79.57 2.73.7A2 2 0 0122 16.92z" />
-                    </svg>
+                    <Phone strokeWidth={1.5} />
                   </div>
                   <div>
                     <h4>Call us</h4>
@@ -66,10 +63,7 @@ export default function ContactPage() {
 
                 <div className="contact-info-item reveal">
                   <div className="contact-info-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="4" width="20" height="16" rx="2" />
-                      <path d="M22 7l-10 6L2 7" />
-                    </svg>
+                    <Mail strokeWidth={1.5} />
                   </div>
                   <div>
                     <h4>Email us</h4>
@@ -79,9 +73,7 @@ export default function ContactPage() {
 
                 <div className="contact-info-item reveal">
                   <div className="contact-info-icon" style={{ background: "rgba(37,211,102,.08)", borderColor: "rgba(37,211,102,.18)", color: "#1a9e47" }}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-                    </svg>
+                    <WhatsappIcon filled={false} />
                   </div>
                   <div>
                     <h4>WhatsApp</h4>

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowRight, Truck, Gift, Award, Heart } from "lucide-react";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 
 export const metadata: Metadata = {
   title: "About Us | Vedil Clothing",
   description:
-    "Founded in 2012 by Vivian Duru, VEDIL Clothing is a Nigerian fashion brand that thrives on creativity, collaboration, and a deep love for the art of fashion.",
+    "Founded in 2012 by Vivian Duru, Vedil Clothing is a Nigerian fashion brand that thrives on creativity, collaboration, and a deep love for the art of fashion.",
 };
 
 export default function AboutPage() {
@@ -13,7 +14,7 @@ export default function AboutPage() {
     <main>
       <ScrollRevealInit />
 
-      {/* Page hero */}
+      {/* ── Hero ── */}
       <section className="page-hero">
         <div className="wrap">
           <span className="eyebrow reveal">Our story</span>
@@ -23,40 +24,49 @@ export default function AboutPage() {
             from Lagos, for the world.
           </h1>
           <p className="reveal">
-            Founded in 2012, VEDIL Clothing is a Nigerian fashion house that thrives on
+            Founded in 2012, Vedil Clothing is a Nigerian fashion house that thrives on
             creativity, collaboration, and a deep love for the art of fashion.
           </p>
         </div>
       </section>
 
-      {/* Founder story */}
+      {/* ── Founder story ── */}
       <section>
         <div className="wrap">
           <div className="about-story">
             <div className="about-photos reveal">
               <div className="ph about-photo-main">
-                <span className="ph-tag">Founder, Vivian Duru</span>
                 <span className="ph-mono">V</span>
+                <span className="ph-tag">Founder, Vivian Duru</span>
               </div>
               <div className="ph about-photo-float">
-                <span className="ph-tag">Collection</span>
+                <span className="ph-mono">✦</span>
+                <span className="ph-tag">Studio, Lagos</span>
               </div>
             </div>
+
             <div>
               <span className="eyebrow reveal">About us</span>
               <h2
                 className="reveal"
                 style={{ fontSize: "clamp(1.8rem,3.5vw,2.6rem)", marginBlock: "1rem 1.2rem" }}
               >
-                Welcome to VEDIL Clothing
+                Welcome to Vedil Clothing
               </h2>
-              <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "1.2rem" }}>
-                Welcome to VEDIL Clothing, a brand where passion for fashion meets timeless
-                elegance. Founded in 2012 by the visionary Vivian Duru, VEDIL Clothing is a
-                Nigerian fashion brand that thrives on creativity, collaboration, and a deep
-                love for the art of fashion.
+              <p
+                className="reveal"
+                style={{ color: "var(--ink-soft)", fontSize: "1.05rem", lineHeight: 1.75, marginBottom: "1.2rem" }}
+              >
+                Welcome to Vedil Clothing, a brand where passion for fashion meets timeless
+                elegance. Founded in 2012 by the visionary{" "}
+                <strong style={{ color: "var(--ink)" }}>Vivian Duru</strong>, Vedil Clothing
+                is a Nigerian fashion brand that thrives on creativity, collaboration, and a
+                deep love for the art of fashion.
               </p>
-              <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "2rem" }}>
+              <p
+                className="reveal"
+                style={{ color: "var(--ink-soft)", fontSize: "1.05rem", lineHeight: 1.75, marginBottom: "2rem" }}
+              >
                 Our team of dedicated designers and artisans work together to bring dreams to
                 life, creating beautiful pieces that resonate with our clients&apos; unique
                 styles and preferences. From ready-to-wear to custom couture, we serve men,
@@ -64,133 +74,153 @@ export default function AboutPage() {
               </p>
               <Link href="/shop" className="btn reveal">
                 Shop the Collection
-                <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
+                <ArrowRight className="arw" size={16} strokeWidth={2} aria-hidden />
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Goal + Mission/Vision */}
+      {/* ── Our goal + Mission / Vision ── */}
       <section style={{ background: "var(--paper)", borderRadius: "36px" }}>
         <div className="wrap" style={{ paddingBlock: "clamp(3rem,6vw,5rem)" }}>
-          <div className="sec-head center">
-            <span className="eyebrow reveal">Our goal</span>
-            <h2 className="reveal">
-              To create timeless fashion that empowers individuals and supports sustainable
-              livelihoods.
+          {/* Big editorial goal statement */}
+          <div style={{ textAlign: "center", marginBottom: "clamp(3rem,6vw,5rem)" }}>
+            <span className="eyebrow reveal" style={{ justifyContent: "center", marginBottom: "2rem", display: "inline-flex" }}>
+              Our goal
+            </span>
+            <h2
+              className="reveal"
+              style={{
+                fontSize: "clamp(2.6rem,6vw,5rem)",
+                lineHeight: 1.1,
+                letterSpacing: "-.02em",
+                maxWidth: "900px",
+                margin: "0 auto",
+              }}
+            >
+              To create timeless fashion that{" "}
+              <em style={{ fontStyle: "italic", color: "var(--burgundy)", fontWeight: 400 }}>
+                empowers individuals
+              </em>{" "}
+              and supports sustainable livelihoods.
             </h2>
           </div>
+
           <div className="mv-grid">
             <div className="mv-card reveal">
               <span className="eyebrow" style={{ marginBottom: "1rem" }}>Mission</span>
               <h3>What we do</h3>
               <p>
-                To creatively and passionately create and make timeless fashion items that
-                meet our clients&apos; unique preferences, one garment at a time.
+                To creatively and passionately create timeless fashion items that meet our
+                clients&apos; unique preferences, with care, skill, and attention in every stitch.
               </p>
             </div>
             <div className="mv-card reveal">
               <span className="eyebrow" style={{ marginBottom: "1rem" }}>Vision</span>
               <h3>Where we&apos;re going</h3>
               <p>
-                To be the fashion brand known for creating opportunities for everyday
-                tailors and artisans for sustainable livelihood across Lagos and Nigeria.
+                To be the fashion brand known for creating opportunities for everyday tailors
+                and artisans for sustainable livelihood across Lagos and Nigeria.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Three offerings */}
-      <section>
-        <div className="wrap">
-          <div className="sec-head center">
-            <span className="eyebrow reveal">What we offer</span>
-            <h2 className="reveal">Three ways we serve you</h2>
-            <p className="reveal">
-              Whether you want to buy, learn to sew, or have your designs manufactured at
-              scale. Vedil has a home for you.
-            </p>
-          </div>
-          <div className="offer-grid">
-            <Link href="/shop" className="offer-card reveal">
-              <div className="ph">
-                <span className="ph-tag">Shop</span>
-                <span className="ph-mono">S</span>
-              </div>
-              <h3>Shop</h3>
-              <p>
-                Ready-to-wear for men, women &amp; children. Ankara, African heritage
-                prints, and everyday essentials.
-              </p>
-              <span className="link-arrow">
-                Browse now{" "}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
-            <Link href="/academy" className="offer-card reveal">
-              <div className="ph">
-                <span className="ph-tag">Academy</span>
-                <span className="ph-mono">A</span>
-              </div>
-              <h3>It&apos;s Fun to Sew</h3>
-              <p>
-                In-person sewing classes from basics to advanced. Learn a craft that can
-                change your life and career.
-              </p>
-              <span className="link-arrow">
-                View courses{" "}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
-            <Link href="/garment-factory" className="offer-card reveal">
-              <div className="ph">
-                <span className="ph-tag">Garment Factory</span>
-                <span className="ph-mono">G</span>
-              </div>
-              <h3>Garment Factory</h3>
-              <p>
-                Bulk production, custom orders, and wholesale. Minimum 40 pieces for
-                brand production runs.
-              </p>
-              <span className="link-arrow">
-                Get a quote{" "}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Made to Measure CTA */}
-      <section>
-        <div className="wrap">
-          <div className="made-measure reveal">
-            <div className="ph" aria-hidden="true" />
-            <div className="inner">
-              <h2 className="made-measure-title">
-                MADE TO
-                <br />
-                MEASURE.
-              </h2>
-              <p className="sub">We go beyond just making the item.</p>
-              <Link href="/garment-factory" className="btn">
-                Garment Factory
-                <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
+              <Link
+                href="/academy"
+                className="link-arrow reveal"
+                style={{ marginTop: "1.2rem", display: "inline-flex" }}
+              >
+                Learn to sew with us
+                <ArrowRight size={15} strokeWidth={2} aria-hidden />
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Made to Measure CTA ── */}
+      <section>
+        <div className="wrap">
+          <div className="made-measure">
+            <div className="ph" aria-hidden />
+            <div className="inner">
+              <span
+                className="eyebrow reveal"
+                style={{
+                  color: "#f4d9a8",
+                  marginBottom: "1.6rem",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: ".6rem",
+                }}
+              >
+                <span style={{ display: "inline-block", width: 26, height: 1, background: "#f4d9a8", opacity: .6 }} />
+                Garment Factory
+              </span>
+              <p
+                className="made-measure-title reveal"
+                style={{ fontFamily: "var(--font-display, 'Fraunces'), serif" }}
+              >
+                Made to<br />Measure
+              </p>
+              <p className="sub reveal">We go beyond just making the item.</p>
+              <Link
+                href="/garment-factory"
+                className="btn reveal"
+                style={{ marginTop: "2.2rem", display: "inline-flex" }}
+              >
+                Garment Factory
+                <ArrowRight className="arw" size={16} strokeWidth={2} aria-hidden />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Our promise ── */}
+      <section style={{ background: "var(--paper)", borderRadius: "36px" }}>
+        <div className="wrap" style={{ paddingBlock: "clamp(3rem,6vw,5rem)" }}>
+          <div className="sec-head center reveal">
+            <span className="eyebrow">Our promise</span>
+            <h2>The standards we hold ourselves to</h2>
+            <p>Every order, every interaction. This is how we show up for you.</p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "1.4rem",
+            }}
+          >
+            {([
+              {
+                label: "Prompt delivery",
+                desc: "Your order arrives exactly when we say it will.",
+                icon: <Truck size={26} strokeWidth={1.5} aria-hidden />,
+              },
+              {
+                label: "Precise packaging",
+                desc: "Every piece handled with care from start to finish.",
+                icon: <Gift size={26} strokeWidth={1.5} aria-hidden />,
+              },
+              {
+                label: "Value guaranteed",
+                desc: "Quality you can feel at every price point.",
+                icon: <Award size={26} strokeWidth={1.5} aria-hidden />,
+              },
+              {
+                label: "Client satisfaction",
+                desc: "We stay with you until you're completely satisfied.",
+                icon: <Heart size={26} strokeWidth={1.5} aria-hidden />,
+              },
+            ] as { label: string; desc: string; icon: React.ReactNode }[]).map(({ label, desc, icon }) => (
+              <div key={label} className="why-card reveal">
+                <div className="why-icon">{icon}</div>
+                <h3 style={{ fontSize: "1.1rem", marginBottom: ".5rem" }}>{label}</h3>
+                <p>{desc}</p>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
     </main>
