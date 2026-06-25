@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function AcademySection() {
   return (
@@ -20,12 +21,6 @@ export default function AcademySection() {
               <span className="chip">Beginner friendly</span>
               <span className="chip">Certificate on completion</span>
             </div>
-            <Link href="/academy" className="btn reveal">
-              View All Courses
-              <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </Link>
           </div>
           <div className="ph reveal" aria-hidden="true"><span className="ph-tag">Studio image</span></div>
         </div>
@@ -69,6 +64,13 @@ export default function AcademySection() {
               </div>
             </div>
           </article>
+        </div>
+
+        <div className="academy-view-all reveal">
+          <Link href="/academy" className="link-arrow">
+            View All Courses
+            <ArrowRight size={15} strokeWidth={2} />
+          </Link>
         </div>
       </div>
     </section>

@@ -1,10 +1,7 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-const ArrowIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M5 12h14M13 5l7 7-7 7" />
-  </svg>
-);
+const ArrowIcon = () => <ArrowRight size={15} strokeWidth={2} />;
 
 export default function ShopSection() {
   return (
@@ -17,49 +14,30 @@ export default function ShopSection() {
         </div>
 
         <div className="cat-grid">
-          <article className="cat-card men reveal">
-            <div className="ph"><span className="ph-mono">M</span><span className="ph-tag">Men · Image</span></div>
+          <article className="cat-card heritage reveal">
+            <div className="ph"><span className="ph-mono">A</span><span className="ph-tag">Africa My Heritage · Image</span></div>
             <div className="body">
-              <h3>Men</h3>
-              <p className="sub">Clothing &amp; Accessories</p>
-              <Link href="/shop/men" className="link-arrow">Browse Men <ArrowIcon /></Link>
+              <h3>Africa My Heritage</h3>
+              <p className="sub">Ankara · African prints</p>
+              <Link href="/shop/africa-my-heritage" className="link-arrow">Browse Heritage <ArrowIcon /></Link>
             </div>
           </article>
 
-          <article className="cat-card women reveal">
-            <div className="ph"><span className="ph-mono">W</span><span className="ph-tag">Women · Image</span></div>
+          <article className="cat-card rtw reveal">
+            <div className="ph"><span className="ph-mono">R</span><span className="ph-tag">Ready to Wear · Image</span></div>
             <div className="body">
-              <h3>Women</h3>
-              <p className="sub">Clothing &amp; Accessories</p>
-              <Link href="/shop/women" className="link-arrow">Browse Women <ArrowIcon /></Link>
+              <h3>Ready to Wear</h3>
+              <p className="sub">Everyday dressing, elevated</p>
+              <Link href="/shop/ready-to-wear" className="link-arrow">Browse Ready to Wear <ArrowIcon /></Link>
             </div>
           </article>
 
-          <article className="cat-card kids reveal">
-            <div className="ph"><span className="ph-mono">C</span><span className="ph-tag">Children · Image</span></div>
+          <article className="cat-card acc reveal">
+            <div className="ph"><span className="ph-mono">Ac</span><span className="ph-tag">Accessories · Image</span></div>
             <div className="body">
-              <h3>Children</h3>
-              <p className="sub">Clothing &amp; Accessories</p>
-              <Link href="/shop/children" className="link-arrow">Browse Children <ArrowIcon /></Link>
-            </div>
-          </article>
-        </div>
-
-        <div className="cat-sub">
-          <article className="sub-card acc reveal">
-            <div className="ph" aria-hidden="true" />
-            <div>
               <h3>Accessories</h3>
-              <p>Headwraps, bags, belts and finishing touches that complete the look.</p>
-              <Link href="/shop/accessories" className="link-arrow">Shop Accessories <ArrowIcon /></Link>
-            </div>
-          </article>
-          <article className="sub-card new reveal">
-            <div className="ph" aria-hidden="true" />
-            <div>
-              <h3>New Arrivals</h3>
-              <p>Just in: fresh cuts and seasonal colours, restocked every week.</p>
-              <Link href="/shop/new-arrivals" className="link-arrow">See What&apos;s New <ArrowIcon /></Link>
+              <p className="sub">The finishing touch</p>
+              <Link href="/shop/accessories" className="link-arrow">Browse Accessories <ArrowIcon /></Link>
             </div>
           </article>
         </div>

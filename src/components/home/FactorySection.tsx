@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function FactorySection() {
   return (
@@ -16,11 +17,9 @@ export default function FactorySection() {
               brands. Our factory delivers consistent quality at scale. Share your specs and
               we&apos;ll handle sampling, sourcing and finishing, on time.
             </p>
-            <Link href="/contact#quote" className="btn">
+            <Link href="/garment-factory#quote" className="btn">
               Request a Quote
-              <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
+              <ArrowRight className="arw" size={16} strokeWidth={2} />
             </Link>
             <div className="factory-stats">
               <div><b>500+</b><span>Garments / week capacity</span></div>
