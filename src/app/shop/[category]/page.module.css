@@ -1,0 +1,111 @@
+/* ─── Category hero ───────────────────────────────────────────── */
+.catHero {
+  padding-block: clamp(2.8rem, 6vw, 5rem);
+  border-bottom: 1px solid var(--line);
+}
+.catHero h1 {
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  max-width: 720px;
+  margin: 1rem 0 1.1rem;
+}
+.catHero p {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  max-width: 560px;
+}
+
+/* ─── Breadcrumb ──────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .82rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.6rem;
+}
+.breadcrumb a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color .2s;
+}
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb span { opacity: .5; }
+.breadcrumb span:last-child { opacity: 1; color: var(--ink); font-weight: 600; }
+
+/* ─── Category switcher strip ─────────────────────────────────── */
+.catSwitcher {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 74px;
+  z-index: 59;
+  /* scroll-edge fades */
+  --fade: var(--paper);
+}
+
+/* left + right fades to signal horizontal scroll on mobile */
+@media (max-width: 767px) {
+  .catSwitcher::before,
+  .catSwitcher::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2.5rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .catSwitcher::before {
+    left: 0;
+    background: linear-gradient(to right, var(--fade), transparent);
+  }
+  .catSwitcher::after {
+    right: 0;
+    background: linear-gradient(to left, var(--fade), transparent);
+  }
+}
+
+/* nav is full-bleed so fades overlay correctly */
+.catSwitcherNav {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* replicate .wrap centering without a wrapping div */
+  padding-inline: clamp(20px, calc((100vw - 1240px) / 2 + 20px), 50vw);
+}
+.catSwitcherNav::-webkit-scrollbar { display: none; }
+
+.catSwitcherTab {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .85rem 1.4rem;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+  white-space: nowrap;
+}
+.catSwitcherTab:hover { color: var(--ink); }
+.catSwitcherTabActive {
+  color: var(--burgundy);
+  border-bottom-color: var(--burgundy);
+}
+
+.catSwitcherNum {
+  font-family: var(--font-display, "Fraunces"), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: .72rem;
+  opacity: .45;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ─── Product grid section ────────────────────────────────────── */
+.catGrid { padding-block: clamp(2.4rem, 5vw, 4rem); }

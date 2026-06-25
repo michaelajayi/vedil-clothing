@@ -1,0 +1,159 @@
+/* ─── Outer wrapper ───────────────────────────────────────────── */
+.pdpWrap {
+  padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+/* ─── Breadcrumb ──────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .82rem;
+  color: var(--ink-soft);
+  margin-bottom: clamp(1.6rem, 4vw, 2.8rem);
+}
+.breadcrumb a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color .2s;
+}
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb span { opacity: .5; }
+.breadcrumb span:last-child { opacity: 1; color: var(--ink); font-weight: 600; }
+
+/* ─── Two-column layout ───────────────────────────────────────── */
+.pdp {
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  gap: clamp(2.4rem, 6vw, 6rem);
+  align-items: start;
+}
+
+/* ─── Image column ────────────────────────────────────────────── */
+.pdpImage {
+  position: sticky;
+  top: 88px;
+  aspect-ratio: 3 / 4;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* ─── Info column ─────────────────────────────────────────────── */
+.pdpInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding-block: .5rem;
+}
+
+.pdpEyebrow {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.pdpName {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* ─── Prices ──────────────────────────────────────────────────── */
+.pdpPrices { display: flex; flex-direction: column; gap: .3rem; }
+
+.pdpPrice {
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.pdpWholesaleHint {
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+
+/* ─── Description ─────────────────────────────────────────────── */
+.pdpDesc {
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.pdpDescLabel {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.pdpDesc p:last-child {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+/* ─── Meta table ──────────────────────────────────────────────── */
+.pdpMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 1.6rem;
+  font-size: .88rem;
+}
+
+.pdpMeta > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: .6rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pdpMeta dt {
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+.pdpMeta dd {
+  color: var(--ink);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ─── Related products ────────────────────────────────────────── */
+.related {
+  padding-block: clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid var(--line);
+  margin-top: clamp(2rem, 5vw, 4rem);
+}
+
+.relatedHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.relatedTitle {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pdp {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .pdpImage {
+    position: static;
+    aspect-ratio: 4 / 3;
+  }
+}
