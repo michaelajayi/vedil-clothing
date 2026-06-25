@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { ChevronDown, ShoppingBag, Menu, X } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 
 export default function Header() {
@@ -35,28 +36,50 @@ export default function Header() {
             <li className="has-dropdown">
               <button className="nav-item" aria-haspopup="true">
                 Shop
-                <svg className="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
+                <ChevronDown className="chev" strokeWidth={2} />
               </button>
-              <div className="dropdown">
-                <Link href="/shop/men"><strong>Men</strong><span>Clothing &amp; Accessories</span></Link>
-                <Link href="/shop/women"><strong>Women</strong><span>Clothing &amp; Accessories</span></Link>
-                <Link href="/shop/children"><strong>Children</strong><span>Clothing &amp; Accessories</span></Link>
+              <div className="dropdown dropdown--mega">
+                <div className="mega-col">
+                  <span className="mega-heading">Collections</span>
+                  <Link href="/shop/africa-my-heritage" className="mega-item">
+                    <strong>Africa My Heritage</strong>
+                    <span>Ankara &amp; African prints</span>
+                  </Link>
+                  <Link href="/shop/ready-to-wear" className="mega-item">
+                    <strong>Ready to Wear</strong>
+                    <span>Everyday dressing, elevated</span>
+                  </Link>
+                  <Link href="/shop/accessories" className="mega-item">
+                    <strong>Accessories</strong>
+                    <span>Hats, jewellery &amp; more</span>
+                  </Link>
+                </div>
+                <div className="mega-rule" />
+                <div className="mega-col">
+                  <span className="mega-heading">Shop by</span>
+                  <Link href="/shop/ready-to-wear?gender=women" className="mega-item">
+                    <strong>Women</strong>
+                  </Link>
+                  <Link href="/shop/ready-to-wear?gender=men" className="mega-item">
+                    <strong>Men</strong>
+                  </Link>
+                  <Link href="/shop/ready-to-wear?gender=children" className="mega-item">
+                    <strong>Children</strong>
+                  </Link>
+                  <Link href="/shop" className="mega-view-all">View All →</Link>
+                </div>
               </div>
             </li>
-            <li><Link href="/academy" className="nav-item">Academy</Link></li>
+            <li><Link href="/about" className="nav-item">About</Link></li>
+            <li><Link href="/academy" className="nav-item">It&apos;s Fun to Sew</Link></li>
             <li><Link href="/garment-factory" className="nav-item">Garment Factory</Link></li>
+            <li><Link href="/faq" className="nav-item">FAQ</Link></li>
             <li><Link href="/contact" className="nav-item">Contact</Link></li>
           </ul>
 
           <div className="nav-actions">
             <button className="icon-btn" aria-label="View cart" onClick={openCart}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                <path d="M3 6h18" />
-                <path d="M16 10a4 4 0 01-8 0" />
-              </svg>
+              <ShoppingBag strokeWidth={1.7} />
               {itemCount > 0 && (
                 <span className="cart-count">{itemCount}</span>
               )}
@@ -66,9 +89,7 @@ export default function Header() {
               aria-label="Open menu"
               onClick={() => setMenuOpen(true)}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 6h18M3 12h18M3 18h18" />
-              </svg>
+              <Menu strokeWidth={2} />
             </button>
           </div>
         </div>
@@ -84,18 +105,20 @@ export default function Header() {
           aria-label="Close menu"
           onClick={() => setMenuOpen(false)}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
+          <X strokeWidth={2} />
         </button>
         <Link href="/shop" onClick={() => setMenuOpen(false)}>Shop</Link>
         <div className="sub-links">
-          <Link href="/shop/men" onClick={() => setMenuOpen(false)}>Men</Link>
-          <Link href="/shop/women" onClick={() => setMenuOpen(false)}>Women</Link>
-          <Link href="/shop/children" onClick={() => setMenuOpen(false)}>Children</Link>
+          <div className="sub-links-pills">
+            <Link href="/shop/africa-my-heritage" onClick={() => setMenuOpen(false)}>Africa My Heritage</Link>
+            <Link href="/shop/ready-to-wear" onClick={() => setMenuOpen(false)}>Ready to Wear</Link>
+            <Link href="/shop/accessories" onClick={() => setMenuOpen(false)}>Accessories</Link>
+          </div>
         </div>
-        <Link href="/academy" onClick={() => setMenuOpen(false)}>Academy</Link>
+        <Link href="/about" onClick={() => setMenuOpen(false)}>About</Link>
+        <Link href="/academy" onClick={() => setMenuOpen(false)}>It&apos;s Fun to Sew</Link>
         <Link href="/garment-factory" onClick={() => setMenuOpen(false)}>Garment Factory</Link>
+        <Link href="/faq" onClick={() => setMenuOpen(false)}>FAQ</Link>
         <Link href="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
       </nav>
     </>

@@ -35,6 +35,8 @@ type CartAction =
   | { type: "CLOSE" }
   | { type: "HYDRATE"; items: CartItem[] };
 
+export { fmtPrice } from "@/lib/products";
+
 // ─── Price helper ─────────────────────────────────────────────
 
 export function effectivePrice(item: CartItem): number {
@@ -42,10 +44,6 @@ export function effectivePrice(item: CartItem): number {
     return item.wholesalePrice;
   }
   return item.retailPrice;
-}
-
-export function fmtPrice(n: number): string {
-  return "₦" + n.toLocaleString("en-NG");
 }
 
 // ─── Reducer ──────────────────────────────────────────────────

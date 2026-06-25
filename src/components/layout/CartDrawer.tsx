@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { X, ShoppingBag, ArrowRight } from "lucide-react";
 import { useCart, effectivePrice, fmtPrice } from "@/contexts/CartContext";
 
 export default function CartDrawer() {
@@ -32,9 +33,7 @@ export default function CartDrawer() {
             )}
           </h2>
           <button className="icon-btn" onClick={closeCart} aria-label="Close cart">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
+            <X strokeWidth={2} />
           </button>
         </div>
 
@@ -42,10 +41,7 @@ export default function CartDrawer() {
         <div className="cart-body">
           {items.length === 0 ? (
             <div className="cart-empty">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                <path d="M3 6h18M16 10a4 4 0 01-8 0" />
-              </svg>
+              <ShoppingBag strokeWidth={1.5} />
               <p>Your cart is empty.</p>
               <button className="btn" onClick={closeCart}>
                 Continue Shopping
@@ -137,9 +133,7 @@ export default function CartDrawer() {
             <div className="cart-foot-btns">
               <Link href="/checkout" className="btn" onClick={closeCart}>
                 Checkout
-                <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
+                <ArrowRight className="arw" size={16} strokeWidth={2} />
               </Link>
               <Link href="/cart" className="btn btn--outline" onClick={closeCart}>
                 View Cart
