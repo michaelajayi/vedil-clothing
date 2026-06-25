@@ -66,7 +66,71 @@ One global `WhatsAppFloat` in the root layout. Do **not** add another WhatsApp b
 
 ## Running locally
 ```bash
-npm run dev      # http://localhost:3000
+pnpm dev         # http://localhost:3000
 npm run build    # production build
 npm run lint     # ESLint
 ```
+
+## Testing (Playwright)
+
+### Commands
+```bash
+npx playwright test              # run all tests, generate traces
+npx playwright test --ui         # open dashboard — replay, inspect, watch live
+npx playwright test --headed     # watch run in real browser
+npx playwright test -g "contact" # run tests matching name
+npx playwright test --debug      # Playwright Inspector, step through actions
+npx playwright show-report       # open HTML report from last run
+```
+
+### What accumulates per run
+Each test produces a `trace.zip` and (if enabled) a `video.webm` in `test-results/<test-name>/`.
+With 11 tests, one full run = ~93MB: ~86MB traces (2–15MB each), ~4MB videos (40KB–600KB each), ~3MB screenshots.
+**Default config:** `trace: on`, `video: off`, `screenshot: off` — trace alone covers everything UI Mode needs.
+Video is worth enabling temporarily when debugging animation or transition bugs; screenshot is redundant when trace is on.
+
+### Locator hierarchy — use in this order
+```ts
+page.getByRole("button", { name: "Send Message" })  // best — survives redesigns
+page.getByLabel("Email address")
+page.getByPlaceholder("Your name")
+page.getByText("exact visible string", { exact: true })
+page.locator(".scoped-css-class")                   // ok for stable component hooks
+page.locator("[data-testid='hero']")                // add to markup when needed
+// Never: nth-child selectors, unscoped text=Men, xpath
+```
+
+Scope locators to reduce ambiguity:
+```ts
+const form = page.locator("form#contact");
+await form.getByLabel("Email").fill("...");
+```
+
+### The one rule agents must not break — no arbitrary waits
+Playwright auto-waits for elements to be visible, enabled, and stable before every action. Never add `waitForTimeout` to paper over timing issues — it creates flaky tests that randomly fail and mask real problems.
+
+```ts
+// Wrong
+await page.waitForTimeout(1000);
+await page.click("button");
+
+// Right — let Playwright's auto-wait do its job
+await page.getByRole("button", { name: "Submit" }).click();
+
+// Right — when you genuinely need to wait for state change
+await page.waitForSelector("button:not([disabled])");
+await page.getByRole("button", { name: "Submit" }).click();
+```
+
+If a test is flaky, investigate the root cause (race condition, animation, network) — never silence it with a sleep.
+
+### What to test vs. skip
+| Test | Skip |
+|---|---|
+| User-facing flows — nav, forms, CTAs | CSS class names or visual pixel positions |
+| Error and empty states | Things TypeScript already enforces |
+| Critical content — phone, WhatsApp link | Every line of copy on every page |
+| Navigation — does clicking a link go to the right URL | Internal component state |
+
+### One behavior per test
+If a test is named "contact form", it should not also check the footer phone number. Keep assertions scoped to what the test name says.

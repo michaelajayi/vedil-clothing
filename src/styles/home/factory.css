@@ -1,0 +1,31 @@
+.factory {
+  position: relative; border-radius: 36px; overflow: hidden;
+  color: var(--cream); isolation: isolate;
+}
+.factory .ph {
+  position: absolute; inset: 0; z-index: -2;
+  background: linear-gradient(120deg, #2a211b, #4a3526 55%, #6e1f2a);
+}
+.factory::after {
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:
+    radial-gradient(60% 90% at 85% 20%, rgba(176,122,60,.4), transparent 60%),
+    linear-gradient(90deg, rgba(42,33,27,.7), rgba(42,33,27,.25));
+}
+.factory .inner { padding: clamp(3rem,7vw,6rem) clamp(1.6rem,5vw,4.5rem); max-width: 680px; }
+.factory .eyebrow { color: #f4d9a8; }
+.factory .eyebrow::before { background: #f4d9a8; }
+.factory h2 { font-size: clamp(2.1rem,5vw,3.6rem); margin: 1.1rem 0 1.1rem; color: #fff; }
+.factory h2 em { font-style: italic; color: #f4d9a8; font-weight: 400; }
+.factory p { font-size: 1.08rem; color: rgba(255,255,255,.88); margin-bottom: 2rem; max-width: 540px; }
+.factory .btn { --bg: var(--cream); --fg: var(--burgundy); box-shadow: 0 14px 30px -14px rgba(0,0,0,.5); }
+.factory .btn:hover { --bg: #fff; }
+
+.factory-stats { display: flex; flex-wrap: wrap; gap: 2.4rem; margin-top: 2.6rem; }
+.factory-stats div b { font-family: var(--font-display, "Fraunces"), serif; font-size: 2rem; color: #f4d9a8; display: block; }
+.factory-stats div span { font-size: .82rem; opacity: .85; letter-spacing: .02em; }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 980px) {
+  .factory-stats { gap: 1.6rem; }
+}

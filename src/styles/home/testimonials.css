@@ -1,0 +1,42 @@
+/* ─── Desktop grid ───────────────────────────────────────────── */
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+
+.testi-card {
+  background: var(--cream); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 2rem 1.8rem;
+  display: flex; flex-direction: column; gap: 1.2rem;
+  transition: transform .45s, box-shadow .45s;
+}
+.testi-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+
+.quote-mark { font-family: var(--font-display, "Fraunces"), serif; font-size: 3.5rem; line-height: .5; color: var(--burgundy); opacity: .35; height: 1.5rem; }
+.testi-card p { font-size: 1.04rem; color: var(--ink); }
+
+.testi-author { display: flex; align-items: center; gap: .9rem; margin-top: auto; }
+.avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; color: #fff; font-weight: 700;
+  font-family: var(--font-display, "Fraunces"), serif; font-size: 1.1rem; flex-shrink: 0;
+}
+.testi-author b { display: block; font-weight: 600; font-size: .95rem; }
+.testi-author span { font-size: .8rem; color: var(--ink-soft); }
+.stars { color: var(--gold); font-size: .85rem; letter-spacing: .1em; }
+
+/* ─── Embla carousel (mobile) ────────────────────────────────── */
+.testi-embla { display: none; }
+.testi-embla-container { display: flex; }
+.testi-embla-slide { flex: 0 0 85vw; max-width: 340px; padding-right: 1rem; }
+
+.testi-dots { display: flex; justify-content: center; gap: .5rem; margin-top: 1.2rem; }
+.testi-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--line); border: none; padding: 0; cursor: pointer;
+  transition: background .25s, transform .25s;
+}
+.testi-dot.is-active { background: var(--burgundy); transform: scale(1.3); }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .testi-grid { display: none; }
+  .testi-embla { display: block; }
+}

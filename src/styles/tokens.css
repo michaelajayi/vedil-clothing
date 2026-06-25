@@ -1,0 +1,24 @@
+:root {
+  --cream:      #FBF6EE;
+  --paper:      #F4ECDF;
+  --beige:      #E8DCC8;
+  --sand:       #DBC9AE;
+  --ink:        #2A211B;
+  --ink-soft:   #6B5D52;
+  --burgundy:   #6E1F2A;
+  --burgundy-d: #561620;
+  --gold:       #B07A3C;
+  --line:       rgba(42,33,27,.12);
+  --shadow:     0 24px 60px -28px rgba(42,33,27,.45);
+  --r:          18px;
+  --maxw:       1240px;
+}
+
+@theme inline {
+  --color-cream:    var(--cream);
+  --color-paper:    var(--paper);
+  --color-ink:      var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-burgundy: var(--burgundy);
+  --color-gold:     var(--gold);
+}

@@ -1,0 +1,32 @@
+/* Home section course cards */
+.course-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+
+.course-card {
+  background: var(--cream); border-radius: var(--r); overflow: hidden;
+  border: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s;
+}
+.course-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.course-card .ph { aspect-ratio: 16/10; }
+.course-card.c1 .ph { background: linear-gradient(150deg,#7d6347,#bfa37e); }
+.course-card.c2 .ph { background: linear-gradient(150deg,#6e1f2a,#b07a3c); }
+.course-card.c3 .ph { background: linear-gradient(150deg,#4a3526,#9a7e54); }
+
+.course-body { padding: 1.5rem 1.5rem 1.7rem; display: flex; flex-direction: column; flex: 1; }
+.course-format { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--gold); margin-bottom: .55rem; }
+.course-card h3 { font-size: 1.45rem; margin-bottom: .5rem; }
+.course-card p { font-size: .9rem; color: var(--ink-soft); margin-bottom: 1.3rem; flex: 1; }
+.course-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.price { font-family: var(--font-display, "Fraunces"), serif; font-size: 1.55rem; font-weight: 600; }
+.price small { font-size: .72rem; font-family: inherit; color: var(--ink-soft); font-weight: 500; display: block; letter-spacing: .02em; }
+.btn--enroll { padding: .7rem 1.3rem; font-size: .88rem; }
+
+/* View All link sits below the course grid, right-aligned on desktop */
+.academy-view-all { display: flex; justify-content: flex-end; margin-top: 1.5rem; }
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .course-grid { grid-template-columns: 1fr; }
+  .academy-view-all { justify-content: flex-start; }
+}
