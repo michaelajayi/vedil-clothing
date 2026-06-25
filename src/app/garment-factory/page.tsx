@@ -228,18 +228,45 @@ export default function GarmentFactoryPage() {
       {/* Inquiry form */}
       <section id="quote">
         <div className="wrap">
-          <div style={{ maxWidth: 720, margin: "0 auto" }}>
-            <div className="factory-quote reveal">
-              <span className="eyebrow" style={{ marginBottom: "1.2rem" }}>Get started</span>
-              <h3>Tell us about your project</h3>
+          <div className="factory-inquiry-split">
+            <div className="factory-inquiry-info reveal">
+              <span className="eyebrow">Get started</span>
+              <h2>Tell us about your project</h2>
               <p>
-                Fill in the form below and we&apos;ll reach out to discuss your order. For faster
-                responses, you can also{" "}
-                <a href="https://wa.me/2348138683171" target="_blank" rel="noopener noreferrer" style={{ color: "var(--burgundy)", fontWeight: 600 }}>
+                Fill in the form and we&apos;ll reach out within 24 hours to discuss your
+                order, pricing, and timeline. For a faster response,{" "}
+                <a
+                  href="https://wa.me/2348138683171"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--burgundy)", fontWeight: 600 }}
+                >
                   message us on WhatsApp
                 </a>
                 .
               </p>
+              <ul className="benefits-list">
+                <li>Minimum order of 40 pieces</li>
+                <li>Custom branding and labelling available</li>
+                <li>Flexible payment options</li>
+                <li>In-house design consultation included</li>
+              </ul>
+              <div className="factory-info-stats">
+                <div>
+                  <b>10+</b>
+                  <span>Years in production</span>
+                </div>
+                <div>
+                  <b>500+</b>
+                  <span>Orders fulfilled</span>
+                </div>
+                <div>
+                  <b>40+</b>
+                  <span>Min. order quantity</span>
+                </div>
+              </div>
+            </div>
+            <div className="factory-quote reveal">
               <FactoryForm />
             </div>
           </div>

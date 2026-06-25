@@ -12,6 +12,15 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+
+# scratch
+shop-preview.html
+/scratchpad/
+
+# claude code internal
+/.claude/
 
 # next.js
 /.next/
