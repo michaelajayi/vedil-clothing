@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleAlert, ArrowRight } from "lucide-react";
 import PhoneInput from "@/components/ui/PhoneInput";
 import Select from "@/components/ui/Select";
 import FileUpload from "@/components/ui/FileUpload";
@@ -45,9 +46,7 @@ function FieldError({ message }: { message?: string }) {
   if (!message || message.trim() === "") return null;
   return (
     <p className="field-error">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-        <circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />
-      </svg>
+      <CircleAlert size={12} strokeWidth={2.5} />
       {message}
     </p>
   );
@@ -56,7 +55,6 @@ function FieldError({ message }: { message?: string }) {
 export default function FactoryForm() {
   const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
-  const [fileError, setFileError] = useState<string | null>(null);
 
   const { register, control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -80,6 +78,18 @@ export default function FactoryForm() {
   }
 
   return (
+    <>
+    <style>{`
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active,
+      textarea:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px #FBF6EE inset !important;
+        -webkit-text-fill-color: #2A211B !important;
+        transition: background-color 5000s ease-in-out 0s;
+      }
+    `}</style>
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className="field-row">
         <div className="field">
@@ -104,7 +114,6 @@ export default function FactoryForm() {
                 id="gf-phone"
                 value={field.value}
                 onChange={field.onChange}
-                defaultIso2="ng"
                 hasError={!!errors.phone}
                 autoComplete="tel"
               />
@@ -158,23 +167,16 @@ export default function FactoryForm() {
       </div>
 
       <div className="field">
-        <FileUpload
-          files={files}
-          onChange={setFiles}
-          error={fileError}
-          onError={setFileError}
-        />
-        {fileError && <FieldError message={fileError} />}
+        <FileUpload onChange={setFiles} />
       </div>
 
       <button type="submit" className="btn" disabled={isSubmitting}>
         {isSubmitting ? "Sending…" : "Send Enquiry"}
         {!isSubmitting && (
-          <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M5 12h14M13 5l7 7-7 7" />
-          </svg>
+          <ArrowRight className="arw" size={16} strokeWidth={2} />
         )}
       </button>
     </form>
+    </>
   );
 }
