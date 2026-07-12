@@ -1,0 +1,22 @@
+{
+  "deliveryFees": {
+    "pickup": 0,
+    "dispatch": 3500,
+    "dhl": 7500
+  },
+  "deliveryLabels": {
+    "pickup": "Self Pick-up: No. 95 Ago Palace Way, Okota (Free)",
+    "dispatch": "Your Dispatch Rider · ₦3,500",
+    "dhl": "Vedil Ships via DHL · ₦7,500"
+  },
+  "contactInfo": {
+    "address": "No. 95 Ago Palace Way",
+    "city": "Okota",
+    "state": "Lagos",
+    "country": "Nigeria",
+    "phone": "+234 813 868 3171",
+    "email": "hello@vedilclothing.com",
+    "whatsapp": "https://wa.me/2348138683171",
+    "whatsappDisplay": "Chat on WhatsApp"
+  }
+}

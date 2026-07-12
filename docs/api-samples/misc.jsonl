@@ -1,0 +1,91 @@
+// ─── GET /api/company-profile ─────────────────────────────────
+{
+  "id": "00000000-0000-0000-0000-000000000001",
+  "phone": "+2348138683171",
+  "whatsapp": "+2348138683171",
+  "email": "hello@vedilclothing.com",
+  "addressLine": "12 Balogun Street",   // ⚠️ differs from DESIGN.md "95 Ago Palace Way"
+  "city": "Lagos",
+  "state": "Lagos",
+  "country": "Nigeria",
+  "instagramUrl": "https://instagram.com/vedilclothing",
+  "facebookUrl": "https://facebook.com/vedilclothing",
+  "tiktokUrl": "https://tiktok.com/@vedilclothing"
+}
+
+// ─── GET /api/config/public ───────────────────────────────────
+{
+  "id": "00000000-0000-0000-0000-000000000002",
+  "currencyCode": "NGN",
+  "localDeliveryFee": 300000,   // kobo → ₦3,000
+  "intlDeliveryFee": 1500000,   // kobo → ₦15,000
+  "moqDefault": 40
+}
+
+// ─── GET / -> API metadata ────────────────────────────────────
+{
+  "service": "vedil-clothing-backend",
+  "version": "0.0.1",
+  "environment": "development",
+  "status": "healthy",
+  "documentationUrl": "/api/docs",
+  "timestamp": "2026-07-12T12:27:40.222Z"
+}
+
+// ─── GET /health ──────────────────────────────────────────────
+{ "status": "ok", "timestamp": "2026-07-12T12:27:47.439Z" }
+
+// ─── GET /api/cart/{sessionId} (from spec) ────────────────────
+{
+  "id": "...",
+  "cartSessionId": "550e8400-...",
+  "userId": null,
+  "items": [
+    { "id": "...", "variantId": "...", "quantity": 2,
+      "unitPrice": 35000, "lineTotal": 70000 }
+  ],
+  "total": 70000,
+  "createdAt": "...",
+  "updatedAt": "..."
+}
+
+// ─── POST /api/checkout/initiate (request from spec) ──────────
+// Request body:
+{ "cartSessionId": "550e8400-...", "customerEmail": "customer@example.com",
+  "customerPhone": "+2348138683171",
+  "shippingAddress": { "street": "123 Main St", "city": "Lagos",
+                        "state": "Lagos", "postalCode": "100001",
+                        "country": "Nigeria" },
+  "deliveryFeeAmount": 3500, "currencyCode": "NGN",
+  "emailVerificationToken": "..." }   // only for course items
+
+// ─── POST /api/checkout/initiate (response from spec) ─────────
+{
+  "orderId": "550e8400-...",
+  "orderReference": "ORD-20260708-001",
+  "totalAmount": 175000,
+  "authorizationUrl": "https://checkout.paystack.com/...",
+  "accessCode": "pay_xxx",
+  "paystackReference": "ORD_7b3c7d..."
+}
+
+// ─── GET /api/orders/{orderReference} (from spec) ─────────────
+{
+  "id": "...", "orderReference": "ORD-20260708-001",
+  "status": "PAID",  // PENDING_PAYMENT | PAID | CANCELED | FAILED
+  "currencyCode": "NGN",
+  "subtotalAmount": 171500, "deliveryFeeAmount": 3500, "totalAmount": 175000,
+  "customerEmail": "customer@example.com",
+  "customerPhone": "+2348138683171",
+  "shippingAddress": { /* ... */ },
+  "paystackReference": "ORD_7b3c7d...",
+  "items": [
+    { "id": "...", "variantId": "...", "productNameSnapshot": "Vedil Signature Tee",
+      "variantSkuSnapshot": "TEE-RED-XL",
+      "productKindSnapshot": "PHYSICAL",
+      "unitAmountSnapshot": 35000, "quantity": 2, "lineAmountSnapshot": 70000,
+      "currencyCode": "NGN",
+      "selectedOptionsSnapshot": { "size": "XL", "color": "Red" } }
+  ],
+  "createdAt": "...", "updatedAt": "..."
+}

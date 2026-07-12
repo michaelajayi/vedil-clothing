@@ -1,0 +1,90 @@
+[
+  {
+    "id": "basic",
+    "title": "Basic Sewing Class",
+    "duration": "3 months",
+    "format": "In-person · Lagos",
+    "description": "This is the best place to start as it covers fundamentals of sewing, providing a strong foundation.",
+    "registration": "₦10,000",
+    "tuition": "₦300,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#7d6347,#bfa37e)"
+  },
+  {
+    "id": "intermediate",
+    "title": "Intermediate Sewing Class",
+    "duration": "3 months",
+    "format": "In-person · Lagos",
+    "description": "Suitable for those that have mastered Basic Sewing class course outline and are ready to be introduced to more complex techniques and projects.",
+    "registration": "₦10,000",
+    "tuition": "₦400,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#6e1f2a,#b07a3c)"
+  },
+  {
+    "id": "advanced",
+    "title": "Advanced Sewing Class",
+    "duration": "3 months",
+    "format": "In-person · Lagos",
+    "description": "Designed for experienced sewists, this class focuses on mastering advanced techniques and perfecting your craft.",
+    "registration": "₦10,000",
+    "tuition": "₦500,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#4a3526,#9a7e54)"
+  },
+  {
+    "id": "general-upgrade",
+    "title": "General Upgrade: Women's Wear",
+    "duration": "3 months",
+    "format": "In-person · Lagos",
+    "description": "Suitable for fashion designers/tailors who wants to gain up-to-date sewing techniques and practices. It captures topics in Basic, Intermediate and Advanced Sewing classes on womenswear.",
+    "registration": "₦10,000",
+    "tuition": "₦800,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#6e1f2a,#a4565f)"
+  },
+  {
+    "id": "rtw-production",
+    "title": "Ready-to-Wear Production Class",
+    "duration": "8 weeks",
+    "format": "In-person · Lagos",
+    "description": "For students who wish to gain hands-on experience in rtw production. You will understand the complete lifecycle of garment production from concept to finished product.",
+    "registration": "₦10,000",
+    "tuition": "₦300,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#2a3d26,#5a7e54)"
+  },
+  {
+    "id": "childrens-wear",
+    "title": "Children's Wear Class",
+    "duration": "2 months",
+    "format": "In-person · Lagos",
+    "description": "Designed to provide students with the knowledge and skills necessary to design, produce and market children's clothing. Intending students should already have basic sewing skills before registering.",
+    "registration": "₦10,000",
+    "tuition": "₦300,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#8a6a2f,#c2a35e)"
+  },
+  {
+    "id": "menswear",
+    "title": "Menswear Class",
+    "duration": "8 weeks",
+    "format": "In-person · Lagos",
+    "description": "Learn the fundamentals of designing and constructing tailored menswear, from shirts and trousers to native and formal pieces.",
+    "registration": "₦10,000",
+    "tuition": "₦300,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#3a3a4a,#6a7086)"
+  },
+  {
+    "id": "apprenticeship",
+    "title": "Apprenticeship Class",
+    "duration": "2 months",
+    "format": "In-person · Lagos",
+    "description": "A practical, industry-focused class that offers real workshop experience and hands-on training for aspiring fashion professionals.",
+    "registration": "₦10,000",
+    "tuition": "₦400,000",
+    "certificate": "₦20,000",
+    "phColor": "linear-gradient(150deg,#2a211b,#5a4636)"
+  }
+]

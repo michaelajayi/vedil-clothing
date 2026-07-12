@@ -1,0 +1,50 @@
+// ─── GET /api/courses (list) ──────────────────────────────────
+{
+  "id": "6a1e96d7-7e4f-420f-bd03-36f15b51ef94",
+  "name": "Fashion Design Foundations",
+  "slug": "fashion-design-foundations",
+  "description": "A comprehensive introduction to fashion design. Learn sketching, pattern making, and garment construction from industry professionals.",
+  "status": "ACTIVE",
+  "kind": "COURSE",
+  "categoryId": "d88809e1-4f01-4390-acfb-eb7d2aa64829",
+  "category": { "id": "d88809e1-...", "name": "Academy", "slug": "academy" },
+  "courseProfile": {
+    "id": "75dcd48d-...",
+    "productId": "6a1e96d7-...",
+    "instructorName": "Chioma Okafor",
+    "durationText": "8 weeks",
+    "deliveryMode": "LIVE",  // SELF_PACED | LIVE | HYBRID
+    "accessDurationDays": null,  // null = lifetime access
+    "startsAt": "2026-09-01T09:00:00.000Z",
+    "endsAt": "2026-10-24T17:00:00.000Z"
+  },
+  "images": [],
+  "variants": [
+    { "id": "1a2dee39-...", "productId": "6a1e96d7-...",
+      "sku": "FDF-001", "status": "ACTIVE", "isDefault": true,
+      "priceTiers": [
+        { "id": "071b0ad2-...", "minQuantity": 1,
+          "amount": 150000, "currencyCode": "NGN" }
+      ]
+    }
+  ],
+  "createdAt": "2026-07-12T09:15:29.034Z",
+  "updatedAt": "2026-07-12T09:15:29.034Z"
+}
+
+// ─── GET /api/courses/{slug} (detail) ─────────────────────────
+// Same shape as list item (no extra fields beyond list response)
+{
+  "id": "6a1e96d7-...",
+  "name": "Fashion Design Foundations",
+  "slug": "fashion-design-foundations",
+  "description": "...",
+  "status": "ACTIVE",
+  "kind": "COURSE",
+  "categoryId": "d88809e1-...",
+  "courseProfile": { /* same as list */ },
+  "images": [],
+  "variants": [ /* same as list */ ],
+  "createdAt": "2026-07-12T09:15:29.034Z",
+  "updatedAt": "2026-07-12T09:15:29.034Z"
+}

@@ -1,0 +1,72 @@
+// ─── GET /api/products (list) ─────────────────────────────────
+// Returns array of products with basic variant + price info
+{
+  "id": "f8f56ea8-a7d1-4bd8-af26-ebe8a5ce42fd",
+  "name": "Vedil Signature Tee",
+  "slug": "vedil-signature-tee",
+  "description": "Premium cotton tee.",
+  "status": "ACTIVE",
+  "kind": "PHYSICAL",
+  "categoryId": "1de7e3d3-9b39-4e97-bd80-0f5714c787d5",
+  "category": { "id": "1de7e3d3-9b39-4e97-bd80-0f5714c787d5", "name": "Shop", "slug": "shop" },
+  "images": [  // may be empty
+    { "id": "...", "fileId": "...", "displayOrder": 1, "isPrimary": false,
+      "file": { "id": "...", "url": "https://cdn.example.com/images/abc.jpg",
+                "altText": "Front view", "width": null, "height": null,
+                "mimeType": null, "sizeInBytes": null } }
+  ],
+  "variants": [
+    { "id": "d6b1fef3-...", "productId": "f8f56ea8-...", "sku": "TEE-RED-XL",
+      "status": "ACTIVE", "isDefault": true,
+      "priceTiers": [
+        { "id": "49d575c0-...", "variantId": "d6b1fef3-...", "minQuantity": 1,
+          "amount": 7000000, "currencyCode": "NGN" }
+      ],
+      "optionValues": []  // populated in detail response
+    }
+  ],
+  "createdAt": "2026-07-08T09:20:58.776Z",
+  "updatedAt": "2026-07-08T09:20:58.776Z",
+  "deletedAt": null
+}
+
+// ─── GET /api/products/{slug} (detail) ─────────────────────────
+// Same shape as list but with extra fields: attributes, full optionValues on variants
+{
+  "id": "f8f56ea8-...",
+  "name": "Vedil Signature Tee",
+  "slug": "vedil-signature-tee",
+  "description": "Premium cotton tee.",
+  "status": "ACTIVE",
+  "kind": "PHYSICAL",
+  "categoryId": "1de7e3d3-...",
+  "category": { "id": "1de7e3d3-...", "name": "Shop", "slug": "shop" },
+  "attributes": [
+    { "id": "90b3601b-...", "name": "material", "value": "cotton",
+      "displayOrder": 1 }
+  ],
+  "images": [ /* same as list */ ],
+  "variants": [
+    { "id": "d6b1fef3-...", "productId": "f8f56ea8-...",
+      "sku": "TEE-RED-XL", "status": "ACTIVE", "isDefault": true,
+      "priceTiers": [
+        { "id": "49d575c0-...", "minQuantity": 1,
+          "amount": 7000000, "currencyCode": "NGN" }
+      ],
+      "optionValues": [
+        { "variantId": "d6b1fef3-...", "optionValueId": "b7777cfe-...",
+          "optionValue": {
+            "id": "b7777cfe-...", "optionTypeId": "be10bfeb-...",
+            "value": "S", "code": "S", "displayOrder": 1,
+            "optionType": { "id": "be10bfeb-...", "name": "Size",
+                            "slug": "size", "displayOrder": 1 }
+          }
+        }
+      ],
+      "images": [ /* variant-specific images, same shape as product images */ ]
+    }
+  ],
+  "createdAt": "2026-07-08T09:20:58.776Z",
+  "updatedAt": "2026-07-08T09:20:58.776Z",
+  "deletedAt": null
+}

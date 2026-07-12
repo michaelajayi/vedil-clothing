@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vedil Clothing — Integration Plan</title>
+    <style>
+      :root {
+        --cream: #fbf6ee;
+        --paper: #f4ecdf;
+        --ink: #2a211b;
+        --ink-soft: #6b5d52;
+        --burgundy: #6e1f2a;
+        --gold: #b07a3c;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        background: var(--cream);
+        color: var(--ink);
+        line-height: 1.6;
+        padding: 2rem;
+      }
+      .wrap {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 2.2rem;
+        margin-bottom: 0.3rem;
+        letter-spacing: -0.02em;
+      }
+      h1 em {
+        color: var(--burgundy);
+        font-style: italic;
+      }
+      .subtitle {
+        color: var(--ink-soft);
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+        margin: 2rem 0 1rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid var(--paper);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      h2 .badge {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: 0.15rem 0.6rem;
+        border-radius: 20px;
+      }
+      .badge.done {
+        background: #d4edda;
+        color: #155724;
+      }
+      .badge.next {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .badge.wait {
+        background: #e2e3e5;
+        color: #383d41;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.2rem 1.4rem;
+        margin-bottom: 0.8rem;
+        border: 1px solid rgba(42, 33, 27, 0.08);
+      }
+      .card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+      }
+      .card p {
+        font-size: 0.9rem;
+        color: var(--ink-soft);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 0.15rem 0.5rem;
+        border-radius: 6px;
+        margin-right: 0.4rem;
+      }
+      .tag.green {
+        background: #d4edda;
+        color: #155724;
+      }
+      .tag.yellow {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .tag.red {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .tag.blue {
+        background: #d1ecf1;
+        color: #0c5460;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        margin: 0.8rem 0 1.2rem;
+      }
+      th,
+      td {
+        padding: 0.5rem 0.7rem;
+        text-align: left;
+        border-bottom: 1px solid var(--paper);
+      }
+      th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--ink-soft);
+      }
+      ol.steps {
+        padding-left: 1.4rem;
+      }
+      ol.steps li {
+        margin-bottom: 0.6rem;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid var(--paper);
+        margin: 2rem 0;
+      }
+      .file {
+        font-family: "SF Mono", "Cascadia Code", monospace;
+        font-size: 0.85rem;
+        background: var(--paper);
+        padding: 0.1rem 0.4rem;
+        border-radius: 4px;
+      }
+      @media (max-width: 640px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Vedil Clothing — Frontend <em>↔</em> Backend Integration</h1>
+      <p class="subtitle">
+        Grill session · 2026-07-12 · Aligned and ready to implement
+      </p>
+
+      <!-- Aligned decisions -->
+      <h2>✅ Aligned Decisions</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Data fetching</h3>
+          <p>
+            TanStack Query — best fit for async server state, caching, and
+            refetching. No Redux.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Integration type</h3>
+          <p>
+            Client-to-API. Admin dashboard deferred — owner uses Swagger for
+            now.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Course enrollment</h3>
+          <p>
+            Full flow — email OTP → Paystack → enrollment. WhatsApp stays for
+            support only.
+          </p>
+        </div>
+        <div class="card">
+          <h3>CORS</h3>
+          <p>
+            Handled on backend via <code>app.enableCors()</code> in
+            <span class="file">main.ts</span>.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Pricing model</h3>
+          <p>
+            Deferred — frontend shows first price tier. Documented as backend
+            feedback.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Course fees</h3>
+          <p>
+            Deferred — single price for now. Registration/certificate breakdown
+            documented as backend feedback.
+          </p>
+        </div>
+      </div>
+
+      <!-- Phase 0 -->
+      <h2><span class="badge done">Done</span> Phase 0: Documentation</h2>
+      <div class="card">
+        <table>
+          <tr>
+            <th>Artifact</th>
+            <th>Purpose</th>
+          </tr>
+          <tr>
+            <td><span class="file">src/types/api.ts</span></td>
+            <td>Typed contract — all API response shapes</td>
+          </tr>
+          <tr>
+            <td><span class="file">docs/api-contract.md</span></td>
+            <td>FE↔BE shared understanding, field mappings, discrepancies</td>
+          </tr>
+          <tr>
+            <td><span class="file">docs/api-discrepancies.md</span></td>
+            <td>Backend feedback — required schema changes</td>
+          </tr>
+          <tr>
+            <td><span class="file">docs/api-samples/</span></td>
+            <td>Sample API responses (products, courses, misc)</td>
+          </tr>
+          <tr>
+            <td><span class="file">docs/data-backup/</span></td>
+            <td>Hardcoded data backed up before stripping</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="file"
+                >thoughts/plans/2026-07-12-fe-be-integration.md</span
+              >
+            </td>
+            <td>Master integration plan</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Phase 1 -->
+      <h2>
+        <span class="badge done">Done</span> Phase 1: Strip Hardcoded Data
+      </h2>
+      <div class="card">
+        <table>
+          <tr>
+            <th>File</th>
+            <th>Change</th>
+          </tr>
+          <tr>
+            <td><span class="file">src/lib/products.ts</span></td>
+            <td>PRODUCTS array emptied</td>
+          </tr>
+          <tr>
+            <td><span class="file">src/app/academy/page.tsx</span></td>
+            <td>Courses array emptied</td>
+          </tr>
+          <tr>
+            <td><span class="file">src/app/checkout/page.tsx</span></td>
+            <td>Delivery fees zeroed out</td>
+          </tr>
+          <tr>
+            <td><span class="file">src/app/contact/page.tsx</span></td>
+            <td>Contact info → "Loading…" placeholders</td>
+          </tr>
+          <tr>
+            <td><span class="file">src/components/layout/Footer.tsx</span></td>
+            <td>Contact section → "Contact details loading…"</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="file">src/components/layout/WhatsAppFloat.tsx</span>
+            </td>
+            <td>Fixed wrong WhatsApp number</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Phase 2 -->
+      <h2>
+        <span class="badge next">Next</span> Phase 2: TanStack Query + API
+        Client
+      </h2>
+      <div class="card">
+        <ol class="steps">
+          <li>Install <span class="file">@tanstack/react-query</span></li>
+          <li>
+            Create <span class="file">src/lib/api.ts</span> — base fetch client
+            with <code>NEXT_PUBLIC_API_URL</code>
+          </li>
+          <li>
+            Create <span class="file">src/lib/queries/</span> — domain query
+            hooks (products, courses, cart, etc.)
+          </li>
+          <li>
+            Wire <code>QueryClientProvider</code> into
+            <span class="file">layout.tsx</span>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Phase 3 -->
+      <h2><span class="badge wait">Planned</span> Phase 3: Wire Endpoints</h2>
+      <div class="card">
+        <table>
+          <tr>
+            <th>Order</th>
+            <th>Domain</th>
+            <th>Difficulty</th>
+            <th>Pages</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Company Profile</td>
+            <td><span class="tag green">Low</span></td>
+            <td>/contact, footer</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Site Config</td>
+            <td><span class="tag green">Low</span></td>
+            <td>Checkout (delivery fees)</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Products</td>
+            <td><span class="tag yellow">Medium</span></td>
+            <td>/shop, /shop/[cat], /shop/[cat]/[p]</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Courses</td>
+            <td><span class="tag yellow">Medium</span></td>
+            <td>/academy</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Cart API</td>
+            <td><span class="tag red">High</span></td>
+            <td>Cart drawer, /cart</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Checkout</td>
+            <td><span class="tag red">High</span></td>
+            <td>/checkout (rewrite)</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Email Verification</td>
+            <td><span class="tag yellow">Medium</span></td>
+            <td>Course checkout</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Contact &amp; Factory Forms</td>
+            <td><span class="tag yellow">Medium</span></td>
+            <td>/contact, /garment-factory</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Course Enrollment</td>
+            <td><span class="tag red">High</span></td>
+            <td>/academy</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Pending backend -->
+      <h2>⚠️ Pending Backend Actions</h2>
+      <div class="card">
+        <table>
+          <tr>
+            <th>Action</th>
+            <th>Priority</th>
+          </tr>
+          <tr>
+            <td>Enable CORS in <span class="file">main.ts</span></td>
+            <td><span class="tag red">Blocking</span></td>
+          </tr>
+          <tr>
+            <td>Add <code>gender</code> field to products</td>
+            <td><span class="tag red">Required</span></td>
+          </tr>
+          <tr>
+            <td>Add <code>featured</code> / <code>isNew</code> fields</td>
+            <td><span class="tag yellow">Enhancement</span></td>
+          </tr>
+          <tr>
+            <td>Confirm company address (Ago Palace vs Balogun)</td>
+            <td><span class="tag red">Required</span></td>
+          </tr>
+          <tr>
+            <td>Configure social media URLs</td>
+            <td><span class="tag yellow">Enhancement</span></td>
+          </tr>
+          <tr>
+            <td>Add <code>registrationFee</code> to courses</td>
+            <td><span class="tag blue">Deferred</span></td>
+          </tr>
+          <tr>
+            <td>Resolve pricing tier model</td>
+            <td><span class="tag blue">Deferred</span></td>
+          </tr>
+        </table>
+      </div>
+
+      <hr />
+      <p style="text-align: center; color: var(--ink-soft); font-size: 0.85rem">
+        Vedil Clothing — Grill session completed · 12 July 2026 ·<br />
+        Plan persists at
+        <span class="file">thoughts/plans/2026-07-12-fe-be-integration.md</span>
+      </p>
+    </div>
+  </body>
+</html>
