@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vedil Clothing — Integration Plan</title>
+    <title>Vedil Clothing — Integration Plan (Historical)</title>
     <style>
       :root {
         --cream: #fbf6ee;
@@ -165,9 +165,44 @@
   <body>
     <div class="wrap">
       <h1>Vedil Clothing — Frontend <em>↔</em> Backend Integration</h1>
-      <p class="subtitle">
-        Grill session · 2026-07-12 · Aligned and ready to implement
-      </p>
+      <p class="subtitle">Grill session · 2026-07-12 · Historical implementation record</p>
+      <div class="card" style="border-left: 4px solid var(--burgundy)">
+        <h3>Current release status lives elsewhere</h3>
+        <p>
+          This plan predates the cart, OTP UI, and backend-mediated checkout
+          work now present in the repository. Use
+          <a href="launch-readiness.html">Launch Readiness</a> for the active
+          go/no-go checklist and verified system state.
+        </p>
+      </div>
+
+      <!-- Summary bar -->
+      <div
+        style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2rem"
+      >
+        <div class="card" style="flex: 1; min-width: 140px; text-align: center">
+          <p style="font-size: 2rem; font-weight: 700; color: var(--burgundy)">
+            6
+          </p>
+          <p style="font-size: 0.8rem; color: var(--ink-soft)">Domains wired</p>
+        </div>
+        <div class="card" style="flex: 1; min-width: 140px; text-align: center">
+          <p style="font-size: 2rem; font-weight: 700; color: var(--gold)">2</p>
+          <p style="font-size: 0.8rem; color: var(--ink-soft)">Ready to wire</p>
+        </div>
+        <div class="card" style="flex: 1; min-width: 140px; text-align: center">
+          <p style="font-size: 2rem; font-weight: 700; color: #721c24">2</p>
+          <p style="font-size: 0.8rem; color: var(--ink-soft)">
+            Needs arch change
+          </p>
+        </div>
+        <div class="card" style="flex: 1; min-width: 140px; text-align: center">
+          <p style="font-size: 2rem; font-weight: 700; color: var(--ink)">0</p>
+          <p style="font-size: 0.8rem; color: var(--ink-soft)">
+            Schema mismatches blocking
+          </p>
+        </div>
+      </div>
 
       <!-- Aligned decisions -->
       <h2>✅ Aligned Decisions</h2>
@@ -296,129 +331,194 @@
 
       <!-- Phase 2 -->
       <h2>
-        <span class="badge next">Next</span> Phase 2: TanStack Query + API
+        <span class="badge done">Done</span> Phase 2: TanStack Query + API
         Client
       </h2>
       <div class="card">
         <ol class="steps">
-          <li>Install <span class="file">@tanstack/react-query</span></li>
+          <li>✅ Install <span class="file">@tanstack/react-query</span></li>
           <li>
-            Create <span class="file">src/lib/api.ts</span> — base fetch client
-            with <code>NEXT_PUBLIC_API_URL</code>
+            ✅ Create <span class="file">src/lib/api.ts</span> — base fetch
+            client with <code>NEXT_PUBLIC_API_URL</code>
           </li>
           <li>
-            Create <span class="file">src/lib/queries/</span> — domain query
-            hooks (products, courses, cart, etc.)
+            ✅ Create <span class="file">src/lib/queries/</span> — domain query
+            hooks (products, courses, cart, checkout, inquiries)
           </li>
           <li>
-            Wire <code>QueryClientProvider</code> into
+            ✅ Wire <code>QueryClientProvider</code> into
             <span class="file">layout.tsx</span>
           </li>
         </ol>
       </div>
 
       <!-- Phase 3 -->
-      <h2><span class="badge wait">Planned</span> Phase 3: Wire Endpoints</h2>
+      <h2>
+        <span class="badge next">In progress</span> Phase 3: Wire Endpoints
+      </h2>
       <div class="card">
         <table>
           <tr>
             <th>Order</th>
             <th>Domain</th>
-            <th>Difficulty</th>
+            <th>Status</th>
             <th>Pages</th>
+            <th>Next step</th>
           </tr>
           <tr>
             <td>1</td>
             <td>Company Profile</td>
-            <td><span class="tag green">Low</span></td>
+            <td><span class="tag green">✅ Done</span></td>
             <td>/contact, footer</td>
+            <td>—</td>
           </tr>
           <tr>
             <td>2</td>
             <td>Site Config</td>
-            <td><span class="tag green">Low</span></td>
+            <td><span class="tag green">✅ Done</span></td>
             <td>Checkout (delivery fees)</td>
+            <td>—</td>
           </tr>
           <tr>
             <td>3</td>
             <td>Products</td>
-            <td><span class="tag yellow">Medium</span></td>
+            <td><span class="tag green">✅ Done</span></td>
             <td>/shop, /shop/[cat], /shop/[cat]/[p]</td>
+            <td>—</td>
           </tr>
           <tr>
             <td>4</td>
             <td>Courses</td>
-            <td><span class="tag yellow">Medium</span></td>
+            <td><span class="tag green">✅ Done</span></td>
             <td>/academy</td>
+            <td>—</td>
           </tr>
           <tr>
             <td>5</td>
             <td>Cart API</td>
-            <td><span class="tag red">High</span></td>
+            <td><span class="tag blue">🟢 Ready</span></td>
             <td>Cart drawer, /cart</td>
+            <td>Rewrite CartContext → TanStack Query</td>
           </tr>
           <tr>
             <td>6</td>
-            <td>Checkout</td>
-            <td><span class="tag red">High</span></td>
-            <td>/checkout (rewrite)</td>
+            <td>Contact / Factory Forms</td>
+            <td><span class="tag green">✅ Done</span></td>
+            <td>/contact, /garment-factory</td>
+            <td>—</td>
           </tr>
           <tr>
             <td>7</td>
             <td>Email Verification</td>
-            <td><span class="tag yellow">Medium</span></td>
+            <td><span class="tag blue">🟢 Ready</span></td>
             <td>Course checkout</td>
+            <td>Build OTP input component</td>
           </tr>
           <tr>
             <td>8</td>
-            <td>Contact &amp; Factory Forms</td>
-            <td><span class="tag yellow">Medium</span></td>
-            <td>/contact, /garment-factory</td>
+            <td>Checkout</td>
+            <td><span class="tag red">🔴 Rewrite</span></td>
+            <td>/checkout (rewrite)</td>
+            <td>Arch mismatch — server-mediated flow</td>
           </tr>
           <tr>
             <td>9</td>
             <td>Course Enrollment</td>
-            <td><span class="tag red">High</span></td>
+            <td><span class="tag red">🔴 Blocked</span></td>
             <td>/academy</td>
+            <td>Depends on #7 + #8</td>
           </tr>
         </table>
       </div>
 
       <!-- Pending backend -->
-      <h2>⚠️ Pending Backend Actions</h2>
+      <h2>⚠️ Backend Discrepancies</h2>
       <div class="card">
         <table>
           <tr>
-            <th>Action</th>
+            <th>Issue</th>
+            <th>Frontend workaround</th>
             <th>Priority</th>
           </tr>
           <tr>
-            <td>Enable CORS in <span class="file">main.ts</span></td>
-            <td><span class="tag red">Blocking</span></td>
+            <td>CORS in <span class="file">main.ts</span></td>
+            <td>None — just set <code>CORS_ORIGINS</code> env var on deploy</td>
+            <td><span class="tag green">✅ Coded</span></td>
           </tr>
           <tr>
-            <td>Add <code>gender</code> field to products</td>
-            <td><span class="tag red">Required</span></td>
-          </tr>
-          <tr>
-            <td>Add <code>featured</code> / <code>isNew</code> fields</td>
+            <td>Missing <code>gender</code> field</td>
+            <td>Inferred from product name via regex</td>
             <td><span class="tag yellow">Enhancement</span></td>
           </tr>
           <tr>
-            <td>Confirm company address (Ago Palace vs Balogun)</td>
-            <td><span class="tag red">Required</span></td>
-          </tr>
-          <tr>
-            <td>Configure social media URLs</td>
+            <td>Missing <code>featured</code>/<code>isNew</code> flags</td>
+            <td>30-day heuristic for new; first 4 as featured</td>
             <td><span class="tag yellow">Enhancement</span></td>
           </tr>
           <tr>
-            <td>Add <code>registrationFee</code> to courses</td>
+            <td>Address: Ago Palace vs Balogun St</td>
+            <td>Needs owner confirmation</td>
+            <td><span class="tag red">Required</span></td>
+          </tr>
+          <tr>
+            <td>Social media URLs not configured</td>
+            <td>Footer links currently go to <code>#</code></td>
+            <td><span class="tag yellow">Enhancement</span></td>
+          </tr>
+          <tr>
+            <td>Course fee breakdown (<code>registrationFee</code>)</td>
+            <td>Displayed as "Included" labels</td>
             <td><span class="tag blue">Deferred</span></td>
           </tr>
           <tr>
-            <td>Resolve pricing tier model</td>
+            <td>Pricing tier model (N-tier vs 2-tier)</td>
+            <td>Shows first tier only</td>
             <td><span class="tag blue">Deferred</span></td>
+          </tr>
+        </table>
+      </div>
+
+      <hr />
+
+      <!-- Post-launch -->
+      <h2>🚀 Pre-launch checklist</h2>
+      <div class="card">
+        <table>
+          <tr>
+            <th>Item</th>
+            <th>Notes</th>
+          </tr>
+          <tr>
+            <td>Deploy backend to public URL</td>
+            <td>Render / Railway / Fly.io</td>
+          </tr>
+          <tr>
+            <td>Set <code>NEXT_PUBLIC_API_URL</code> in prod</td>
+            <td>Point to deployed backend</td>
+          </tr>
+          <tr>
+            <td>Set <code>CORS_ORIGINS</code> on backend</td>
+            <td>Allow frontend production domain</td>
+          </tr>
+          <tr>
+            <td>Set <code>NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY</code></td>
+            <td>Production Paystack key</td>
+          </tr>
+          <tr>
+            <td>Set <code>RESEND_API_KEY</code> (if keeping Next.js routes)</td>
+            <td>Or switch forms to backend API</td>
+          </tr>
+          <tr>
+            <td>Real product photos</td>
+            <td>Replace all <code>.ph</code> placeholders</td>
+          </tr>
+          <tr>
+            <td>Fix footer nav links</td>
+            <td><code>/shop/men</code>, <code>/shop/women</code> → 404</td>
+          </tr>
+          <tr>
+            <td>Dead CSS cleanup</td>
+            <td><code>REWORK.md</code> — old shop-section classes</td>
           </tr>
         </table>
       </div>

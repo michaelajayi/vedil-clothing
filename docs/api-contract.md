@@ -47,6 +47,13 @@ This document captures the shared understanding between the Next.js frontend and
 | Variant options (size, colour) | `variants[].optionValues[].optionValue` | Includes `optionType` for grouping |
 | Variant images | `variants[].images[].file.url` | Variant-specific images |
 
+### Constraint: Single default variant per product
+
+- Exactly **one** variant per product should have `isDefault: true`.
+- Multiple variants with `isDefault: true` is invalid — the frontend picks the first match arbitrarily, which is undefined behaviour.
+- Products with zero variants set as default also need a default — the frontend falls back to `variants[0]`.
+- The frontend `resolveVariantId()` helper uses `variants.find(v => v.isDefault) ?? variants[0]`.
+
 ### Discrepancies
 
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
@@ -95,7 +102,85 @@ This document captures the shared understanding between the Next.js frontend and
 
 ---
 
-## 3. Cart
+## 9. Course Enrollment (Direct Purchase)
+
+### Endpoints
+
+| Method | Path | FE Use |
+|---|---|---|
+| `POST` | `/api/courses/enroll` | Enroll in a course — bypasses cart entirely |
+
+### Shared understanding
+
+- Course purchase flows are **different from physical products**: single student per enrollment, no quantity, no cart, no delivery.
+- The frontend calls this endpoint directly when the user clicks "Pay Now" in the enroll slide-in panel.
+- The backend creates the order + enrollment record directly (no cart involvement), initializes the Paystack transaction, and returns the redirect URL.
+- Frontend flow: open enroll panel → enter email → click "Pay Now" → `POST /api/courses/enroll` → redirect to `authorizationUrl` → Paystack → redirect back to `/checkout/confirmation`.
+- No email OTP verification needed (unlike the cart-based checkout flow) — the email is collected once on the enroll panel.
+- Quantity is always 1.
+
+### Request
+
+```json
+{
+  "email": "student@example.com",      // Student's email (required)
+  "variantId": "uuid-of-course-variant" // The course variant to enroll in
+}
+```
+
+### Response
+
+```json
+{
+  "orderReference": "ORD-XXXXXX",     // Used by confirmation page to poll status
+  "authorizationUrl": "https://paystack.com/..."  // Redirect user here
+}
+```
+
+### Flow diagram
+
+```
+Frontend (EnrollPanel)            Backend                         Paystack
+    |                                |                                |
+    |  POST /api/courses/enroll      |                                |
+    |  { email, variantId }          |                                |
+    |------------------------------->|                                |
+    |                                |  Create order (PENDING)         |
+    |                                |  Create enrollment record       |
+    |                                |  Initiate Paystack transaction  |
+    |                                |------------------------------->|
+    |  { orderReference,             |                                |
+    |    authorizationUrl }          |                                |
+    |<-------------------------------|                                |
+    |                                |                                |
+    |  Store orderReference in        |                                |
+    |  sessionStorage                 |                                |
+    |                                |                                |
+    |  Redirect to authorizationUrl   |                                |
+    |---------------------------------------------------------------->|
+    |                                |                                |
+    |  (User pays on Paystack)       |                                |
+    |                                |                                |
+    |  Paystack redirects to          |                                |
+    |  /checkout/confirmation         |                                |
+    |<---------------------------------------------------------------|
+    |                                |                                |
+    |  GET /api/checkout/status/{ref} |                                |
+    |  (poll for PAID status)        |                                |
+    |------------------------------->|                                |
+    |  { status: "PAID" }            |                                |
+    |<-------------------------------|                                |
+```
+
+### Discrepancies
+
+| # | Issue | Frontend expects | Backend delivers | Priority | Status |
+|---|---|---|---|---|---|
+| D11 | **Endpoint not yet built** | `POST /api/courses/enroll` | N/A — not implemented | High | 🔴 **Needs backend implementation** |
+
+---
+
+## 10. Cart
 
 ### Endpoints
 
@@ -307,6 +392,7 @@ None currently. This is a new flow not yet built on the frontend.
 | D8 | Company | Address mismatch (Ago Palace vs Balogun) | 🔴 Needs confirmation |
 | D9 | Company | Social handles not configured | 🟡 Content input |
 | D10 | Forms | Next.js route vs backend API | 🔴 Not integrated |
+| D11 | Course Enrollment | `POST /api/courses/enroll` endpoint not built | 🔴 Needs backend |
 
 ---
 
@@ -317,3 +403,4 @@ None currently. This is a new flow not yet built on the frontend.
 | 2026-07-12 | Use **TanStack Query** for data fetching | Best fit for async server state, caching, refetching |
 | 2026-07-12 | Pricing model discrepancy **deferred** | Will document as backend feedback and decide after seeing empty states |
 | 2026-07-12 | Course fee breakdown **deferred** | Will document as backend feedback for schema update |
+| 2026-07-15 | Course direct-purchase flow — new `POST /api/courses/enroll` endpoint | Course purchases bypass cart entirely; single-student, no quantity, no delivery |

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vedil Clothing — Launch Readiness</title>
+    <style>
+      :root { --cream:#fbf6ee; --paper:#f4ecdf; --ink:#2a211b; --soft:#6b5d52; --burgundy:#6e1f2a; --gold:#b07a3c; --green:#155724; --green-bg:#d4edda; --yellow:#856404; --yellow-bg:#fff3cd; --red:#721c24; --red-bg:#f8d7da; }
+      * { box-sizing:border-box; }
+      body { margin:0; padding:2rem; background:var(--cream); color:var(--ink); font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+      main { max-width:960px; margin:auto; }
+      h1 { margin:0; font-size:clamp(2rem,5vw,3rem); letter-spacing:-.03em; }
+      h2 { margin:2.4rem 0 .8rem; font-size:1.3rem; border-bottom:2px solid var(--paper); padding-bottom:.4rem; }
+      h3 { margin:.1rem 0 .35rem; font-size:1rem; }
+      p { margin:.3rem 0; }
+      a { color:var(--burgundy); }
+      .subtitle, .muted { color:var(--soft); }
+      .notice, .card { background:#fff; border:1px solid rgba(42,33,27,.1); border-radius:12px; padding:1.1rem 1.25rem; margin:.8rem 0; }
+      .notice { border-left:5px solid var(--burgundy); }
+      .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:.8rem; }
+      .metric { text-align:center; }
+      .metric strong { display:block; color:var(--burgundy); font-size:1.7rem; }
+      .pill { display:inline-block; border-radius:99px; font-size:.72rem; font-weight:700; padding:.15rem .55rem; text-transform:uppercase; letter-spacing:.03em; white-space:nowrap; }
+      .done { color:var(--green); background:var(--green-bg); } .verify { color:var(--yellow); background:var(--yellow-bg); } .block { color:var(--red); background:var(--red-bg); }
+      table { width:100%; border-collapse:collapse; background:#fff; border:1px solid rgba(42,33,27,.1); border-radius:12px; overflow:hidden; }
+      th, td { text-align:left; padding:.75rem; vertical-align:top; border-bottom:1px solid var(--paper); }
+      th { color:var(--soft); font-size:.78rem; letter-spacing:.04em; text-transform:uppercase; background:#fffdf9; }
+      tr:last-child td { border-bottom:0; }
+      ul { margin:.45rem 0; padding-left:1.25rem; }
+      code { background:var(--paper); border-radius:4px; padding:.1rem .3rem; font-size:.9em; }
+      .checklist { list-style:none; padding:0; }
+      .checklist li { margin:.5rem 0; padding-left:1.8rem; position:relative; }
+      .checklist li::before { content:"☐"; position:absolute; left:0; color:var(--burgundy); font-size:1.15rem; }
+      footer { margin:3rem 0 1rem; color:var(--soft); font-size:.85rem; text-align:center; }
+      @media (max-width:640px) { body{padding:1rem;} th,td{padding:.6rem;font-size:.88rem;} table{display:block;overflow-x:auto;} }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Vedil Clothing — Launch Readiness</h1>
+      <p class="subtitle">Current frontend ↔ backend state · audited 2026-07-14 · update after every verified change</p>
+
+      <div class="notice">
+        <strong>This is the launch source of truth.</strong>
+        The code has most integrations authored, but no live backend was available during this audit and the quality gate is failing. Do not mark the site ready until every blocking item has evidence.
+      </div>
+
+      <div class="grid">
+        <div class="card metric"><strong>8+</strong><span>integration areas authored</span></div>
+        <div class="card metric"><strong>0</strong><span>live backend flows verified in this audit</span></div>
+        <div class="card metric"><strong>2</strong><span>quality gates currently not passing</span></div>
+        <div class="card metric"><strong>Go / no-go</strong><span>currently: <span class="pill block">No-go</span></span></div>
+      </div>
+
+      <h2>System snapshot</h2>
+      <table>
+        <thead><tr><th>Area</th><th>Frontend state</th><th>Evidence still needed</th></tr></thead>
+        <tbody>
+          <tr><td>Catalog, company profile, site config</td><td><span class="pill done">Wired</span> TanStack Query calls are present for products, courses, profile, and public config.</td><td>Deployed API responses, empty/error states, real data and image rendering.</td></tr>
+          <tr><td>Contact &amp; factory enquiries</td><td><span class="pill done">Wired</span> Forms post to NestJS; old Next.js routes are deleted.</td><td>Successful record creation, notification delivery, file upload limits and failure messages.</td></tr>
+          <tr><td>Cart</td><td><span class="pill done">Wired</span> Session cart uses backend add/update/remove endpoints.</td><td>Mutation, refresh, multi-tab, tier pricing, and clear-after-payment behaviour.</td></tr>
+          <tr><td>Checkout &amp; Paystack</td><td><span class="pill done">Wired</span> Backend creates order and returns a hosted Paystack URL; confirmation polls status.</td><td>Real payment, webhook, paid/failed/cancelled states, order data, receipt, and recovery.</td></tr>
+          <tr><td>Course checkout &amp; OTP</td><td><span class="pill done">UI authored</span> A course cart requires OTP before checkout.</td><td>OTP delivery, expiry/resend, verified token, paid enrollment, access details, and email.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Blocking launch checklist</h2>
+      <ul class="checklist">
+        <li><strong>Backend availability:</strong> deploy or start the target backend, then record its base URL, health check, and API version.</li>
+        <li><strong>Production payment:</strong> complete a controlled Paystack payment and prove <code>initiate → redirect → webhook → PAID → order confirmation</code>.</li>
+        <li><strong>Course enrollment:</strong> complete the OTP + course payment path and prove enrollment/access plus the customer email.</li>
+        <li><strong>Fix checkout validation:</strong> do not allow paid delivery until config is loaded; send or remove first name, last name, and order note; enforce phone and state where labelled required.</li>
+        <li><strong>Cart finalisation:</strong> prove that a paid order cannot leave a re-orderable stale cart and that server pricing is shown consistently.</li>
+        <li><strong>Quality gates:</strong> make <code>pnpm lint</code>, <code>pnpm build</code>, and the relevant Playwright suite pass in a clean environment.</li>
+        <li><strong>Production configuration:</strong> set <code>NEXT_PUBLIC_API_URL</code>, backend CORS origin(s), Paystack callback/webhook and secret, database backups, OTP/email provider, and error monitoring.</li>
+      </ul>
+
+      <h2>High-risk product and content gaps</h2>
+      <table>
+        <thead><tr><th>Gap</th><th>Current behaviour</th><th>Decision needed</th></tr></thead>
+        <tbody>
+          <tr><td>Product and course images</td><td>API image URLs are mapped, but shop, PDP, and academy components render visual placeholders.</td><td>Render approved backend assets and verify image hosting/optimisation.</td></tr>
+          <tr><td>Collections and gender</td><td>Backend <code>shop</code> maps to ready-to-wear. Heritage/accessories may be empty; gender is inferred from names.</td><td>Provide correct backend categories/attributes or intentionally remove unsupported filters/routes.</td></tr>
+          <tr><td>Address and pickup</td><td>Docs conflict between Ago Palace Way and Balogun Street; checkout hardcodes Ago Palace Way.</td><td>Confirm one owner-approved address and update backend/content together.</td></tr>
+          <tr><td>Footer and legal routes</td><td>Some footer links point to non-existent shop pages, academy anchors, <code>/privacy</code>, and <code>/terms</code>.</td><td>Fix, remove, or create every linked destination before release.</td></tr>
+          <tr><td>Content completeness</td><td>Student handbook, social links, product images, stock/status, and delivery messaging require confirmation.</td><td>Supply approved launch content and test it on mobile.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Verification matrix</h2>
+      <table>
+        <thead><tr><th>Flow</th><th>Pass condition</th><th>Owner / evidence</th></tr></thead>
+        <tbody>
+          <tr><td>Browse catalogue</td><td>Live products, prices, sizes, stock, images, and category routes are correct.</td><td>Owner: ____ · Evidence: ____</td></tr>
+          <tr><td>Physical checkout</td><td>Cart totals match backend/order totals; successful and failed payments have clear recovery paths.</td><td>Owner: ____ · Evidence: ____</td></tr>
+          <tr><td>Course enrollment</td><td>OTP works and a paid learner is enrolled/notified exactly once.</td><td>Owner: ____ · Evidence: ____</td></tr>
+          <tr><td>Enquiry forms</td><td>Contact and factory submissions persist, notify the team, and uploads work within limits.</td><td>Owner: ____ · Evidence: ____</td></tr>
+          <tr><td>Failure handling</td><td>Offline/API 4xx/5xx states are human-readable and visitors have a support route.</td><td>Owner: ____ · Evidence: ____</td></tr>
+          <tr><td>Release smoke test</td><td>Production domain, API CORS, HTTPS, payment callback, email sender, and mobile navigation work.</td><td>Owner: ____ · Evidence: ____</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Known audit findings</h2>
+      <div class="card">
+        <ul>
+          <li><span class="pill block">Blocking</span> <code>pnpm lint</code> fails. It includes generated Playwright report assets and also reports checkout React-effect violations.</li>
+          <li><span class="pill verify">Unverified</span> <code>pnpm build</code> did not produce a completed production build artifact during the audit; rerun it in clean CI after lint fixes.</li>
+          <li><span class="pill verify">Unverified</span> <code>localhost:4000</code> was unavailable, so no actual frontend/backend request was verified.</li>
+          <li><span class="pill verify">Insufficient coverage</span> Existing E2E coverage has no OTP, form submission, cart mutation, successful/failed callback, webhook, or enrollment test.</li>
+        </ul>
+      </div>
+
+      <h2>Related records</h2>
+      <div class="card">
+        <p><a href="grill-session-summary.html">Original integration plan (historical)</a> · <a href="api-contract.md">API contract</a> · <a href="api-discrepancies.md">backend discrepancies</a> · <a href="../thoughts/plans/2026-07-12-fe-be-integration.md">implementation plan</a></p>
+      </div>
+
+      <footer>Update this document with dates and evidence as each launch gate is verified. A code change is not evidence of a working end-to-end flow.</footer>
+    </main>
+  </body>
+</html>
