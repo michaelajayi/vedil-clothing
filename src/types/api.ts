@@ -307,15 +307,15 @@ export interface VerifyOtpPayload {
 
 export interface VerifyOtpResponse {
 	// Returns a verificationToken (string) in the response body
-	verificationToken?: string;
+	verificationToken: string;
 }
 
 // ─── Contact Inquiries ──────────────────────────────────
 
 export interface CreateContactInquiryPayload {
 	name: string;
-	phone: string;
-	email: string;
+	phone?: string;
+	email?: string;
 	subject: string; // order | academy | factory | wholesale | other
 	message: string;
 }

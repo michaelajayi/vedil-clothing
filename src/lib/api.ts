@@ -26,6 +26,22 @@ export class ApiError extends Error {
 		this.status = status;
 		this.body = body;
 	}
+
+	/**
+	 * Extract a human-readable message string from a NestJS error response body.
+	 * NestJS ValidationPipe returns: { message: string | string[], error: string, statusCode: number }
+	 * Falls back to the generic HTTP status message if nothing useful is in the body.
+	 */
+	readableMessage(): string {
+		if (!this.body || typeof this.body !== "object") return this.message;
+		const body = this.body as Record<string, unknown>;
+		const msg = body.message;
+		if (typeof msg === "string") return msg;
+		if (Array.isArray(msg) && msg.length > 0)
+			return msg.filter((m) => typeof m === "string").join(". ");
+		if (typeof body.error === "string") return body.error;
+		return this.message;
+	}
 }
 
 // ─── Request helpers ─────────────────────────────────────
