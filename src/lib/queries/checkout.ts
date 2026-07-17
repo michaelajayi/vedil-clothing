@@ -7,6 +7,7 @@ import type {
 	ApiOrder,
 	SendOtpPayload,
 	VerifyOtpPayload,
+	VerifyOtpResponse,
 } from "@/types/api";
 
 // ─── Checkout ────────────────────────────────────────────
@@ -48,6 +49,6 @@ export function useSendOtp() {
 export function useVerifyOtp() {
 	return useMutation({
 		mutationFn: (payload: VerifyOtpPayload) =>
-			api.post("/api/email-verification/verify-otp", payload),
+			api.post<VerifyOtpResponse>("/api/email-verification/verify-otp", payload),
 	});
 }

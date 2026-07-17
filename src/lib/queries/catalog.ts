@@ -1,4 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import type {
 	ApiProductListItem,
@@ -19,12 +19,20 @@ export const productsOptions = (category?: string) =>
 		staleTime: 60 * 1000, // 1 min — products may change
 	});
 
+export function useProducts(category?: string) {
+	return useQuery(productsOptions(category));
+}
+
 export const productOptions = (slug: string) =>
 	queryOptions({
 		queryKey: ["products", "detail", slug],
 		queryFn: () => api.get<ApiProductDetail>(`/api/products/${slug}`),
 		staleTime: 60 * 1000,
 	});
+
+export function useProduct(slug: string, enabled = true) {
+	return useQuery({ ...productOptions(slug), enabled });
+}
 
 // ─── Courses ─────────────────────────────────────────────
 
@@ -35,9 +43,17 @@ export const coursesOptions = () =>
 		staleTime: 60 * 1000,
 	});
 
+export function useCourses() {
+	return useQuery(coursesOptions());
+}
+
 export const courseOptions = (slug: string) =>
 	queryOptions({
 		queryKey: ["courses", "detail", slug],
 		queryFn: () => api.get<ApiCourseDetail>(`/api/courses/${slug}`),
 		staleTime: 60 * 1000,
 	});
+
+export function useCourse(slug: string) {
+	return useQuery(courseOptions(slug));
+}
