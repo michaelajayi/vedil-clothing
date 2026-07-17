@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vedil Clothing
 
-## Getting Started
+Customer-facing storefront for Vedil Clothing and the It’s Fun to Sew Academy.
+The frontend is a Next.js 16 application that talks directly to the NestJS
+backend for catalog, enquiries, cart, checkout, and course verification.
 
-First, run the development server:
+## Current launch state
+
+The integration code is largely in place, but the release is **not yet
+go-live ready**. The active source of truth is the
+[launch-readiness checklist](docs/launch-readiness.html). It records the
+remaining work, launch gates, risks, owners/evidence fields, and the exact
+end-to-end flows that still need a production-like test.
+
+Use the documents below for their specific purpose:
+
+- [Launch readiness](docs/launch-readiness.html) — current go/no-go checklist
+  and system snapshot; update this as work is verified.
+- [Integration history](docs/grill-session-summary.html) — the original July
+  integration plan; retained for decisions and history, not release status.
+- [API contract](docs/api-contract.md) — agreed frontend/backend shapes.
+- [Backend discrepancies](docs/api-discrepancies.md) — backend/content changes
+  still required.
+- [Implementation plan](thoughts/plans/2026-07-12-fe-be-integration.md) —
+  detailed implementation record.
+
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The frontend runs at `http://localhost:3000`. Set `NEXT_PUBLIC_API_URL` in
+`.env.local` to the NestJS backend; it falls back to `http://localhost:4000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Useful checks:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm lint
+pnpm build
+pnpm test
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+At the last audit (2026-07-14), lint did not pass and no backend was running
+locally, so a passing local command alone is not launch evidence. See the
+launch checklist for the required verification evidence.

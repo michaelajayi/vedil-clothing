@@ -56,15 +56,15 @@ One global `WhatsAppFloat` in the root layout. Do **not** add another WhatsApp b
 | --- | --- | --- |
 | `/` | ✅ Done | Static |
 | `/about` | ✅ Done | Static |
-| `/academy` | ✅ Done (empty state) | Backend API 🔜 |
+| `/academy` | ✅ Done | Backend API (TanStack Query) |
 | `/garment-factory` | ✅ Done | Static + Next.js API route |
-| `/contact` | ✅ Done (empty state) | Backend API 🔜 |
+| `/contact` | ✅ Done | Backend API (TanStack Query) + client form |
 | `/faq` | ✅ Done | Static |
-| `/shop` | ✅ Done (empty state) | Backend API 🔜 |
-| `/shop/[category]` | ✅ Done (empty state) | Backend API 🔜 |
-| `/shop/[category]/[product]` | 404 (no data) | Backend API 🔜 |
+| `/shop` | ✅ Done | Backend API (TanStack Query) |
+| `/shop/[category]` | ✅ Done | Backend API (TanStack Query) |
+| `/shop/[category]/[product]` | ✅ Done | Backend API (TanStack Query) |
 | `/cart` | ✅ Done | Client-only (localStorage) |
-| `/checkout` | ✅ Done | Client-only (Paystack inline.js) |
+| `/checkout` | ✅ Done | Client-only (Paystack); delivery fees from API |
 
 ## Integration status
 
@@ -75,8 +75,43 @@ See `thoughts/plans/2026-07-12-fe-be-integration.md` for the full integration pl
 | 0: Documentation & Contract | ✅ Done |
 | 1: Strip hardcoded data | ✅ Done |
 | 2: TanStack Query + API client | ✅ Done |
-| 3: Wire endpoints | 🔜 Next |
-| 4: Test integrations | 🔜 Next |
+| 3: Wire endpoints | 🟡 6/10 domains wired, 4 remain (see below) |
+| 4: Test integrations | ⏳ Not started |
+
+### Domain-level status
+
+| # | Domain | Frontend components | Backend hook | Schema discrepancy | Status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **Company Profile** | ✅ ContactInfo, FooterContact wired | ✅ `useCompanyProfile()` | D8 (address mismatch) | ✅ Done |
+| 2 | **Site Config** | ✅ Delivery fees in checkout | ✅ `useSiteConfig()` | None | ✅ Done |
+| 3 | **Products** | ✅ ProductListClient, CategoryGridClient, ProductDetailClient | ✅ `useProducts()`, `useProduct()` | D2 (gender), D3 (featured/isNew) — heuristic workaround | ✅ Done |
+| 4 | **Courses** | ✅ CourseListClient with skeleton/error/empty | ✅ `useCourses()` | D5 (fee breakdown — deferred) | ✅ Done |
+| 5 | **Cart API** | ⏳ Not wired (localStorage only) | ✅ Hook exists | None — backend auto-creates cart | 🟢 Ready to wire |
+| 6 | **Contact Form** | ✅ Wired to backend API, Next.js route removed | ✅ `useSubmitContact()` | None | ✅ Done |
+| 7 | **Factory Form** | ✅ Wired to backend API (multipart), Next.js route removed | ✅ `useSubmitFactoryInquiry()` | None | ✅ Done |
+| 8 | **Email Verification** | ⏳ No OTP UI built | ✅ `useSendOtp()`, `useVerifyOtp()` | None | 🟢 Ready to wire |
+| 9 | **Checkout Initiate** | ⏳ Paystack inline.js (no backend involvement) | ✅ `useInitiateCheckout()` | D7 — architectural mismatch: needs rewrite to backend-mediated flow | 🔴 Needs rewrite |
+| 10 | **Course Enrollment** | ⏳ Depends on email verification + checkout flow | ⏳ Not started | Depends on #8 + #9 | 🔴 Blocked |
+
+**🟢 Ready to wire** means hooks exist with zero schema discrepancy — only frontend component work needed.
+
+## Pre-launch checklist
+
+- [ ] Deploy backend to public URL (Render / Railway / Fly.io)
+- [ ] Set `NEXT_PUBLIC_API_URL` in production — point to deployed backend
+- [ ] Set `CORS_ORIGINS` on backend — allow frontend production domain
+- [ ] Set `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` — production Paystack key
+- [x] Wire contact form → backend API (Next.js route removed)
+- [x] Wire factory form → backend API (Next.js route removed)
+- [x] Wire cart API (rewrite CartContext to use TanStack Query)
+- [x] Rewrite checkout flow (backend-mediated Paystack redirect)
+- [ ] Set `PAYSTACK_CALLBACK_URL` on backend — e.g. `https://vedilclothing.com/checkout/callback`
+- [ ] Replace product image placeholders (`.ph`) with real photos
+- [ ] Fix footer nav links (`/shop/men`, `/shop/women` → 404)
+- [ ] Confirm company address (Ago Palace Way vs Balogun St)
+- [ ] Configure social media URLs in backend
+- [ ] Remove dead CSS (old shop-section classes — see `REWORK.md`)
+- [ ] Confirm email address with owner (`hello@vedilclothing.com`)
 
 ## Working conventions
 
