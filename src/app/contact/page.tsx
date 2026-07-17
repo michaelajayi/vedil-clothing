@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail } from "lucide-react";
-import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 import ContactForm from "@/components/contact/ContactForm";
+import ContactInfo from "@/components/contact/ContactInfo";
 
 export const metadata: Metadata = {
 	title: "Contact Us | Vedil Clothing",
@@ -44,81 +43,7 @@ export default function ContactPage() {
 							>
 								Find us
 							</h2>
-							<div className="contact-info-list">
-								<div className="contact-info-item reveal">
-									<div className="contact-info-icon">
-										<MapPin strokeWidth={1.5} />
-									</div>
-									<div>
-										<h4>Visit us</h4>
-										<p
-											style={{ color: "var(--ink-soft)", fontStyle: "italic" }}
-										>
-											Loading address…
-										</p>
-									</div>
-								</div>
-
-								<div className="contact-info-item reveal">
-									<div className="contact-info-icon">
-										<Phone strokeWidth={1.5} />
-									</div>
-									<div>
-										<h4>Call us</h4>
-										<p
-											style={{ color: "var(--ink-soft)", fontStyle: "italic" }}
-										>
-											Loading phone…
-										</p>
-									</div>
-								</div>
-
-								<div className="contact-info-item reveal">
-									<div className="contact-info-icon">
-										<Mail strokeWidth={1.5} />
-									</div>
-									<div>
-										<h4>Email us</h4>
-										<p
-											style={{ color: "var(--ink-soft)", fontStyle: "italic" }}
-										>
-											Loading email…
-										</p>
-									</div>
-								</div>
-
-								<div className="contact-info-item reveal">
-									<div
-										className="contact-info-icon"
-										style={{
-											background: "rgba(37,211,102,.08)",
-											borderColor: "rgba(37,211,102,.18)",
-											color: "#1a9e47",
-										}}
-									>
-										<WhatsappIcon filled={false} />
-									</div>
-									<div>
-										<h4>WhatsApp</h4>
-										<p
-											style={{ color: "var(--ink-soft)", fontStyle: "italic" }}
-										>
-											Loading WhatsApp…
-										</p>
-									</div>
-								</div>
-							</div>
-
-							{/* Map placeholder */}
-							<div className="ph contact-map reveal">
-								<span className="ph-tag">Okota, Lagos · Google Maps</span>
-								<span
-									className="ph-mono"
-									style={{ fontSize: "1rem", letterSpacing: ".3em" }}
-								>
-									MAP
-								</span>
-							</div>
+							<ContactInfo />
 						</div>
 
 						{/* Contact form */}
