@@ -101,6 +101,42 @@ test("contact form — fill and validate", async ({ page }) => {
   );
 });
 
+for (const contact of [
+  { field: "email", value: "amara@example.com" },
+  { field: "phone", value: "08012345678" },
+]) {
+  test(`contact form — submits with only ${contact.field}`, async ({ page }) => {
+    let submittedBody: Record<string, unknown> | undefined;
+    await page.route("**/api/contact-inquiries", async (route) => {
+      submittedBody = route.request().postDataJSON();
+      await route.fulfill({ status: 201, contentType: "application/json", body: "{}" });
+    });
+
+    await page.goto("/contact");
+    await page.locator("#c-name").fill("Amara Okonkwo");
+    if (contact.field === "email") {
+      await page.locator("#c-email").fill(contact.value);
+    } else {
+      await page.locator("#c-phone").fill(contact.value);
+    }
+    await page.locator("#c-subject").click();
+    await page.getByRole("option", { name: "Order enquiry" }).click();
+    await page.locator("#c-message").fill("I would like to know more about your collection.");
+    await page.getByRole("button", { name: "Send Message" }).click();
+
+    await expect.poll(() => submittedBody).toBeDefined();
+    expect(submittedBody).toMatchObject({
+      name: "Amara Okonkwo",
+      subject: "order",
+      message: "I would like to know more about your collection.",
+      [contact.field]: contact.field === "phone" ? "+2348012345678" : contact.value,
+    });
+    expect(submittedBody).not.toHaveProperty(
+      contact.field === "phone" ? "email" : "phone",
+    );
+  });
+}
+
 test("contact page — WhatsApp link present", async ({ page }) => {
   await page.goto("/contact");
   const waLink = page.locator("a[href*='wa.me']").first();
