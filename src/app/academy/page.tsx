@@ -1,25 +1,18 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
+import CourseListClient from "@/components/academy/CourseListClient";
+
+// ─── Student handbook config ────────────────────────────────
+// Replace with the actual PDF URL when you have it
+const HANDBOOK_URL = "/student-handbook.pdf";
 
 export const metadata: Metadata = {
 	title: "It's Fun to Sew Academy | Vedil Clothing",
 	description:
 		"Join hundreds of fashion enthusiasts at the It's Fun to Sew Academy. In-person sewing classes in Lagos from basic to advanced, each with certificate on completion.",
 };
-
-const courses: {
-	id: string;
-	title: string;
-	duration: string;
-	format: string;
-	description: string;
-	registration: string;
-	tuition: string;
-	certificate: string;
-	phColor: string;
-}[] = [];
 
 export default function AcademyPage() {
 	return (
@@ -63,6 +56,18 @@ export default function AcademyPage() {
 								participants gain understanding before proceeding to
 								Intermediate class.
 							</p>
+
+							{/* Student handbook */}
+							<a
+								href={HANDBOOK_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="handbook-link reveal"
+							>
+								<BookOpen size={16} />
+								Download Student Handbook
+							</a>
+
 							<div className="academy-feats reveal">
 								<span className="chip">Certificate on completion</span>
 								<span className="chip">Sewing machine per student</span>
@@ -78,7 +83,7 @@ export default function AcademyPage() {
 				</div>
 			</section>
 
-			{/* Course listing */}
+			{/* Course listing — live from API */}
 			<section>
 				<div className="wrap">
 					<div className="sec-head">
@@ -90,65 +95,7 @@ export default function AcademyPage() {
 						</p>
 					</div>
 
-					<div className="course-listing">
-						{courses.map((course, i) => (
-							<article
-								key={course.id}
-								className={`course-item${i % 2 !== 0 ? " alt" : ""} reveal`}
-							>
-								<div
-									className="ph course-item-img"
-									style={{ background: course.phColor } as React.CSSProperties}
-								>
-									<span className="ph-tag">{course.title}</span>
-								</div>
-								<div className="course-item-body">
-									<span className="course-duration-badge">
-										{course.format} · {course.duration}
-									</span>
-									<h3>{course.title}</h3>
-									<p className="course-item-desc">{course.description}</p>
-									<div className="course-fees-table">
-										<div className="fee-row">
-											<span>Registration</span>
-											<strong>{course.registration}</strong>
-										</div>
-										<div className="fee-row">
-											<span>Tuition</span>
-											<strong>{course.tuition}</strong>
-										</div>
-										<div className="fee-row">
-											<span>Certificate</span>
-											<strong>{course.certificate}</strong>
-										</div>
-										<div className="fee-row">
-											<span>Duration</span>
-											<strong>{course.duration}</strong>
-										</div>
-									</div>
-									<div className="course-item-actions">
-										<a
-											href="https://wa.me/2348138683171"
-											target="_blank"
-											rel="noopener noreferrer"
-											className="btn"
-										>
-											Register Now
-											<ArrowRight className="arw" size={16} strokeWidth={2} />
-										</a>
-										<a
-											href="https://wa.me/2348138683171"
-											target="_blank"
-											rel="noopener noreferrer"
-											className="btn btn--ghost"
-										>
-											Student Handbook
-										</a>
-									</div>
-								</div>
-							</article>
-						))}
-					</div>
+					<CourseListClient />
 				</div>
 			</section>
 
@@ -179,6 +126,16 @@ export default function AcademyPage() {
 					</div>
 				</div>
 			</section>
+			{/* Student Handbook — floating button */}
+			<a
+				href={HANDBOOK_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="handbook-float"
+			>
+				<BookOpen size={17} />
+				Handbook
+			</a>
 		</main>
 	);
 }
