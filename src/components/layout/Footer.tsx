@@ -4,6 +4,7 @@ import {
 	FacebookIcon,
 	TiktokIcon,
 } from "@/components/ui/BrandIcons";
+import FooterContact from "./FooterContact";
 
 export default function Footer() {
 	return (
@@ -22,26 +23,10 @@ export default function Footer() {
 							Academy, and a garment factory for brands that mean business.
 						</p>
 						<div className="foot-contact">
-							<p
-								style={{
-									color: "var(--ink-soft)",
-									fontStyle: "italic",
-									fontSize: "0.85rem",
-								}}
-							>
-								Contact details loading…
-							</p>
+							<FooterContact />
 						</div>
 						<div className="socials">
-							<a href="#" aria-label="Instagram">
-								<InstagramIcon />
-							</a>
-							<a href="#" aria-label="Facebook">
-								<FacebookIcon />
-							</a>
-							<a href="#" aria-label="TikTok">
-								<TiktokIcon />
-							</a>
+							<SocialLinks />
 						</div>
 					</div>
 
@@ -114,5 +99,38 @@ export default function Footer() {
 				</div>
 			</div>
 		</footer>
+	);
+}
+
+// ─── Social Links (static URLs — these rarely change) ────
+
+function SocialLinks() {
+	return (
+		<>
+			<a
+				href="https://www.instagram.com/vedilclothing"
+				aria-label="Instagram"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<InstagramIcon />
+			</a>
+			<a
+				href="https://web.facebook.com/people/Vedil-Clothing/"
+				aria-label="Facebook"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<FacebookIcon />
+			</a>
+			<a
+				href="https://www.tiktok.com/@vedilclothing"
+				aria-label="TikTok"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<TiktokIcon />
+			</a>
+		</>
 	);
 }
