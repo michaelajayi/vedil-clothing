@@ -1,9 +1,20 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { X, Loader } from "lucide-react";
-import { useCourseEnroll } from "@/lib/queries/enrollment";
+import { X, Loader, ArrowLeft, Check } from "lucide-react";
+import {
+	useCourseEnroll,
+	useSendOtp,
+	useVerifyOtp,
+} from "@/lib/queries/enrollment";
 import type { CourseDisplay } from "@/lib/course-mapper";
+
+// ─── Helpers ──────────────────────────────────────────────
+
+const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const isOtp = (v: string) => /^\d{6}$/.test(v);
+
+type Step = "email" | "verify" | "pay";
 
 // ─── Props ────────────────────────────────────────────────
 
@@ -25,36 +36,95 @@ function EnrollPanelForm({
 		authorizationUrl: string;
 	}) => void;
 }) {
+	// ── State ──
+	const [step, setStep] = useState<Step>("email");
 	const [email, setEmail] = useState("");
+	const [otp, setOtp] = useState("");
+	const [verificationToken, setVerificationToken] = useState<string | null>(
+		null,
+	);
 	const [error, setError] = useState<string | null>(null);
+
+	const sendOtp = useSendOtp();
+	const verifyOtpMutation = useVerifyOtp();
 	const enroll = useCourseEnroll();
 
-	const isValidEmail = email.includes("@") && email.includes(".");
+	// Reset when a mutation completes (clear transient errors)
+	const clearError = useCallback(() => setError(null), []);
 
-	const handleSubmit = useCallback(async () => {
-		if (!isValidEmail) return;
+	// ── Step 1: Send OTP ──
+	const handleSendOtp = useCallback(async () => {
+		if (!isEmail(email)) return;
+		setError(null);
 
+		try {
+			await sendOtp.mutateAsync(email.trim());
+			setStep("verify");
+		} catch (err: unknown) {
+			setError(
+				err instanceof Error
+					? err.message
+					: "Failed to send verification code. Please try again.",
+			);
+		}
+	}, [email, sendOtp]);
+
+	// ── Step 2: Verify OTP ──
+	const handleVerifyOtp = useCallback(async () => {
+		if (!isOtp(otp)) return;
+		setError(null);
+
+		try {
+			const result = await verifyOtpMutation.mutateAsync({
+				email: email.trim(),
+				otp: otp.trim(),
+			});
+			setVerificationToken(result.verificationToken);
+			setStep("pay");
+		} catch (err: unknown) {
+			setError(
+				err instanceof Error
+					? err.message
+					: "Invalid verification code. Please try again.",
+			);
+		}
+	}, [email, otp, verifyOtpMutation]);
+
+	// ── Step 3: Pay ──
+	const handlePay = useCallback(async () => {
+		if (!verificationToken) return;
 		setError(null);
 
 		try {
 			const result = await enroll.mutateAsync({
 				email: email.trim(),
 				variantId: course.variantId,
+				verificationToken,
 			});
 
 			onPaySuccess(result);
 		} catch (err: unknown) {
-			const message =
+			setError(
 				err instanceof Error
 					? err.message
-					: "Something went wrong. Please try again.";
-			setError(message);
+					: "Something went wrong. Please try again.",
+			);
 		}
-	}, [email, isValidEmail, enroll, course.variantId, onPaySuccess]);
+	}, [email, verificationToken, enroll, course.variantId, onPaySuccess]);
 
-	return (
-		<div className="enroll-panel-body">
-			{/* Course info */}
+	// ── Go back to email step ──
+	const handleBack = useCallback(() => {
+		setStep("email");
+		setError(null);
+	}, []);
+
+	// ── Pending states ──
+	const isPending =
+		sendOtp.isPending || verifyOtpMutation.isPending || enroll.isPending;
+
+	// ── Shared: course info header ──
+	const courseInfo = (
+		<>
 			<div className="enroll-course-info">
 				<p className="enroll-course-title">{course.title}</p>
 				<p className="enroll-course-meta">
@@ -62,13 +132,11 @@ function EnrollPanelForm({
 				</p>
 			</div>
 
-			{/* Total — prominent */}
 			<div className="enroll-total-section">
 				<p className="enroll-total-label">Total</p>
 				<p className="enroll-total-amount">{course.tuitionFormatted}</p>
 			</div>
 
-			{/* Fee breakdown */}
 			<div className="enroll-breakdown">
 				<p className="enroll-breakdown-heading">Fee Breakdown</p>
 				<div className="enroll-breakdown-row">
@@ -88,33 +156,164 @@ function EnrollPanelForm({
 					<strong>{course.duration}</strong>
 				</div>
 			</div>
+		</>
+	);
 
-			{/* Email input */}
+	// ── Step indicator ──
+	const stepIndicator = (
+		<div className="enroll-steps">
+			<div
+				className={`enroll-step-dot${step === "email" ? " active" : ""}${step !== "email" ? " done" : ""}`}
+			>
+				{step !== "email" ? <Check size={12} strokeWidth={3} /> : 1}
+			</div>
+			<div className="enroll-step-line" />
+			<div
+				className={`enroll-step-dot${step === "verify" ? " active" : ""}${step === "pay" ? " done" : ""}`}
+			>
+				{step === "pay" ? <Check size={12} strokeWidth={3} /> : 2}
+			</div>
+			<div className="enroll-step-line" />
+			<div className={`enroll-step-dot${step === "pay" ? " active" : ""}`}>
+				3
+			</div>
+		</div>
+	);
+
+	// ── Step: Email ──
+	if (step === "email") {
+		return (
+			<div className="enroll-panel-body">
+				{courseInfo}
+
+				<div className="enroll-email-section">
+					<label htmlFor="enroll-email">Email address</label>
+					<input
+						id="enroll-email"
+						type="email"
+						placeholder="you@example.com"
+						value={email}
+						onChange={(e) => {
+							setEmail(e.target.value);
+							clearError();
+						}}
+						autoComplete="email"
+						inputMode="email"
+						disabled={isPending}
+					/>
+				</div>
+
+				{error && <p className="enroll-error">{error}</p>}
+
+				<button
+					className="btn enroll-pay-btn"
+					onClick={handleSendOtp}
+					disabled={!isEmail(email) || isPending}
+				>
+					{sendOtp.isPending ? (
+						<>
+							<Loader size={18} strokeWidth={2} className="enroll-spin" />
+							Sending code…
+						</>
+					) : (
+						"Send verification code"
+					)}
+				</button>
+
+				<p className="enroll-footer-note">
+					We&apos;ll send a 6-digit code to this email
+				</p>
+			</div>
+		);
+	}
+
+	// ── Step: Verify OTP ──
+	if (step === "verify") {
+		return (
+			<div className="enroll-panel-body">
+				{stepIndicator}
+
+				<div className="enroll-verify-section">
+					<p className="enroll-verify-heading">Check your email</p>
+					<p className="enroll-verify-sub">
+						We sent a 6-digit code to <strong>{email}</strong>
+					</p>
+
+					<label htmlFor="enroll-otp">Verification code</label>
+					<input
+						id="enroll-otp"
+						type="text"
+						inputMode="numeric"
+						placeholder="000 000"
+						maxLength={6}
+						value={otp}
+						onChange={(e) => {
+							setOtp(e.target.value.replace(/\D/g, "").slice(0, 6));
+							clearError();
+						}}
+						disabled={isPending}
+						autoComplete="one-time-code"
+					/>
+
+					<button
+						className="btn enroll-pay-btn"
+						onClick={handleVerifyOtp}
+						disabled={!isOtp(otp) || isPending}
+					>
+						{verifyOtpMutation.isPending ? (
+							<>
+								<Loader
+									size={18}
+									strokeWidth={2}
+									className="enroll-spin"
+								/>
+								Verifying…
+							</>
+						) : (
+							"Verify code"
+						)}
+					</button>
+
+					{error && <p className="enroll-error">{error}</p>}
+
+					<button
+						className="enroll-back-btn"
+						onClick={handleBack}
+						disabled={isPending}
+					>
+						<ArrowLeft size={14} strokeWidth={2} />
+						Use a different email
+					</button>
+				</div>
+			</div>
+		);
+	}
+
+	// ── Step: Pay ──
+	return (
+		<div className="enroll-panel-body">
+			{stepIndicator}
+
+			{courseInfo}
+
 			<div className="enroll-email-section">
 				<label htmlFor="enroll-email">Email address</label>
 				<input
 					id="enroll-email"
 					type="email"
-					placeholder="you@example.com"
 					value={email}
-					onChange={(e) => {
-						setEmail(e.target.value);
-						setError(null);
-					}}
-					autoComplete="email"
-					inputMode="email"
-					disabled={enroll.isPending}
+					readOnly
+					disabled
+					tabIndex={-1}
 				/>
 			</div>
 
-			{/* Error */}
 			{error && <p className="enroll-error">{error}</p>}
 
-			{/* Pay button */}
 			<button
 				className="btn enroll-pay-btn"
-				onClick={handleSubmit}
-				disabled={!isValidEmail || enroll.isPending}
+				onClick={handlePay}
+				disabled={isPending}
 			>
 				{enroll.isPending ? (
 					<>
@@ -126,7 +325,9 @@ function EnrollPanelForm({
 				)}
 			</button>
 
-			<p className="enroll-footer-note">Secured by Paystack · SSL encrypted</p>
+			<p className="enroll-footer-note">
+				Email verified · Secured by Paystack · SSL encrypted
+			</p>
 		</div>
 	);
 }
