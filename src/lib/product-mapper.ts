@@ -37,6 +37,15 @@ export interface ProductDisplay {
 	variants: ApiVariant[];
 	/** Primary image URL or null */
 	imageUrl: string | null;
+	/** All product images (for gallery) */
+	images: Array<{
+		id: string;
+		url: string;
+		altText: string | null;
+		isPrimary: boolean;
+		width: number | null;
+		height: number | null;
+	}>;
 }
 
 // ─── Price extraction helpers ───────────────────────────
@@ -148,20 +157,40 @@ function isRecentlyCreated(createdAt: string): boolean {
 export function mapApiProduct(api: ApiProductListItem): ProductDisplay {
 	const prices = extractPrices(api.variants);
 
+	// Use real API fields when available, fall back to heuristics
+	const gender =
+		api.gender != null
+			? (api.gender.toLowerCase() as Gender)
+			: inferGender(api.name);
+
+	const isNew =
+		api.isNew != null ? api.isNew : isRecentlyCreated(api.createdAt);
+
+	const featured = api.featured ?? false;
+
 	return {
 		id: api.id,
 		slug: api.slug,
 		name: api.name,
 		description: api.description ?? undefined,
 		category: mapCategory(api.category.slug),
-		gender: inferGender(api.name),
+		gender,
 		retailPrice: prices.retailPriceNaira,
 		wholesalePrice: prices.wholesalePriceNaira ?? 0,
 		moq: prices.wholesaleMinQty ?? prices.retailMinQty,
-		isNew: isRecentlyCreated(api.createdAt),
+		isNew,
+		featured,
 		sizes: extractSizes(api.variants),
 		variants: api.variants,
 		imageUrl: api.images?.[0]?.file?.url ?? null,
+		images: (api.images ?? []).map((img) => ({
+			id: img.id,
+			url: img.file.url,
+			altText: img.file.altText,
+			isPrimary: img.isPrimary,
+			width: img.file.width,
+			height: img.file.height,
+		})),
 	};
 }
 
