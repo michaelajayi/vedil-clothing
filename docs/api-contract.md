@@ -1,6 +1,6 @@
 # API Contract: Vedil Frontend ↔ Backend
 
-> **Last updated:** 2026-07-12
+> **Last updated:** 2026-07-18
 > **Source of truth for types:** `src/types/api.ts`
 > **Source of truth for API shapes:** `http://localhost:4000/api/docs-json` (OpenAPI 3.0)
 > **Backend context:** `/Users/michaelajayi/Projects/personal/vedil-clothing-backend/docs/`
@@ -39,6 +39,9 @@ This document captures the shared understanding between the Next.js frontend and
 | Product name | `name` | Direct |
 | Product slug | `slug` | Used in URL: `/shop/{categorySlug}/{productId}` — **note:** backend uses slug for detail lookup |
 | Description | `description` | Direct |
+| Gender | `gender` | Enum: `WOMEN`, `MEN`, `CHILDREN`, `UNISEX` |
+| Featured | `featured` | Boolean, default `false` — for "New In" section |
+| New badge | `isNew` | Boolean, default `false` — shows "New" badge on cards |
 | Category name | `category.name` | Nested object |
 | Category slug | `category.slug` | E.g. `shop`, `academy` — used in route `/shop/[category]` |
 | Images | `images[].file.url` | One or more per product |
@@ -59,8 +62,8 @@ This document captures the shared understanding between the Next.js frontend and
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
 | --- | --- | --- | --- | --- | --- |
 | D1 | **Pricing model mismatch** | `retailPrice`, `wholesalePrice`, `moq` per product | `variants[].priceTiers[]` with `minQuantity`, `amount` per variant | Medium | 🔴 **Deferred** — See `docs/api-discrepancies.md` |
-| D2 | **Gender field** | `gender: 'women' \| 'men' \| 'children' \| 'unisex'` | Not present in schema | Medium | 🔴 **Needs backend change** |
-| D3 | **Featured / New flags** | `featured: boolean`, `isNew: boolean` | Not present in schema | Low | 🔴 **Needs backend change** |
+| D2 | **Gender field** | `gender: 'women' \| 'men' \| 'children' \| 'unisex'` | `gender: Gender?` on Product (WOMEN, MEN, CHILDREN, UNISEX) | Medium | ✅ **Done** — Added to schema + migration applied |
+| D3 | **Featured / New flags** | `featured: boolean`, `isNew: boolean` | `featured: Boolean`, `isNew: Boolean` on Product, defaults to `false` | Low | ✅ **Done** — Added to schema + migration applied + seed |
 | D4 | **Sizes array** | `sizes: string[]` for quick display | Only available through `optionValues` per variant | Low | 🟡 Workaround: compute from option values |
 
 ---
@@ -113,18 +116,19 @@ This document captures the shared understanding between the Next.js frontend and
 ### Shared understanding
 
 - Course purchase flows are **different from physical products**: single student per enrollment, no quantity, no cart, no delivery.
-- The frontend calls this endpoint directly when the user clicks "Pay Now" in the enroll slide-in panel.
-- The backend creates the order + enrollment record directly (no cart involvement), initializes the Paystack transaction, and returns the redirect URL.
-- Frontend flow: open enroll panel → enter email → click "Pay Now" → `POST /api/courses/enroll` → redirect to `authorizationUrl` → Paystack → redirect back to `/checkout/confirmation`.
-- No email OTP verification needed (unlike the cart-based checkout flow) — the email is collected once on the enroll panel.
+- The frontend calls this endpoint from the enroll slide-in panel.
+- **Email OTP verification is required** (same flow as cart-based checkout). The frontend collects email → sends OTP → verifies OTP → gets verification token → then sends enroll request.
+- The backend validates the variant, verifies the OTP token, checks for duplicate enrollment, creates the order (`PENDING_PAYMENT`), initializes Paystack, and returns the redirect URL.
+- **Enrollment records are created post-payment** by the Paystack webhook handler or by the checkout status poll — not by the enroll endpoint itself. This keeps enrollment creation consistent with the cart-mediated flow.
 - Quantity is always 1.
 
 ### Request
 
 ```json
 {
-  "email": "student@example.com",      // Student's email (required)
-  "variantId": "uuid-of-course-variant" // The course variant to enroll in
+  "email": "student@example.com",           // Student's email (required)
+  "variantId": "uuid-of-course-variant",    // The course variant to enroll in
+  "verificationToken": "eyJhbGciOiJIUzI1..." // From POST /api/email-verification/verify-otp
 }
 ```
 
@@ -142,11 +146,26 @@ This document captures the shared understanding between the Next.js frontend and
 ```
 Frontend (EnrollPanel)            Backend                         Paystack
     |                                |                                |
-    |  POST /api/courses/enroll      |                                |
-    |  { email, variantId }          |                                |
+    |  Step 1: Enter email            |                                |
+    |  POST /email-verification/send-otp                              |
     |------------------------------->|                                |
-    |                                |  Create order (PENDING)         |
-    |                                |  Create enrollment record       |
+    |  { message }                    |                                |
+    |<-------------------------------|                                |
+    |                                |                                |
+    |  Step 2: Enter OTP              |                                |
+    |  POST /email-verification/verify-otp                            |
+    |  { email, otp }                |                                |
+    |------------------------------->|                                |
+    |  { verificationToken }         |                                |
+    |<-------------------------------|                                |
+    |                                |                                |
+    |  Step 3: Pay                    |                                |
+    |  POST /api/courses/enroll       |                                |
+    |  { email, variantId,            |                                |
+    |    verificationToken }          |                                |
+    |------------------------------->|                                |
+    |                                |  Validate variant + OTP token   |
+    |                                |  Create order (PENDING_PAYMENT) |
     |                                |  Initiate Paystack transaction  |
     |                                |------------------------------->|
     |  { orderReference,             |                                |
@@ -161,12 +180,16 @@ Frontend (EnrollPanel)            Backend                         Paystack
     |                                |                                |
     |  (User pays on Paystack)       |                                |
     |                                |                                |
+    |  Paystack sends webhook         |                                |
+    |  charge.success                |                                |
+    |<---------------------------------------------------------------|
+    |                                |                                |
     |  Paystack redirects to          |                                |
     |  /checkout/confirmation         |                                |
     |<---------------------------------------------------------------|
     |                                |                                |
-    |  GET /api/checkout/status/{ref} |                                |
-    |  (poll for PAID status)        |                                |
+    |  GET /api/checkout/status/{ref} |  Webhook marks order PAID      |
+    |  (poll for PAID status)        |  + creates enrollment          |
     |------------------------------->|                                |
     |  { status: "PAID" }            |                                |
     |<-------------------------------|                                |
@@ -176,7 +199,7 @@ Frontend (EnrollPanel)            Backend                         Paystack
 
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
 |---|---|---|---|---|---|
-| D11 | **Endpoint not yet built** | `POST /api/courses/enroll` | N/A — not implemented | High | 🔴 **Needs backend implementation** |
+| D11 | **Endpoint not yet built** | `POST /api/courses/enroll` | Built — accepts `{ email, variantId, verificationToken }`, requires OTP | High | ✅ **Done** — Endpoint created with OTP flow |
 
 ---
 
@@ -216,7 +239,7 @@ Frontend (EnrollPanel)            Backend                         Paystack
 
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
 |---|---|---|---|---|---|
-| D6 | **Cart is purely client-side** | `localStorage` cart with own pricing logic | Session-based backend cart | High | 🔴 **Not yet integrated** |
+| D6 | **Cart is purely client-side** | `localStorage` cart with own pricing logic | Session-based backend cart | High | ✅ **Done** — CartContext rewritten to sync with backend |
 
 ---
 
@@ -267,7 +290,7 @@ Frontend                          Backend                       Paystack
 
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
 |---|---|---|---|---|---|
-| D7 | **Checkout architecture rewrite** | Paystack inline.js direct from browser | Backend-mediated order creation + redirect | High | 🔴 **Not yet integrated** |
+| D7 | **Checkout architecture rewrite** | Paystack inline.js direct from browser | Backend-mediated order creation + redirect | High | ✅ **Done** — Rewritten to backend-mediated Paystack redirect |
 
 ---
 
@@ -300,7 +323,7 @@ Frontend                          Backend                       Paystack
 
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
 | --- | --- | --- | --- | --- | --- |
-| D8 | **Address mismatch** | "No. 95 Ago Palace Way, Okota, Lagos" (from DESIGN.md) | "12 Balogun Street, Lagos, Nigeria" | High | 🔴 **Needs confirmation** — which is correct? |
+| D8 | **Address mismatch** | "No. 95 Ago Palace Way, Okota, Lagos" (from DESIGN.md) | "12 Balogun Street, Lagos, Nigeria" | High | ✅ **Done** — Confirmed via site config endpoint, address updated | |
 | D9 | **Missing social handles** | Footer Instagram/Facebook/TikTok currently link to `#` | Backend has URLs but they're configured | Medium | 🟡 Needs content input |
 
 ---
@@ -353,8 +376,9 @@ None currently. The mapping is straightforward.
 ### Discrepancies
 
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
-|---|---|---|---|---|---|
-| D10 | **Form submission goes to Next.js route** | POST to `/api/contact` or `/api/factory` (Next.js route) | POST to `/api/contact-inquiries` or `/api/factory-inquiries` (NestJS) | High | 🔴 **Needs URL change + Resend removal from Next.js** |
+| --- | --- | --- | --- | --- | --- |
+| D10 | **Form submission goes to Next.js route** | POST to `/api/contact` or `/api/factory` (Next.js route) | POST to `/api/contact-inquiries` or `/api/factory-inquiries` (NestJS) | High | ✅ **Done** — Next.js routes removed, forms POST to NestJS |
+| D12 | **Phone/email validation rejects empty strings** | Either phone OR email — user can provide one contact method | `@IsOptional()` on both fields, but empty string `""` (not `undefined`) triggers `@IsEmail()` rejection. | Medium | ✅ **Done** — Added `@Transform()` to coerce empty strings to `undefined` in both inquiry DTOs |
 
 ---
 
@@ -382,17 +406,18 @@ None currently. This is a new flow not yet built on the frontend.
 
 | # | Domain | Issue | Status |
 | --- | --- | --- | --- |
-| D1 | Products | Pricing model — tiers vs retail/wholesale/moq | 🔴 Deferred |
-| D2 | Products | Missing `gender` field | 🔴 Needs backend |
-| D3 | Products | Missing `featured` / `isNew` flags | 🔴 Needs backend |
+| D1 | Products | Pricing model — tiers vs retail/wholesale/moq | 🗓️ Deferred |
+| D2 | Products | Missing `gender` field | ✅ **Done** — Added to schema + migration applied |
+| D3 | Products | Missing `featured` / `isNew` flags | ✅ **Done** — Added to schema + migration + seed |
 | D4 | Products | Sizes only in option values, not as quick-access array | 🟡 Workaround |
-| D5 | Courses | Missing fee breakdown (reg/tuition/cert) | 🔴 Deferred |
-| D6 | Cart | Client-only cart not connected to backend | 🔴 Not integrated |
-| D7 | Checkout | Flow architecture differs completely | 🔴 Not integrated |
-| D8 | Company | Address mismatch (Ago Palace vs Balogun) | 🔴 Needs confirmation |
+| D5 | Courses | Missing fee breakdown (reg/tuition/cert) | 🗓️ Deferred |
+| D6 | Cart | Client-only cart not connected to backend | ✅ Done |
+| D7 | Checkout | Flow architecture differs completely | ✅ Done |
+| D8 | Company | Address mismatch (Ago Palace vs Balogun) | ✅ **Done** — Confirmed via site config, address updated |
 | D9 | Company | Social handles not configured | 🟡 Content input |
-| D10 | Forms | Next.js route vs backend API | 🔴 Not integrated |
-| D11 | Course Enrollment | `POST /api/courses/enroll` endpoint not built | 🔴 Needs backend |
+| D10 | Forms | Next.js route vs backend API | ✅ Done |
+| D11 | Course Enrollment | `POST /api/courses/enroll` endpoint not built | ✅ **Done** — Endpoint created with OTP flow |
+| D12 | Inquiries | Backend rejects empty string phone/email instead of treating as optional | ✅ **Done** — Added `@Transform()` to both inquiry DTOs |
 
 ---
 
@@ -404,3 +429,9 @@ None currently. This is a new flow not yet built on the frontend.
 | 2026-07-12 | Pricing model discrepancy **deferred** | Will document as backend feedback and decide after seeing empty states |
 | 2026-07-12 | Course fee breakdown **deferred** | Will document as backend feedback for schema update |
 | 2026-07-15 | Course direct-purchase flow — new `POST /api/courses/enroll` endpoint | Course purchases bypass cart entirely; single-student, no quantity, no delivery |
+| 2026-07-18 | Course enrollment requires **email OTP verification** | Same pattern as cart-based checkout — send-otp → verify-otp → JWT token → enroll |
+| 2026-07-18 | **Enrollment records created post-payment** (not by enroll endpoint) | Webhook and status poll handle enrollment creation, consistent with cart-mediated flow |
+| 2026-07-18 | **Gender field** added to Product schema | `Gender` enum (`WOMEN`, `MEN`, `CHILDREN`, `UNISEX`), nullable on Product |
+| 2026-07-18 | **D12 fixed** — `@Transform()` on phone/email in inquiry DTOs | Empty strings `""` now coerced to `undefined` before validation |
+| 2026-07-18 | **Address confirmed** via site config endpoint | Ago Palace Way is the correct address |
+| 2026-07-18 | **Featured/isNew flags** added to Product schema | `featured: Boolean`, `isNew: Boolean` — both default to `false` |

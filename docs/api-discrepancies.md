@@ -2,6 +2,7 @@
 
 > **Purpose:** Document gaps between what the frontend needs and what the backend currently delivers. This is the communication channel for backend changes.
 > **Context:** The `docs/api-contract.md` file captures the full shared understanding. This file extracts only the discrepancies needing backend action.
+> **Last updated:** 2026-07-18
 
 ---
 
@@ -15,16 +16,29 @@
 
 ---
 
-## D2 — Products missing `gender` field
+## ✅ Resolved — Gender field (D2)
 
 - **Endpoint:** `GET /api/products`, `GET /api/products/{slug}`
-- **Current state:** Products have no `gender` attribute
-- **What the frontend needs:** Products should be filterable by `gender` — values: `women`, `men`, `children`, `unisex`
-- **Priority:** 🔴 Required
-- **Suggested approach:** Either:
-  - Add an `attribute` with `name: "gender"` (and treat it specially), or
-  - Add a dedicated `gender` column to the product schema
-- **Affected pages:** `/shop/[category]` — gender filter tabs (Women / Men / Children / All)
+- **Action taken:** Added `Gender` enum (`WOMEN`, `MEN`, `CHILDREN`, `UNISEX`) and `gender Gender?` field to `Product` model in Prisma schema. Migration applied.
+- **Status:** ✅ **Done**
+
+---
+
+## ✅ Resolved — Address mismatch (D8)
+
+- **Endpoint:** `GET /api/company-profile`
+- **Previous backend value:** "12 Balogun Street, Lagos, Nigeria"
+- **Corrected value:** "No. 95 Ago Palace Way, Okota, Lagos, Nigeria"
+- **Action taken:** Confirmed via site config endpoint. Address is now correct.
+- **Status:** ✅ **Done**
+
+---
+
+## ✅ Resolved — Phone/email validation on inquiries (D12)
+
+- **Endpoints:** `POST /api/contact-inquiries`, `POST /api/factory-inquiries`
+- **Action taken:** Added `@Transform(({ value }: { value: unknown }) => value === '' ? undefined : value)` from `class-transformer` to both `phone` and `email` fields in both `CreateContactInquiryDto` and `CreateFactoryInquiryDto`. Empty strings are now coerced to `undefined` before validation runs.
+- **Status:** ✅ **Done**
 
 ---
 
@@ -38,17 +52,6 @@
 - **Priority:** 🟡 Enhancement
 - **Suggested approach:** Add optional boolean fields to product schema (default `false`)
 - **Affected pages:** `/shop` (New In section), category product cards (badge)
-
----
-
-## D8 — Company profile address mismatch
-
-- **Endpoint:** `GET /api/company-profile`
-- **Current backend value:** "12 Balogun Street, Lagos, Nigeria"
-- **Frontend expectation (from DESIGN.md):** "No. 95 Ago Palace Way, Okota, Lagos, Nigeria"
-- **Priority:** 🔴 Required (one is wrong — need to confirm which)
-- **Action needed:** Confirm correct address with business owner and update accordingly
-- **Affected pages:** `/contact`, footer, any component displaying business address
 
 ---
 
