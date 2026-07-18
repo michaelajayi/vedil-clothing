@@ -114,6 +114,9 @@ export interface ApiProductListItem {
 	description: string | null;
 	status: ProductStatus;
 	kind: ProductKind;
+	gender: "WOMEN" | "MEN" | "CHILDREN" | "UNISEX" | null;
+	featured: boolean;
+	isNew: boolean;
 	categoryId: string;
 	category: ApiCategory;
 	images: ApiProductImage[];
