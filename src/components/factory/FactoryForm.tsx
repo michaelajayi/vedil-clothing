@@ -68,6 +68,7 @@ function FieldError({ message }: { message?: string }) {
 export default function FactoryForm() {
 	const { toast } = useToast();
 	const [files, setFiles] = useState<File[]>([]);
+	const [fileError, setFileError] = useState<string | null>(null);
 
 	const {
 		register,
@@ -83,6 +84,13 @@ export default function FactoryForm() {
 	const factoryMutation = useSubmitFactoryInquiry();
 
 	async function onSubmit(data: FormValues) {
+		if (fileError) {
+			toast("File upload error", {
+				description: fileError,
+				variant: "error",
+			});
+			return;
+		}
 		try {
 			await factoryMutation.mutateAsync({
 				name: data.name,
@@ -114,112 +122,99 @@ export default function FactoryForm() {
 	}
 
 	return (
-		<>
-			<style>{`
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus,
-      input:-webkit-autofill:active,
-      textarea:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px #FBF6EE inset !important;
-        -webkit-text-fill-color: #2A211B !important;
-        transition: background-color 5000s ease-in-out 0s;
-      }
-    `}</style>
-			<form onSubmit={handleSubmit(onSubmit)} noValidate>
-				<div className="field-row">
-					<div className="field">
-						<label htmlFor="gf-name">Full name</label>
-						<input
-							id="gf-name"
-							type="text"
-							placeholder="Your name"
-							autoComplete="name"
-							className={errors.name ? "input-error" : undefined}
-							{...register("name")}
-						/>
-						<FieldError message={errors.name?.message} />
-					</div>
-					<div className="field">
-						<label htmlFor="gf-phone">
-							Phone / WhatsApp
-							<span className="field-or-hint">or email below</span>
-						</label>
-						<Controller
-							name="phone"
-							control={control}
-							render={({ field }) => (
-								<PhoneInput
-									id="gf-phone"
-									value={field.value}
-									onChange={field.onChange}
-									hasError={!!errors.phone}
-									autoComplete="tel"
-								/>
-							)}
-						/>
-						<FieldError message={errors.phone?.message} />
-					</div>
-				</div>
-
+		<form onSubmit={handleSubmit(onSubmit)} noValidate>
+			<div className="field-row">
 				<div className="field">
-					<label htmlFor="gf-email">
-						Email address
-						<span className="field-or-hint">or phone above</span>
-					</label>
+					<label htmlFor="gf-name">Full name</label>
 					<input
-						id="gf-email"
-						type="email"
-						placeholder="you@example.com"
-						autoComplete="email"
-						className={errors.email ? "input-error" : undefined}
-						{...register("email")}
+						id="gf-name"
+						type="text"
+						placeholder="Your name"
+						autoComplete="name"
+						className={errors.name ? "input-error" : undefined}
+						{...register("name")}
 					/>
-					<FieldError message={errors.email?.message} />
+					<FieldError message={errors.name?.message} />
 				</div>
-
 				<div className="field">
-					<label htmlFor="gf-service">Service needed</label>
+					<label htmlFor="gf-phone">
+						Phone / WhatsApp
+						<span className="field-or-hint">or email below</span>
+					</label>
 					<Controller
-						name="service"
+						name="phone"
 						control={control}
 						render={({ field }) => (
-							<Select
-								id="gf-service"
-								options={SERVICES}
-								placeholder="Select a service…"
+							<PhoneInput
+								id="gf-phone"
 								value={field.value}
-								onValueChange={field.onChange}
-								hasError={!!errors.service}
+								onChange={field.onChange}
+								hasError={!!errors.phone}
+								autoComplete="tel"
 							/>
 						)}
 					/>
-					<FieldError message={errors.service?.message} />
+					<FieldError message={errors.phone?.message} />
 				</div>
+			</div>
 
-				<div className="field">
-					<label htmlFor="gf-details">Tell us more</label>
-					<textarea
-						id="gf-details"
-						rows={5}
-						placeholder="Describe your design, quantity, timeline, fabric preferences…"
-						className={errors.details ? "input-error" : undefined}
-						{...register("details")}
-					/>
-					<FieldError message={errors.details?.message} />
-				</div>
+			<div className="field">
+				<label htmlFor="gf-email">
+					Email address
+					<span className="field-or-hint">or phone above</span>
+				</label>
+				<input
+					id="gf-email"
+					type="email"
+					placeholder="you@example.com"
+					autoComplete="email"
+					className={errors.email ? "input-error" : undefined}
+					{...register("email")}
+				/>
+				<FieldError message={errors.email?.message} />
+			</div>
 
-				<div className="field">
-					<FileUpload onChange={setFiles} />
-				</div>
-
-				<button type="submit" className="btn" disabled={isSubmitting}>
-					{isSubmitting ? "Sending…" : "Send Enquiry"}
-					{!isSubmitting && (
-						<ArrowRight className="arw" size={16} strokeWidth={2} />
+			<div className="field">
+				<label htmlFor="gf-service">Service needed</label>
+				<Controller
+					name="service"
+					control={control}
+					render={({ field }) => (
+						<Select
+							id="gf-service"
+							options={SERVICES}
+							placeholder="Select a service…"
+							value={field.value}
+							onValueChange={field.onChange}
+							hasError={!!errors.service}
+						/>
 					)}
-				</button>
-			</form>
-		</>
+				/>
+				<FieldError message={errors.service?.message} />
+			</div>
+
+			<div className="field">
+				<label htmlFor="gf-details">Tell us more</label>
+				<textarea
+					id="gf-details"
+					rows={5}
+					placeholder="Describe your design, quantity, timeline, fabric preferences…"
+					className={errors.details ? "input-error" : undefined}
+					{...register("details")}
+				/>
+				<FieldError message={errors.details?.message} />
+			</div>
+
+			<div className="field">
+				<FileUpload onChange={setFiles} onError={setFileError} />
+			</div>
+
+			<button type="submit" className="btn" disabled={isSubmitting}>
+				{isSubmitting ? "Sending…" : "Send Enquiry"}
+				{!isSubmitting && (
+					<ArrowRight className="arw" size={16} strokeWidth={2} />
+				)}
+			</button>
+		</form>
 	);
 }

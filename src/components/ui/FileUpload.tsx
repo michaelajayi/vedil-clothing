@@ -24,9 +24,10 @@ interface FileEntry {
 
 interface FileUploadProps {
 	onChange: (files: File[]) => void;
+	onError?: (error: string | null) => void;
 }
 
-export default function FileUpload({ onChange }: FileUploadProps) {
+export default function FileUpload({ onChange, onError }: FileUploadProps) {
 	const [entries, setEntries] = useState<FileEntry[]>([]);
 	const [error, setError] = useState<string | null>(null);
 
@@ -35,29 +36,37 @@ export default function FileUpload({ onChange }: FileUploadProps) {
 		setEntries(next);
 		onChange(next.map((e) => e.file));
 		setError(null);
+		onError?.(null);
 	}
 
 	const onDrop = useCallback(
 		(accepted: File[], rejected: FileRejection[]) => {
 			if (rejected.length > 0) {
-				setError(rejected[0].errors[0]?.message ?? "File not accepted.");
+				const msg = rejected[0].errors[0]?.message ?? "File not accepted.";
+				setError(msg);
+				onError?.(msg);
 				return;
 			}
 			const next = [...entries, ...accepted.map((file) => ({ file }))];
 			if (next.length > MAX_FILES) {
-				setError(`Maximum ${MAX_FILES} files allowed.`);
+				const msg = `Maximum ${MAX_FILES} files allowed.`;
+				setError(msg);
+				onError?.(msg);
 				return;
 			}
 			const total = next.reduce((s, e) => s + e.file.size, 0);
 			if (total > MAX_TOTAL_BYTES) {
-				setError("Total size exceeds 20 MB.");
+				const msg = "Total size exceeds 20 MB.";
+				setError(msg);
+				onError?.(msg);
 				return;
 			}
 			setError(null);
+			onError?.(null);
 			setEntries(next);
 			onChange(next.map((e) => e.file));
 		},
-		[entries, onChange],
+		[entries, onChange, onError],
 	);
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({

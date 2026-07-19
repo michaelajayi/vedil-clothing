@@ -49,7 +49,7 @@ type FormValues = z.infer<typeof schema>;
 
 const SUBJECTS = [
 	{ value: "order", label: "Order enquiry" },
-	{ value: "academy", label: "Academy / courses" },
+	{ value: "academy", label: "It's Fun to Sew / courses" },
 	{ value: "factory", label: "Garment factory project" },
 	{ value: "wholesale", label: "Wholesale partnership" },
 	{ value: "other", label: "Something else" },
@@ -110,109 +110,96 @@ export default function ContactForm() {
 	}
 
 	return (
-		<>
-			<style>{`
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus,
-      input:-webkit-autofill:active,
-      textarea:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px #FBF6EE inset !important;
-        -webkit-text-fill-color: #2A211B !important;
-        transition: background-color 5000s ease-in-out 0s;
-      }
-    `}</style>
-			<form onSubmit={handleSubmit(onSubmit)} noValidate>
-				<div className="field-row">
-					<div className="field">
-						<label htmlFor="c-name">Full name</label>
-						<input
-							id="c-name"
-							type="text"
-							placeholder="Your name"
-							autoComplete="name"
-							className={errors.name ? "input-error" : undefined}
-							{...register("name")}
-						/>
-						<FieldError message={errors.name?.message} />
-					</div>
-
-					<div className="field">
-						<label htmlFor="c-phone">
-							Phone / WhatsApp
-							<span className="field-or-hint">or email below</span>
-						</label>
-						<Controller
-							name="phone"
-							control={control}
-							render={({ field }) => (
-								<PhoneInput
-									id="c-phone"
-									value={field.value}
-									onChange={field.onChange}
-									hasError={!!errors.phone}
-									autoComplete="tel"
-								/>
-							)}
-						/>
-						<FieldError message={errors.phone?.message} />
-					</div>
-				</div>
-
+		<form onSubmit={handleSubmit(onSubmit)} noValidate>
+			<div className="field-row">
 				<div className="field">
-					<label htmlFor="c-email">
-						Email address
-						<span className="field-or-hint">or phone above</span>
-					</label>
+					<label htmlFor="c-name">Full name</label>
 					<input
-						id="c-email"
-						type="email"
-						placeholder="you@example.com"
-						autoComplete="email"
-						className={errors.email ? "input-error" : undefined}
-						{...register("email")}
+						id="c-name"
+						type="text"
+						placeholder="Your name"
+						autoComplete="name"
+						className={errors.name ? "input-error" : undefined}
+						{...register("name")}
 					/>
-					<FieldError message={errors.email?.message} />
+					<FieldError message={errors.name?.message} />
 				</div>
 
 				<div className="field">
-					<label htmlFor="c-subject">Subject</label>
+					<label htmlFor="c-phone">
+						Phone / WhatsApp
+						<span className="field-or-hint">or email below</span>
+					</label>
 					<Controller
-						name="subject"
+						name="phone"
 						control={control}
 						render={({ field }) => (
-							<Select
-								id="c-subject"
-								options={SUBJECTS}
-								placeholder="Select a topic…"
+							<PhoneInput
+								id="c-phone"
 								value={field.value}
-								onValueChange={field.onChange}
-								hasError={!!errors.subject}
+								onChange={field.onChange}
+								hasError={!!errors.phone}
+								autoComplete="tel"
 							/>
 						)}
 					/>
-					<FieldError message={errors.subject?.message} />
+					<FieldError message={errors.phone?.message} />
 				</div>
+			</div>
 
-				<div className="field">
-					<label htmlFor="c-message">Message</label>
-					<textarea
-						id="c-message"
-						rows={5}
-						placeholder="How can we help you?"
-						className={errors.message ? "input-error" : undefined}
-						{...register("message")}
-					/>
-					<FieldError message={errors.message?.message} />
-				</div>
+			<div className="field">
+				<label htmlFor="c-email">
+					Email address
+					<span className="field-or-hint">or phone above</span>
+				</label>
+				<input
+					id="c-email"
+					type="email"
+					placeholder="you@example.com"
+					autoComplete="email"
+					className={errors.email ? "input-error" : undefined}
+					{...register("email")}
+				/>
+				<FieldError message={errors.email?.message} />
+			</div>
 
-				<button type="submit" className="btn" disabled={isSubmitting}>
-					{isSubmitting ? "Sending…" : "Send Message"}
-					{!isSubmitting && (
-						<ArrowRight className="arw" size={16} strokeWidth={2} />
+			<div className="field">
+				<label htmlFor="c-subject">Subject</label>
+				<Controller
+					name="subject"
+					control={control}
+					render={({ field }) => (
+						<Select
+							id="c-subject"
+							options={SUBJECTS}
+							placeholder="Select a topic…"
+							value={field.value}
+							onValueChange={field.onChange}
+							hasError={!!errors.subject}
+						/>
 					)}
-				</button>
-			</form>
-		</>
+				/>
+				<FieldError message={errors.subject?.message} />
+			</div>
+
+			<div className="field">
+				<label htmlFor="c-message">Message</label>
+				<textarea
+					id="c-message"
+					rows={5}
+					placeholder="How can we help you?"
+					className={errors.message ? "input-error" : undefined}
+					{...register("message")}
+				/>
+				<FieldError message={errors.message?.message} />
+			</div>
+
+			<button type="submit" className="btn" disabled={isSubmitting}>
+				{isSubmitting ? "Sending…" : "Send Message"}
+				{!isSubmitting && (
+					<ArrowRight className="arw" size={16} strokeWidth={2} />
+				)}
+			</button>
+		</form>
 	);
 }
