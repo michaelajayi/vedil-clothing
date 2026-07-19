@@ -30,19 +30,19 @@ const slides = [
 			"linear-gradient(180deg, rgba(42,33,27,.10), rgba(42,33,27,.55)), linear-gradient(125deg, #7c5a3d, #b89a6f 45%, #d8c4a3)",
 	},
 	{
-		id: "custom",
-		category: "Custom Made",
-		eyebrow: "Designed with you. Tailored to fit.",
+		id: "rtw",
+		category: "Ready to Wear",
+		eyebrow: "Effortless. Everyday. Elegant.",
 		headline: (
 			<>
-				Made to measure,
+				Ready-to-wear for
 				<br />
-				made to <em>last.</em>
+				the <em>whole family.</em>
 			</>
 		),
 		description:
-			"Bespoke creations for those who refuse to compromise on fit or fabric. From consultation to creation.",
-		cta: { label: "Request a Quote", href: "/contact" },
+			"Curated ready-to-wear pieces that bring Lagos sophistication to your daily life. No compromises on fit or fabric.",
+		cta: { label: "Shop Ready-to-Wear", href: "/shop/rtw" },
 		gradient:
 			"linear-gradient(180deg, rgba(110,31,42,.06), rgba(110,31,42,.48)), linear-gradient(125deg, #6e1f2a, #b07a3c 45%, #d8c4a3)",
 	},
@@ -135,9 +135,6 @@ export default function HeroSlider() {
 								className="hero-slider-bg"
 								style={{ background: slide.gradient }}
 							/>
-
-							{/* Persistent category label */}
-							<span className="hero-slide-label">{slide.category}</span>
 
 							{/* "Est. Lagos" badge */}
 							<div className="hero-meta" aria-hidden="true">

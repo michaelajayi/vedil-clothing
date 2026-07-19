@@ -347,7 +347,6 @@ header.nav.scrolled { border-color: var(--line); }
   border-radius: 100px;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  pointer-events: none;
 }
 
 /* ── Arrow buttons ──────────────────────────────────────── */
@@ -363,11 +362,13 @@ header.nav.scrolled { border-color: var(--line); }
   color: #fff;
   display: grid;
   place-items: center;
-  transition: background .3s, transform .3s;
+  opacity: .55;
+  transition: opacity .35s, background .3s, transform .3s;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 .hero-slider-arrow:hover {
+  opacity: 1;
   background: rgba(42,33,27,.70);
   transform: translateY(-50%) scale(1.08);
 }
@@ -377,7 +378,8 @@ header.nav.scrolled { border-color: var(--line); }
 /* ── Arrow tooltips ─────────────────────────────────────── */
 .hero-arrow-tip {
   position: absolute;
-  top: 50%;
+  bottom: calc(100% + 10px);
+  left: 50%;
   white-space: nowrap;
   font-size: .7rem;
   font-weight: 500;
@@ -394,15 +396,13 @@ header.nav.scrolled { border-color: var(--line); }
 }
 .hero-arrow-tip.is-visible { opacity: 1; }
 .hero-arrow-tip--prev {
-  right: calc(100% + 10px);
-  transform: translateY(-50%) translateX(6px);
+  transform: translateX(-50%) translateY(4px);
 }
-.hero-arrow-tip--prev.is-visible { transform: translateY(-50%) translateX(0); }
+.hero-arrow-tip--prev.is-visible { transform: translateX(-50%) translateY(0); }
 .hero-arrow-tip--next {
-  left: calc(100% + 10px);
-  transform: translateY(-50%) translateX(-6px);
+  transform: translateX(-50%) translateY(4px);
 }
-.hero-arrow-tip--next.is-visible { transform: translateY(-50%) translateX(0); }
+.hero-arrow-tip--next.is-visible { transform: translateX(-50%) translateY(0); }
 
 /* ── Dot indicators ─────────────────────────────────────── */
 .hero-slider-dots {
@@ -433,8 +433,6 @@ header.nav.scrolled { border-color: var(--line); }
 }
 
 @media (max-width: 640px) {
-  .hero-slide-label { display: none; }
-  .hero-slider-arrow { width: 40px; height: 40px; }
   .hero-arrow-tip { display: none; }
 }
 
