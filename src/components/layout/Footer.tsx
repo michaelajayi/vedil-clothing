@@ -18,10 +18,6 @@ export default function Footer() {
 								.
 							</span>
 						</div>
-						<p>
-							A Lagos fashion house: ready-to-wear, the It&apos;s Fun to Sew
-							Academy, and a garment factory for brands that mean business.
-						</p>
 						<div className="foot-contact">
 							<FooterContact />
 						</div>
@@ -34,19 +30,13 @@ export default function Footer() {
 						<h4>Shop</h4>
 						<ul>
 							<li>
-								<Link href="/shop/men">Men</Link>
+								<Link href="/shop/ready-to-wear">Ready to Wear</Link>
 							</li>
 							<li>
-								<Link href="/shop/women">Women</Link>
-							</li>
-							<li>
-								<Link href="/shop/children">Children</Link>
+								<Link href="/shop/africa-my-heritage">Africa My Heritage</Link>
 							</li>
 							<li>
 								<Link href="/shop/accessories">Accessories</Link>
-							</li>
-							<li>
-								<Link href="/shop/new-arrivals">New Arrivals</Link>
 							</li>
 						</ul>
 					</div>
@@ -55,13 +45,13 @@ export default function Footer() {
 						<h4>Learn &amp; Make</h4>
 						<ul>
 							<li>
-								<Link href="/academy">The Academy</Link>
+								<Link href="/fun-to-sew">It's Fun to Sew</Link>
 							</li>
 							<li>
-								<Link href="/academy#in-person">In-person Classes</Link>
+								<Link href="/fun-to-sew#in-person">In-person Classes</Link>
 							</li>
 							<li>
-								<Link href="/academy#online">Online Courses</Link>
+								<Link href="/fun-to-sew#online">Online Courses</Link>
 							</li>
 							<li>
 								<Link href="/garment-factory">Garment Factory</Link>
@@ -91,10 +81,6 @@ export default function Footer() {
 				<div className="foot-bottom">
 					<span>
 						© 2026 Vedil Clothing. All rights reserved. Made in Lagos, Nigeria.
-					</span>
-					<span>
-						<Link href="/privacy">Privacy</Link> ·{" "}
-						<Link href="/terms">Terms</Link>
 					</span>
 				</div>
 			</div>

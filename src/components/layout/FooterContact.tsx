@@ -1,17 +1,19 @@
 "use client";
 
+import { MapPin, Phone, Mail } from "lucide-react";
+import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import { useCompanyProfile } from "@/lib/queries/config";
 
 function FooterContactSkeleton() {
 	return (
 		<div>
-			{[1, 2, 3].map((i) => (
+			{[1, 2, 3, 4].map((i) => (
 				<div
 					key={i}
 					className="skeleton-pulse"
 					style={{
 						height: "0.8rem",
-						width: i === 2 ? "12rem" : "9rem",
+						width: i === 4 ? "13rem" : "9rem",
 						borderRadius: "4px",
 						marginBottom: "0.5rem",
 					}}
@@ -42,17 +44,38 @@ export default function FooterContact() {
 	}
 
 	return (
-		<div>
+		<div className="foot-contact-list">
 			{data.addressLine && (
-				<p style={{ fontSize: "0.85rem", lineHeight: 1.6 }}>
-					{data.addressLine}, {data.city}, {data.state}
-				</p>
+				<a
+					href={`https://maps.google.com/?q=${encodeURIComponent(data.addressLine + ", " + data.city + ", " + data.state)}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<MapPin strokeWidth={1.7} />
+					{data.addressLine}, {data.city}
+				</a>
 			)}
 			{data.phone && (
-				<p style={{ fontSize: "0.85rem", lineHeight: 1.6 }}>{data.phone}</p>
+				<a href={`tel:${data.phone}`}>
+					<Phone strokeWidth={1.7} />
+					{data.phone}
+				</a>
 			)}
 			{data.email && (
-				<p style={{ fontSize: "0.85rem", lineHeight: 1.6 }}>{data.email}</p>
+				<a href={`mailto:${data.email}`}>
+					<Mail strokeWidth={1.7} />
+					{data.email}
+				</a>
+			)}
+			{data.whatsapp && (
+				<a
+					href={`https://wa.me/${data.whatsapp.replace(/[^\d]/g, "")}`}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<WhatsappIcon />
+					Chat on WhatsApp
+				</a>
 			)}
 		</div>
 	);
