@@ -25,9 +25,9 @@ const hankenGrotesk = Hanken_Grotesk({
 
 export const metadata: Metadata = {
 	title:
-		"Vedil Clothing | Ready-to-Wear, Sewing Academy & Garment Factory · Lagos",
+		"Vedil Clothing | Ready-to-Wear, It's Fun to Sew & Garment Factory · Lagos",
 	description:
-		"Vedil Clothing is a Lagos fashion house: ready-to-wear for men, women and children, the It's Fun to Sew Academy, and a garment factory for custom and bulk orders.",
+		"Vedil Clothing is a Lagos fashion house: ready-to-wear for men, women and children, It's Fun to Sew, and a garment factory for custom and bulk orders.",
 };
 
 export default function RootLayout({

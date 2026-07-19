@@ -5,186 +5,241 @@ import { ShoppingBag, X, ArrowRight } from "lucide-react";
 import { useCart, effectivePrice, fmtPrice } from "@/contexts/CartContext";
 
 export default function CartPage() {
-  const { items, subtotal, removeItem, setQty, clearCart } = useCart();
+	const { items, subtotal, removeItem, setQty, clearCart } = useCart();
 
-  if (items.length === 0) {
-    return (
-      <main style={{ paddingBlock: "clamp(4rem,10vw,8rem)", textAlign: "center" }}>
-        <div className="wrap" style={{ maxWidth: 560 }}>
-          <ShoppingBag
-            size={56}
-            strokeWidth={1.4}
-            style={{ margin: "0 auto 1.4rem", opacity: .3 }}
-          />
-          <h1 style={{ fontSize: "clamp(1.8rem,4vw,2.4rem)", marginBottom: ".8rem" }}>
-            Your cart is empty
-          </h1>
-          <p style={{ color: "var(--ink-soft)", marginBottom: "2rem" }}>
-            Browse the shop and add something you love.
-          </p>
-          <Link href="/shop" className="btn">Shop Now</Link>
-        </div>
-      </main>
-    );
-  }
+	if (items.length === 0) {
+		return (
+			<main
+				style={{ paddingBlock: "clamp(4rem,10vw,8rem)", textAlign: "center" }}
+			>
+				<div className="wrap" style={{ maxWidth: 560 }}>
+					<ShoppingBag
+						size={56}
+						strokeWidth={1.4}
+						style={{ margin: "0 auto 1.4rem", opacity: 0.3 }}
+					/>
+					<h1
+						style={{
+							fontSize: "clamp(1.8rem,4vw,2.4rem)",
+							marginBottom: ".8rem",
+						}}
+					>
+						Your cart is empty
+					</h1>
+					<p style={{ color: "var(--ink-soft)", marginBottom: "2rem" }}>
+						Browse the shop and add something you love.
+					</p>
+					<Link href="/shop" className="btn">
+						Shop Now
+					</Link>
+				</div>
+			</main>
+		);
+	}
 
-  return (
-    <main style={{ paddingBlock: "clamp(2.5rem,6vw,4.5rem)" }}>
-      <div className="wrap">
-        <h1 style={{ fontSize: "clamp(2rem,4vw,2.8rem)", marginBottom: "2.5rem" }}>
-          Shopping Cart
-        </h1>
+	return (
+		<main style={{ paddingBlock: "clamp(2.5rem,6vw,4.5rem)" }}>
+			<div className="wrap">
+				<h1
+					style={{ fontSize: "clamp(2rem,4vw,2.8rem)", marginBottom: "2.5rem" }}
+				>
+					Shopping Cart
+				</h1>
 
-        <div className="cart-page-layout">
-          {/* Item table */}
-          <div>
-            <table className="cart-table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th style={{ textAlign: "center" }}>Qty</th>
-                  <th style={{ textAlign: "right" }}>Price</th>
-                  <th style={{ textAlign: "right" }}>Total</th>
-                  <th aria-label="Remove" />
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item) => {
-                  const price = effectivePrice(item);
-                  const isWholesale =
-                    item.wholesalePrice !== null && item.quantity >= item.moq;
-                  const moqLeft =
-                    item.wholesalePrice !== null && !isWholesale
-                      ? item.moq - item.quantity
-                      : 0;
+				<div className="cart-page-layout">
+					{/* Item table */}
+					<div>
+						<table className="cart-table">
+							<thead>
+								<tr>
+									<th>Product</th>
+									<th style={{ textAlign: "center" }}>Qty</th>
+									<th style={{ textAlign: "right" }}>Price</th>
+									<th style={{ textAlign: "right" }}>Total</th>
+									<th aria-label="Remove" />
+								</tr>
+							</thead>
+							<tbody>
+								{items.map((item) => {
+									const price = effectivePrice(item);
+									const isWholesale =
+										item.wholesalePrice !== null && item.quantity >= item.moq;
+									const moqLeft =
+										item.wholesalePrice !== null && !isWholesale
+											? item.moq - item.quantity
+											: 0;
 
-                  return (
-                    <tr key={item.id}>
-                      {/* Product */}
-                      <td>
-                        <div className="product-cell">
-                          <div className="product-thumb ph" aria-hidden="true" />
-                          <div>
-                            <p className="product-name">{item.name}</p>
-                            {item.size && (
-                              <p className="product-size">Size: {item.size}</p>
-                            )}
-                            {moqLeft > 0 && (
-                              <p style={{ fontSize: ".75rem", color: "var(--gold)", marginTop: ".3rem" }}>
-                                Add {moqLeft} more for wholesale ({fmtPrice(item.wholesalePrice!)})
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </td>
+									return (
+										<tr key={item.id}>
+											{/* Product */}
+											<td data-label="Product">
+												<div className="product-cell">
+													<div
+														className="product-thumb ph"
+														aria-hidden="true"
+													/>
+													<div>
+														<p className="product-name">{item.name}</p>
+														{item.size && (
+															<p className="product-size">Size: {item.size}</p>
+														)}
+														<div className="product-price-row">
+															<span
+																className={`cell-price${isWholesale ? " ws" : ""}`}
+															>
+																{fmtPrice(price)}
+																{isWholesale && (
+																	<span className="ws-label">Wholesale</span>
+																)}
+															</span>
+														</div>
+														{moqLeft > 0 && (
+															<p className="moq-tip">
+																Add {moqLeft} more for wholesale (
+																{fmtPrice(item.wholesalePrice!)})
+															</p>
+														)}
+													</div>
+												</div>
+											</td>
 
-                      {/* Qty */}
-                      <td style={{ textAlign: "center" }}>
-                        <div className="qty-ctrl" style={{ margin: "0 auto", width: "fit-content" }}>
-                          <button
-                            className="qty-btn"
-                            onClick={() => setQty(item.id, item.quantity - 1)}
-                            aria-label="Decrease"
-                          >
-                            −
-                          </button>
-                          <span className="qty-num">{item.quantity}</span>
-                          <button
-                            className="qty-btn"
-                            onClick={() => setQty(item.id, item.quantity + 1)}
-                            aria-label="Increase"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </td>
+											{/* Qty */}
+											<td data-label="Qty">
+												<div className="qty-total-row">
+													<div className="qty-ctrl">
+														<button
+															className="qty-btn"
+															onClick={() => setQty(item.id, item.quantity - 1)}
+															aria-label="Decrease"
+														>
+															−
+														</button>
+														<span className="qty-num">{item.quantity}</span>
+														<button
+															className="qty-btn"
+															onClick={() => setQty(item.id, item.quantity + 1)}
+															aria-label="Increase"
+														>
+															+
+														</button>
+													</div>
+													<span
+														className={`cell-price${isWholesale ? " ws" : ""}`}
+														style={{ fontSize: ".95rem" }}
+													>
+														{fmtPrice(price * item.quantity)}
+													</span>
+												</div>
+											</td>
 
-                      {/* Unit price */}
-                      <td style={{ textAlign: "right" }}>
-                        <span className={`cell-price${isWholesale ? " ws" : ""}`}>
-                          {fmtPrice(price)}
-                          {isWholesale && (
-                            <span className="ws-label">Wholesale</span>
-                          )}
-                        </span>
-                      </td>
+											{/* Unit price */}
+											<td data-label="Unit Price">
+												<span
+													className={`cell-price${isWholesale ? " ws" : ""}`}
+												>
+													{fmtPrice(price)}
+													{isWholesale && (
+														<span className="ws-label">Wholesale</span>
+													)}
+												</span>
+											</td>
 
-                      {/* Line total */}
-                      <td style={{ textAlign: "right" }}>
-                        <span className={`cell-price${isWholesale ? " ws" : ""}`}>
-                          {fmtPrice(price * item.quantity)}
-                        </span>
-                      </td>
+											{/* Line total */}
+											<td data-label="Total">
+												<span
+													className={`cell-price${isWholesale ? " ws" : ""}`}
+												>
+													{fmtPrice(price * item.quantity)}
+												</span>
+											</td>
 
-                      {/* Remove */}
-                      <td style={{ textAlign: "right" }}>
-                        <button
-                          className="remove-btn"
-                          onClick={() => removeItem(item.id)}
-                          aria-label={`Remove ${item.name}`}
-                        >
-                          <X size={18} strokeWidth={2} />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+											{/* Remove */}
+											<td data-label="Remove">
+												<button
+													className="remove-btn"
+													onClick={() => removeItem(item.id)}
+													aria-label={`Remove ${item.name}`}
+												>
+													<X size={18} strokeWidth={2} />
+												</button>
+											</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
 
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1.5rem" }}>
-              <Link href="/shop" className="btn btn--ghost">
-                ← Continue Shopping
-              </Link>
-              <button
-                className="btn btn--ghost"
-                onClick={clearCart}
-                style={{ fontSize: ".85rem" }}
-              >
-                Clear Cart
-              </button>
-            </div>
-          </div>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "space-between",
+								marginTop: "1.5rem",
+							}}
+						>
+							<Link href="/shop" className="btn btn--ghost">
+								← Continue Shopping
+							</Link>
+							<button
+								className="btn btn--ghost"
+								onClick={clearCart}
+								style={{ fontSize: ".85rem" }}
+							>
+								Clear Cart
+							</button>
+						</div>
+					</div>
 
-          {/* Order summary */}
-          <div className="order-summary">
-            <h3>Order Summary</h3>
+					{/* Order summary */}
+					<div className="order-summary">
+						<h3>Order Summary</h3>
 
-            {items.map((item) => {
-              const price = effectivePrice(item);
-              return (
-                <div className="summary-row" key={item.id}>
-                  <span>
-                    {item.name}
-                    {item.size ? ` (${item.size})` : ""}
-                    {" ×"}{item.quantity}
-                  </span>
-                  <strong>{fmtPrice(price * item.quantity)}</strong>
-                </div>
-              );
-            })}
+						{items.map((item) => {
+							const price = effectivePrice(item);
+							return (
+								<div className="summary-row" key={item.id}>
+									<span>
+										{item.name}
+										{item.size ? ` (${item.size})` : ""}
+										{" ×"}
+										{item.quantity}
+									</span>
+									<strong>{fmtPrice(price * item.quantity)}</strong>
+								</div>
+							);
+						})}
 
-            <div className="summary-row" style={{ marginTop: ".5rem" }}>
-              <span>Delivery</span>
-              <strong>Calculated at checkout</strong>
-            </div>
+						<div className="summary-row" style={{ marginTop: ".5rem" }}>
+							<span>Delivery</span>
+							<strong>Calculated at checkout</strong>
+						</div>
 
-            <div className="summary-row total">
-              <span>Subtotal</span>
-              <strong>{fmtPrice(subtotal)}</strong>
-            </div>
+						<div className="summary-row total">
+							<span>Subtotal</span>
+							<strong>{fmtPrice(subtotal)}</strong>
+						</div>
 
-            <Link href="/checkout" className="btn" style={{ display: "flex", marginTop: "1.4rem" }}>
-              Proceed to Checkout
-              <ArrowRight className="arw" size={16} strokeWidth={2} />
-            </Link>
+						<Link
+							href="/checkout"
+							className="btn"
+							style={{ display: "flex", marginTop: "1.4rem" }}
+						>
+							Proceed to Checkout
+							<ArrowRight className="arw" size={16} strokeWidth={2} />
+						</Link>
 
-            <p style={{ fontSize: ".78rem", color: "var(--ink-soft)", textAlign: "center", marginTop: ".8rem" }}>
-              Secure checkout via Paystack
-            </p>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+						<p
+							style={{
+								fontSize: ".78rem",
+								color: "var(--ink-soft)",
+								textAlign: "center",
+								marginTop: ".8rem",
+							}}
+						>
+							Secure checkout via Paystack
+						</p>
+					</div>
+				</div>
+			</div>
+		</main>
+	);
 }

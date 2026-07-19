@@ -22,7 +22,7 @@ export default function GarmentFactoryPage() {
           </h1>
           <p className="reveal">
             From bulk production for brands and corporates to bespoke custom orders and
-            wholesale catalogues. Vedil Clothing&apos;s factory delivers exceptional quality
+            wholesale catalogues. Vedil Clothing's factory delivers exceptional quality
             and craftsmanship at every scale.
           </p>
         </div>
@@ -201,7 +201,7 @@ export default function GarmentFactoryPage() {
                 Wholesale
               </h2>
               <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "1.4rem" }}>
-                Vedil Clothing&apos;s wholesale programme offers boutiques, department stores,
+                Vedil Clothing's wholesale programme offers boutiques, department stores,
                 and online retailers high-quality, timeless apparel and accessories. Our
                 catalogue, available with a minimum order of 40 pieces, featuring outfits
                 offering great fit, comfort, durability, and versatility, with both wholesale
