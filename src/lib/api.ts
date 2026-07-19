@@ -25,6 +25,11 @@ export class ApiError extends Error {
 		this.name = "ApiError";
 		this.status = status;
 		this.body = body;
+		// Override the super's generic message with a human-readable one
+		// extracted from the backend response body, so that
+		// `err instanceof Error ? err.message : "…"` in catch blocks
+		// everywhere returns the actual backend message.
+		this.message = this.readableMessage();
 	}
 
 	/**

@@ -42,13 +42,88 @@ This document captures the shared understanding between the Next.js frontend and
 | Gender | `gender` | Enum: `WOMEN`, `MEN`, `CHILDREN`, `UNISEX` |
 | Featured | `featured` | Boolean, default `false` — for "New In" section |
 | New badge | `isNew` | Boolean, default `false` — shows "New" badge on cards |
+| **MOQ (wholesale threshold)** | **`moq`** | **Per-product minimum order quantity for wholesale pricing — new field. See MOQ section below.** |
 | Category name | `category.name` | Nested object |
 | Category slug | `category.slug` | E.g. `shop`, `academy` — used in route `/shop/[category]` |
 | Images | `images[].file.url` | One or more per product |
 | Variant SKU | `variants[].sku` | Displayed in admin, not on PDP |
-| Variant price | `variants[].priceTiers[]` | See **Discrepancies** below |
+| Variant price | `variants[].priceTiers[]` | See **Pricing & MOQ** below |
 | Variant options (size, colour) | `variants[].optionValues[].optionValue` | Includes `optionType` for grouping |
 | Variant images | `variants[].images[].file.url` | Variant-specific images |
+
+### Pricing & MOQ — How they work together
+
+**MOQ (`product.moq`)** is the per-product **wholesale threshold** — the quantity at which wholesale pricing kicks in. It's a *pricing threshold*, not a hard constraint. Customers can order fewer than the MOQ — they just pay retail.
+
+**PriceTiers** are per-variant pricing levels. Each variant can have multiple tiers at different quantity thresholds, defining the unit price at each level. The cart automatically picks the best price tier for the quantity ordered.
+
+**How to display:**
+- Show the MOQ on product detail: "Buy `moq`+ units for wholesale"
+- In cart: compute how many more to reach `moq` ("Add X more for wholesale"), then show the price from the best matching PriceTier at that quantity
+- There is NO hard minimum enforcement — the MOQ is for display and pricing, not order blocking
+
+**Example — Vedil Signature Tee (`moq: 40`):**
+
+```
+Variant price tiers:
+  minQuantity=1,  amount=15000  (retail)
+  minQuantity=10, amount=13500  (intermediate bulk)
+  minQuantity=40, amount=10000  (wholesale — matches moq=40)
+```
+
+- Customer orders 1 → pays ₦15,000/unit. Display: "Add 39 more for wholesale (₦10,000)"
+- Customer orders 10 → pays ₦13,500/unit. Display: still under MOQ, "Add 30 more for wholesale (₦10,000)"
+- Customer orders 40 → pays ₦10,000/unit. Display: wholesale pricing applied
+
+**How PriceTier relates to MOQ:**
+- The PriceTier whose `minQuantity` matches the product's `moq` IS the displayed wholesale price
+- If no PriceTier exactly matches the MOQ, pick the PriceTier with the largest `minQuantity` ≤ `moq` OR the first tier with `minQuantity ≥ moq` (whichever gives the best price)
+- Additional tiers below MOQ (like the 10-unit tier above) are intermediate bulk discounts — they apply automatically in cart for any quantity
+
+**Festive / seasonal promotions:**
+- During a campaign, admin adds a temporary PriceTier to the variant (e.g., `minQuantity: 10, amount: 850000`)
+- The product's `moq` field does NOT change — only the PriceTiers change
+- The cart will automatically apply the best tier for any given quantity, so a customer buying 10 during the promo gets ₦8,500/unit even though the displayed MOQ remains 40
+- When the campaign ends, the admin removes the temporary tier, and pricing returns to normal
+
+**How PriceTiers work in cart (backend: `cart.service.ts` `calculateUnitPrice`):**
+1. All price tiers for the variant are collected
+2. Sorted descending by `minQuantity`
+3. The first tier where `quantity >= minQuantity` wins
+4. That tier's `amount` becomes the unit price (in kobo)
+
+**Frontend mapper rules:**
+```
+// On product card / detail: use product.moq as the displayed threshold
+const displayMoq = product.moq // Direct field, not derived
+
+// Find the wholesale price at moq (for display)
+const wholesaleTier = tiers.find(t => t.minQuantity === product.moq)
+                    ?? tiers[tiers.length - 1]  // fallback to highest tier
+const wholesalePrice = wholesaleTier.amount / 100
+
+// For cart item enrichment, use product.moq
+const moq = product.moq
+const wholesalePrice = find the PriceTier that applies at quantity = product.moq
+```
+
+**Per-product MOQ values (from seed):**
+
+| Product | MOQ | Wholesale tier at MOQ |
+|---------|-----|----------------------|
+| Vedil Signature Tee | 40 | `minQty=40, ₦10,000` |
+| Aurora Blazer | 10 | `minQty=10, ₦65,000` |
+| Lagos Linen Shirt | 40 | `minQty=40, ₦18,000` |
+| Irene Midi Dress | 1 | Only retail tier exists (bespoke) |
+| Vedil Tote Bag | 10 | `minQty=10, ₦30,000` |
+| Courses | 1 | Only one tier (course enrollment) |
+
+**Admin:** `moq` can be set when creating/updating a product via:
+- `POST /api/admin/products/physical` — optional `moq` field (defaults to 40 if omitted)
+- `PATCH /api/admin/products/:productId` — optional `moq` field
+- `GET /api/admin/products/:productId` — returns `moq` field
+
+**Global default:** `SiteConfig.moqDefault = 40` is the fallback default used when creating new products without specifying moq. It's exposed via `GET /api/config/public` as a convenience for the admin UI but has no direct role in pricing — that's always per-product.
 
 ### Constraint: Single default variant per product
 
@@ -61,7 +136,7 @@ This document captures the shared understanding between the Next.js frontend and
 
 | # | Issue | Frontend expects | Backend delivers | Priority | Status |
 | --- | --- | --- | --- | --- | --- |
-| D1 | **Pricing model mismatch** | `retailPrice`, `wholesalePrice`, `moq` per product | `variants[].priceTiers[]` with `minQuantity`, `amount` per variant | Medium | 🔴 **Deferred** — See `docs/api-discrepancies.md` |
+| D1 | **Pricing model mismatch** | `retailPrice`, `wholesalePrice`, `moq` per product | `variants[].priceTiers[]` with `minQuantity`, `amount` per variant + **new `product.moq` field** | Medium | ✅ **Resolved** — Added `moq` directly on Product model. Frontend maps `product.moq` + derives wholesale price from best-matching PriceTier. See **Pricing & MOQ** section above. |
 | D2 | **Gender field** | `gender: 'women' \| 'men' \| 'children' \| 'unisex'` | `gender: Gender?` on Product (WOMEN, MEN, CHILDREN, UNISEX) | Medium | ✅ **Done** — Added to schema + migration applied |
 | D3 | **Featured / New flags** | `featured: boolean`, `isNew: boolean` | `featured: Boolean`, `isNew: Boolean` on Product, defaults to `false` | Low | ✅ **Done** — Added to schema + migration applied + seed |
 | D4 | **Sizes array** | `sizes: string[]` for quick display | Only available through `optionValues` per variant | Low | 🟡 Workaround: compute from option values |
@@ -406,9 +481,10 @@ None currently. This is a new flow not yet built on the frontend.
 
 | # | Domain | Issue | Status |
 | --- | --- | --- | --- |
-| D1 | Products | Pricing model — tiers vs retail/wholesale/moq | 🗓️ Deferred |
+| D1 | Products | Pricing model — tiers vs retail/wholesale/moq | ✅ **Resolved** — See **Pricing & MOQ** section |
 | D2 | Products | Missing `gender` field | ✅ **Done** — Added to schema + migration applied |
 | D3 | Products | Missing `featured` / `isNew` flags | ✅ **Done** — Added to schema + migration + seed |
+| D13 | Products | Missing `moq` per product | ✅ **Done** — Added `moq Int @default(40)` to Product schema + admin DTOs + seed. Frontend uses `product.moq` directly. See pricing section above. |
 | D4 | Products | Sizes only in option values, not as quick-access array | 🟡 Workaround |
 | D5 | Courses | Missing fee breakdown (reg/tuition/cert) | 🗓️ Deferred |
 | D6 | Cart | Client-only cart not connected to backend | ✅ Done |
@@ -435,3 +511,4 @@ None currently. This is a new flow not yet built on the frontend.
 | 2026-07-18 | **D12 fixed** — `@Transform()` on phone/email in inquiry DTOs | Empty strings `""` now coerced to `undefined` before validation |
 | 2026-07-18 | **Address confirmed** via site config endpoint | Ago Palace Way is the correct address |
 | 2026-07-18 | **Featured/isNew flags** added to Product schema | `featured: Boolean`, `isNew: Boolean` — both default to `false` |
+| 2026-07-19 | **MOQ per product** — added `moq` field to Product model | Per-product wholesale threshold, defaults to `SiteConfig.moqDefault` (40). Cart already picks best PriceTier automatically. See **Pricing & MOQ** section. |

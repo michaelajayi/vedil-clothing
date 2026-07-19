@@ -72,7 +72,7 @@ export function mapApiCourse(
 		tuitionFormatted: formattedTuition,
 		registrationFormatted: `Included in ${formattedTuition}`,
 		certificateFormatted: "Included",
-		instructorName: api.courseProfile?.instructorName ?? "Vedil Academy",
+		instructorName: api.courseProfile?.instructorName ?? "It's Fun to Sew",
 		phColor: PH_COLORS[index % PH_COLORS.length],
 		variantId: defaultVariant?.id ?? "",
 	};

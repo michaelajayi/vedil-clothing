@@ -57,7 +57,10 @@ interface PriceInfo {
 	wholesaleMinQty: number | null;
 }
 
-function extractPrices(variants: ApiVariant[]): PriceInfo {
+function extractPrices(
+	variants: ApiVariant[],
+	productMoq: number,
+): PriceInfo {
 	const defaultVariant = variants.find((v) => v.isDefault) ?? variants[0];
 
 	if (!defaultVariant || !defaultVariant.priceTiers.length) {
@@ -78,16 +81,25 @@ function extractPrices(variants: ApiVariant[]): PriceInfo {
 	const retailPriceNaira = retailTier.amount / 100;
 	const retailMinQty = retailTier.minQuantity;
 
-	// If a second tier exists, treat it as wholesale pricing
-	const wholesaleTier = tiers.length > 1 ? tiers[1] : null;
-	const wholesalePriceNaira = wholesaleTier ? wholesaleTier.amount / 100 : null;
-	const wholesaleMinQty = wholesaleTier ? wholesaleTier.minQuantity : null;
+	// Find the wholesale tier at or nearest to the product's MOQ
+	// Prefer exact match, then the first tier with minQuantity >= moq
+	// If no tier reaches MOQ, use the highest tier available
+	const wholesaleTier =
+		tiers.find((t) => t.minQuantity === productMoq) ??
+		tiers.find((t) => t.minQuantity >= productMoq) ??
+		tiers[tiers.length - 1];
+
+	// Only treat it as wholesale if it's different from the retail tier
+	const isWholesale =
+		wholesaleTier && wholesaleTier.minQuantity > retailTier.minQuantity;
 
 	return {
 		retailPriceNaira,
 		retailMinQty,
-		wholesalePriceNaira,
-		wholesaleMinQty,
+		wholesalePriceNaira: isWholesale
+			? wholesaleTier!.amount / 100
+			: null,
+		wholesaleMinQty: isWholesale ? wholesaleTier!.minQuantity : null,
 	};
 }
 
@@ -155,7 +167,7 @@ function isRecentlyCreated(createdAt: string): boolean {
 // ─── Main mapper ────────────────────────────────────────
 
 export function mapApiProduct(api: ApiProductListItem): ProductDisplay {
-	const prices = extractPrices(api.variants);
+	const prices = extractPrices(api.variants, api.moq);
 
 	// Use real API fields when available, fall back to heuristics
 	const gender =
@@ -177,7 +189,7 @@ export function mapApiProduct(api: ApiProductListItem): ProductDisplay {
 		gender,
 		retailPrice: prices.retailPriceNaira,
 		wholesalePrice: prices.wholesalePriceNaira ?? 0,
-		moq: prices.wholesaleMinQty ?? prices.retailMinQty,
+		moq: api.moq, // Use the product's own MOQ field
 		isNew,
 		featured,
 		sizes: extractSizes(api.variants),

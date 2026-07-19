@@ -65,15 +65,27 @@
 
 ---
 
+## ✅ Resolved — Pricing model / MOQ (D1)
+
+- **Endpoint:** `GET /api/products`, `GET /api/products/{slug}`, `GET /api/admin/products/...`
+- **Context:** The frontend was built with a 2-tier model (`retailPrice` + `wholesalePrice` + `moq` per product). The backend delivered N-tier pricing via `variants[].priceTiers[]`.
+- **Resolution:** Added `moq Int @default(40)` directly to the `Product` model. Each product now has a definitive MOQ (wholesale threshold). The mapper (`src/lib/product-mapper.ts`) uses `product.moq` instead of deriving from `priceTiers[1]?.minQuantity`. Wholesale price is found by matching the PriceTier whose `minQuantity` equals the product's MOQ (or the nearest tier ≥ MOQ).
+- **Files changed (backend):**
+  - `prisma/schema.prisma` — added `moq Int @default(40)` to Product
+  - `prisma/seed.ts` — set per-product MOQ values
+  - `src/admin/products/dto/create-physical-product.dto.ts` — added `moq` field
+  - `src/admin/products/dto/update-physical-product.dto.ts` — added `moq` field
+  - `src/admin/products/admin-products.controller.ts` — persist moq on create/update
+- **Files changed (frontend):**
+  - `src/types/api.ts` — added `moq: number` to `ApiProductListItem`
+  - `src/lib/product-mapper.ts` — use `api.moq` directly, find wholesale tier by MOQ match
+  - `src/contexts/CartContext.tsx` — use `matchedProduct.moq` for cart item enrichment
+- **See also:** `docs/api-contract.md` — **Pricing & MOQ** section for full integration guide
+- **Status:** ✅ **Done**
+
 ## Deferred Discrepancies
 
 These are accepted gaps. The frontend will work around them for now, and we'll revisit as a group when requirements are clearer.
-
-### D1 — Pricing model: tiers vs retail/wholesale/MOQ
-
-- **Context:** The frontend was built with a simple 2-tier model (`retailPrice` + `wholesalePrice` + `moq` per product). The backend delivers N-tier pricing (`variants[].priceTiers[]` with arbitrary `minQuantity` thresholds).
-- **Decision:** Deferred — the frontend will initially display the first price tier as the base price. Course enrollment and cart pricing will use the full tier model directly.
-- **When to revisit:** When the shop's wholesale display logic is designed.
 
 ### D5 — Course fee breakdown
 

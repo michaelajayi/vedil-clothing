@@ -117,6 +117,7 @@ export interface ApiProductListItem {
 	gender: "WOMEN" | "MEN" | "CHILDREN" | "UNISEX" | null;
 	featured: boolean;
 	isNew: boolean;
+	moq: number;
 	categoryId: string;
 	category: ApiCategory;
 	images: ApiProductImage[];
