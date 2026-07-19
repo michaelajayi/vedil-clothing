@@ -9,7 +9,7 @@ export default function Hero() {
 			</div>
 			<div className="hero-meta reveal">
 				<b>Est. Lagos</b>
-				<span>Ready-to-Wear · Since 2016</span>
+				<span>Ready-to-Wear · Since 2012</span>
 			</div>
 			<div className="wrap">
 				<div className="hero-content">
