@@ -30,3 +30,14 @@ export function getCartSessionId(): string {
 	}
 	return sessionId;
 }
+
+/**
+ * Generate and persist a new session ID, replacing the current one.
+ * Use after a successful checkout so the next cart starts fresh
+ * instead of re-seeding from the completed order's cart.
+ */
+export function rotateCartSession(): string {
+	const newId = generateUUID();
+	localStorage.setItem(STORAGE_KEY, newId);
+	return newId;
+}

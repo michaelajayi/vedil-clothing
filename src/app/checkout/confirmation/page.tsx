@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Check, Loader, ArrowRight, Truck, MapPin } from "lucide-react";
+import {
+	Check,
+	Loader,
+	ArrowRight,
+	Truck,
+	MapPin,
+	HelpCircle,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { orderOptions } from "@/lib/queries/checkout";
+import { useCart } from "@/contexts/CartContext";
 import { fmtPrice } from "@/lib/products";
 import type { CheckoutStatusResponse } from "@/types/api";
 
@@ -18,6 +26,8 @@ function ConfirmationContent() {
 	const [status, setStatus] = useState<
 		"loading" | "paid" | "failed" | "not-found"
 	>("loading");
+	const { resetCart } = useCart();
+	const cartResetDone = useRef(false);
 
 	// ── Resolve orderReference ────────────────────────────────
 	useEffect(() => {
@@ -33,14 +43,20 @@ function ConfirmationContent() {
 	}, [searchParams]);
 
 	// ── Poll payment status ──────────────────────────────────
-	const { data: statusData } = useQuery({
+	const {
+		data: statusData,
+		isError,
+		error,
+	} = useQuery({
 		queryKey: ["checkout", "status", orderRef],
 		queryFn: () =>
 			api.get<CheckoutStatusResponse>(`/api/checkout/status/${orderRef}`),
 		enabled: !!orderRef,
-		retry: 5,
-		retryDelay: 2_000,
+		// No retries — 404 is definitive (wrong reference), and the
+		// refetchInterval below handles polling for pending payments.
+		retry: false,
 		refetchInterval: (query) => {
+			if (query.state.error) return false;
 			const d = query.state.data;
 			if (d?.status === "PAID" || d?.status === "FAILED") return false;
 			return 3_000;
@@ -56,16 +72,43 @@ function ConfirmationContent() {
 
 	// ── Resolve status ───────────────────────────────────────
 	useEffect(() => {
+		if (isError) {
+			// 404 from backend = order not found, show helpful "not-found" state
+			if (error instanceof ApiError && error.status === 404) {
+				setStatus("not-found");
+			} else {
+				setStatus("failed");
+			}
+			return;
+		}
 		if (!statusData) return;
 		if (statusData.status === "PAID") setStatus("paid");
 		if (statusData.status === "FAILED" || statusData.status === "CANCELED") {
 			setStatus("failed");
 		}
-	}, [statusData]);
+	}, [statusData, isError, error]);
+
+	// ── Reset cart on successful payment ────────────────────
+	useEffect(() => {
+		if (status === "paid" && !cartResetDone.current) {
+			cartResetDone.current = true;
+			resetCart();
+		}
+	}, [status, resetCart]);
+
+	// ── Detect item kinds ────────────────────────────────────
+	const hasCourse = order?.items.some(
+		(i) => i.productKindSnapshot === "COURSE",
+	);
+	const hasPhysical = order?.items.some(
+		(i) => i.productKindSnapshot === "PHYSICAL",
+	);
 
 	// ── Format delivery info ─────────────────────────────────
 	const deliveryInfo = (() => {
 		if (!order) return null;
+		// Course-only orders don't have shipping — show course details instead
+		if (hasCourse && !hasPhysical) return null;
 		const addr = order.shippingAddress;
 		if (!addr)
 			return {
@@ -79,12 +122,6 @@ function ConfirmationContent() {
 	// ── What happens next ────────────────────────────────────
 	const nextSteps = (() => {
 		if (!order) return [];
-		const hasCourse = order.items.some(
-			(i) => i.productKindSnapshot === "COURSE",
-		);
-		const hasPhysical = order.items.some(
-			(i) => i.productKindSnapshot === "PHYSICAL",
-		);
 		const steps: string[] = [];
 		if (hasPhysical) {
 			steps.push(
@@ -95,7 +132,7 @@ function ConfirmationContent() {
 		}
 		if (hasCourse) {
 			steps.push(
-				"Your course enrollment is being processed. You'll receive details via email.",
+				"Someone from our team will reach out to you with your course access details.",
 			);
 		}
 		steps.push("A payment receipt has been sent to your email.");
@@ -109,9 +146,9 @@ function ConfirmationContent() {
 				<div className="wrap" style={{ maxWidth: 520, textAlign: "center" }}>
 					<div
 						className="confirm-icon"
-						style={{ color: "var(--gold)", margin: "0 auto 1.2rem" }}
+						style={{ color: "var(--ink-soft)", margin: "0 auto 1.2rem" }}
 					>
-						<Check size={36} strokeWidth={1.5} />
+						<HelpCircle size={36} strokeWidth={1.5} />
 					</div>
 					<h1
 						style={{
@@ -120,11 +157,12 @@ function ConfirmationContent() {
 							fontFamily: "var(--font-display)",
 						}}
 					>
-						Payment received!
+						No order reference found
 					</h1>
 					<p style={{ color: "var(--ink-soft)", marginBottom: ".6rem" }}>
-						But we couldn&apos;t find your order reference. If you received a
-						payment receipt from Paystack, your order is being processed.
+						We couldn&apos;t locate your order. If you have a payment receipt
+						from Paystack, your order is being processed and we&apos;ll follow
+						up shortly.
 					</p>
 					<p style={{ color: "var(--ink-soft)", marginBottom: "2.4rem" }}>
 						Need help? Chat with us on WhatsApp.
@@ -416,8 +454,13 @@ function ConfirmationContent() {
 							flexWrap: "wrap",
 						}}
 					>
-						<Link href="/shop" className="btn">
-							Continue Shopping
+						<Link
+							href={hasCourse && !hasPhysical ? "/fun-to-sew" : "/shop"}
+							className="btn"
+						>
+							{hasCourse && !hasPhysical
+								? "Browse More Courses"
+								: "Continue Shopping"}
 							<ArrowRight className="arw" size={16} strokeWidth={2} />
 						</Link>
 						<a

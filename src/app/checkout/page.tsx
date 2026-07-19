@@ -4,24 +4,22 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useCart, effectivePrice, fmtPrice } from "@/contexts/CartContext";
-import { useSiteConfig } from "@/lib/queries/config";
-import { useInitiateCheckout, useSendOtp, useVerifyOtp } from "@/lib/queries/checkout";
+import {
+	useInitiateCheckout,
+	useSendOtp,
+	useVerifyOtp,
+} from "@/lib/queries/checkout";
 import { getCartSessionId } from "@/lib/cart-session";
 import { ApiError } from "@/lib/api";
 import { useToast } from "@/components/ui/Toast";
-import Combobox from "@/components/ui/Combobox";
 import PhoneInput from "@/components/ui/PhoneInput";
-import { NIGERIA_STATES } from "@/lib/nigeria-states";
 
 type FormData = {
 	firstName: string;
 	lastName: string;
 	email: string;
 	phone: string;
-	address: string;
-	city: string;
-	state: string;
-	delivery: "pickup" | "dispatch" | "dhl";
+	delivery: "pickup" | "dispatch";
 	note: string;
 };
 
@@ -33,20 +31,22 @@ export default function CheckoutPage() {
 		lastName: "",
 		email: "",
 		phone: "",
-		address: "",
-		city: "",
-		state: "",
 		delivery: "pickup",
 		note: "",
 	});
 	const [loading, setLoading] = useState(false);
 
 	// ─── OTP / Verification states ───────────────────────────
-	const requiresOtp = useMemo(() => items.some((item) => item.kind === "COURSE"), [items]);
+	const requiresOtp = useMemo(
+		() => items.some((item) => item.kind === "COURSE"),
+		[items],
+	);
 	const [otpSent, setOtpSent] = useState(false);
 	const [otpCode, setOtpCode] = useState("");
 	const [isEmailVerified, setIsEmailVerified] = useState(false);
-	const [emailVerificationToken, setEmailVerificationToken] = useState<string | null>(null);
+	const [emailVerificationToken, setEmailVerificationToken] = useState<
+		string | null
+	>(null);
 	const [otpError, setOtpError] = useState<string | null>(null);
 	const [cooldown, setCooldown] = useState(0);
 
@@ -81,7 +81,10 @@ export default function CheckoutPage() {
 			setOtpSent(true);
 			setCooldown(60);
 		} catch (err: unknown) {
-			const msg = err instanceof Error ? err.message : "Failed to send verification code.";
+			const msg =
+				err instanceof Error
+					? err.message
+					: "Failed to send verification code.";
 			setOtpError(msg);
 		}
 	}
@@ -106,22 +109,16 @@ export default function CheckoutPage() {
 				setOtpError("Invalid response from server.");
 			}
 		} catch (err: unknown) {
-			const msg = err instanceof Error ? err.message : "Incorrect verification code.";
+			const msg =
+				err instanceof Error ? err.message : "Incorrect verification code.";
 			setOtpError(msg);
 		}
 	}
 
-	// ─── Site config (delivery fees) ─────────────────────────
-	const { data: siteConfig, isLoading: configLoading } = useSiteConfig();
-
-	// Map backend kobo → Naira. backend: localDeliveryFee = dispatch, intlDeliveryFee = DHL
-	const localFeeNaira = siteConfig ? siteConfig.localDeliveryFee / 100 : 0;
-	const intlFeeNaira = siteConfig ? siteConfig.intlDeliveryFee / 100 : 0;
-
+	// ── Both delivery methods are free for now ────────────────
 	const deliveryFees: Record<string, number> = {
 		pickup: 0,
-		dispatch: localFeeNaira,
-		dhl: intlFeeNaira,
+		dispatch: 0,
 	};
 
 	const deliveryFee = deliveryFees[form.delivery];
@@ -168,16 +165,6 @@ export default function CheckoutPage() {
 				customerPhone: form.phone || undefined,
 				deliveryFeeAmount: deliveryFee * 100, // naira → kobo
 				emailVerificationToken: emailVerificationToken || undefined,
-				shippingAddress:
-					form.delivery !== "pickup"
-						? {
-								street: form.address,
-								city: form.city,
-								state: form.state,
-								postalCode: "",
-								country: "Nigeria",
-							}
-						: undefined,
 			});
 
 			// Store order reference so the callback page can find it
@@ -321,8 +308,20 @@ export default function CheckoutPage() {
 										}}
 									>
 										{!otpSent ? (
-											<div style={{ display: "flex", flexDirection: "column", gap: ".5rem" }}>
-												<p style={{ fontSize: ".82rem", color: "var(--ink-soft)", margin: 0 }}>
+											<div
+												style={{
+													display: "flex",
+													flexDirection: "column",
+													gap: ".5rem",
+												}}
+											>
+												<p
+													style={{
+														fontSize: ".82rem",
+														color: "var(--ink-soft)",
+														margin: 0,
+													}}
+												>
 													Email verification is required to enroll in courses.
 												</p>
 												<button
@@ -335,17 +334,43 @@ export default function CheckoutPage() {
 														fontSize: ".82rem",
 														minHeight: "auto",
 													}}
-													disabled={sendOtp.isPending || !form.email || !form.email.includes("@")}
+													disabled={
+														sendOtp.isPending ||
+														!form.email ||
+														!form.email.includes("@")
+													}
 												>
-													{sendOtp.isPending ? "Sending code..." : "Send Verification Code"}
+													{sendOtp.isPending
+														? "Sending code..."
+														: "Send Verification Code"}
 												</button>
 											</div>
 										) : (
-											<div style={{ display: "flex", flexDirection: "column", gap: ".6rem" }}>
-												<p style={{ fontSize: ".82rem", color: "var(--ink-soft)", margin: 0 }}>
-													We sent a 6-digit verification code to <strong>{form.email}</strong>. Enter it below:
+											<div
+												style={{
+													display: "flex",
+													flexDirection: "column",
+													gap: ".6rem",
+												}}
+											>
+												<p
+													style={{
+														fontSize: ".82rem",
+														color: "var(--ink-soft)",
+														margin: 0,
+													}}
+												>
+													We sent a 6-digit verification code to{" "}
+													<strong>{form.email}</strong>. Enter it below:
 												</p>
-												<div style={{ display: "flex", gap: ".5rem", alignItems: "center", flexWrap: "wrap" }}>
+												<div
+													style={{
+														display: "flex",
+														gap: ".5rem",
+														alignItems: "center",
+														flexWrap: "wrap",
+													}}
+												>
 													<input
 														type="text"
 														inputMode="numeric"
@@ -353,7 +378,9 @@ export default function CheckoutPage() {
 														maxLength={6}
 														placeholder="000000"
 														value={otpCode}
-														onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ""))}
+														onChange={(e) =>
+															setOtpCode(e.target.value.replace(/\D/g, ""))
+														}
 														style={{
 															width: "120px",
 															textAlign: "center",
@@ -374,9 +401,13 @@ export default function CheckoutPage() {
 															fontSize: ".82rem",
 															minHeight: "auto",
 														}}
-														disabled={verifyOtp.isPending || otpCode.length !== 6}
+														disabled={
+															verifyOtp.isPending || otpCode.length !== 6
+														}
 													>
-														{verifyOtp.isPending ? "Verifying..." : "Verify Code"}
+														{verifyOtp.isPending
+															? "Verifying..."
+															: "Verify Code"}
 													</button>
 													<button
 														type="button"
@@ -389,7 +420,9 @@ export default function CheckoutPage() {
 														}}
 														disabled={cooldown > 0 || sendOtp.isPending}
 													>
-														{cooldown > 0 ? `Resend (${cooldown}s)` : "Resend Code"}
+														{cooldown > 0
+															? `Resend (${cooldown}s)`
+															: "Resend Code"}
 													</button>
 												</div>
 											</div>
@@ -411,14 +444,7 @@ export default function CheckoutPage() {
 						>
 							<h2>Delivery Method</h2>
 							<div className="delivery-options">
-								{(["pickup", "dispatch", "dhl"] as const).map((method) => {
-									const fee = deliveryFees[method];
-									const feeText =
-										fee === 0
-											? "Free"
-											: configLoading
-												? "Loading…"
-												: fmtPrice(fee);
+								{(["pickup", "dispatch"] as const).map((method) => {
 									return (
 										<label className="delivery-option" key={method}>
 											<input
@@ -432,65 +458,18 @@ export default function CheckoutPage() {
 												<span className="delivery-option-label">
 													{method === "pickup" && "Self Pick-up"}
 													{method === "dispatch" && "Your Dispatch Rider"}
-													{method === "dhl" && "Vedil Ships (DHL + others)"}
 												</span>
 												<span className="delivery-option-desc">
 													{method === "pickup" &&
-														"No. 95 Ago Palace Way, Okota, Lagos · Free"}
+														"No. 95 Ago Palace Way, Okota, Lagos"}
 													{method === "dispatch" &&
-														`Send your rider to our store · ${feeText}`}
-													{method === "dhl" &&
-														`We book delivery to your door · ${feeText}`}
+														"Send your rider to pick up from our store"}
 												</span>
 											</div>
 										</label>
 									);
 								})}
 							</div>
-
-							{form.delivery !== "pickup" && (
-								<>
-									<div className="field">
-										<label htmlFor="address">Street address *</label>
-										<input
-											id="address"
-											name="address"
-											type="text"
-											value={form.address}
-											onChange={handleChange}
-											required
-											autoComplete="street-address"
-										/>
-									</div>
-									<div className="field-row">
-										<div className="field">
-											<label htmlFor="city">City *</label>
-											<input
-												id="city"
-												name="city"
-												type="text"
-												value={form.city}
-												onChange={handleChange}
-												required
-												autoComplete="address-level2"
-											/>
-										</div>
-										<div className="field">
-											<label htmlFor="state">State *</label>
-											<Combobox
-												id="state"
-												options={NIGERIA_STATES}
-												placeholder="Select state…"
-												searchPlaceholder="Search states…"
-												value={form.state}
-												onValueChange={(v) =>
-													setForm((prev) => ({ ...prev, state: v }))
-												}
-											/>
-										</div>
-									</div>
-								</>
-							)}
 						</div>
 
 						{/* Order note */}
@@ -543,13 +522,7 @@ export default function CheckoutPage() {
 
 							<div className="summary-row">
 								<span>Delivery</span>
-								<strong>
-									{configLoading
-										? "Loading…"
-										: deliveryFee === 0
-											? "Free"
-											: fmtPrice(deliveryFee)}
-								</strong>
+								<strong>Free</strong>
 							</div>
 
 							<div className="summary-row total">

@@ -4,13 +4,14 @@ import {
 	createContext,
 	useContext,
 	useReducer,
+	useState,
 	useEffect,
 	useCallback,
 	ReactNode,
 } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { getCartSessionId } from "@/lib/cart-session";
+import { getCartSessionId, rotateCartSession } from "@/lib/cart-session";
 import { useProducts, useCourses } from "@/lib/queries/catalog";
 
 import type { ApiCart, ApiCartItem, AddToCartPayload } from "@/types/api";
@@ -32,7 +33,6 @@ export type CartItem = {
 	kind?: "PHYSICAL" | "COURSE";
 };
 
-
 type CartState = {
 	items: CartItem[];
 	isOpen: boolean;
@@ -45,6 +45,7 @@ type CartAction =
 	| { type: "REMOVE"; id: string }
 	| { type: "SET_QTY"; id: string; quantity: number }
 	| { type: "CLEAR" }
+	| { type: "RESET_AFTER_CHECKOUT" }
 	| { type: "OPEN" }
 	| { type: "CLOSE" }
 	| { type: "HYDRATE"; items: CartItem[] }
@@ -104,6 +105,10 @@ function reducer(state: CartState, action: CartAction): CartState {
 			};
 		case "CLEAR":
 			return { ...state, items: [] };
+		case "RESET_AFTER_CHECKOUT":
+			// Full reset: clear items and unseed so the re-seed effect skips
+			// (the session has been rotated, so the old backend cart won't match)
+			return { items: [], isOpen: false, seeded: false };
 		case "OPEN":
 			return { ...state, isOpen: true };
 		case "CLOSE":
@@ -143,6 +148,13 @@ type CartContextValue = {
 	removeItem: (id: string) => void;
 	setQty: (id: string, quantity: number) => void;
 	clearCart: () => void;
+	/**
+	 * Reset the cart after a successful checkout:
+	 * clears local state, clears localStorage cart data,
+	 * and rotates the session UUID so the next page load
+	 * starts with a fresh backend cart.
+	 */
+	resetCart: () => void;
 	openCart: () => void;
 	closeCart: () => void;
 };
@@ -162,7 +174,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		seeded: false,
 	});
 
-	const sessionId = getCartSessionId();
+	const [sessionId, setSessionId] = useState<string>(() => getCartSessionId());
 	const queryClient = useQueryClient();
 
 	// ── Backend cart query ─────────────────────────────────
@@ -237,7 +249,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		if (!cartLoaded || !serverCart || !state.seeded) return;
 
 		// Only seed if local cart is empty or has placeholder names that we can now enrich
-		const hasPlaceholders = state.items.some((i) => i.name.startsWith("Product ("));
+		const hasPlaceholders = state.items.some((i) =>
+			i.name.startsWith("Product ("),
+		);
 		if (state.items.length > 0 && !hasPlaceholders) return;
 
 		if (!serverCart.items.length) return;
@@ -247,7 +261,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 			const matchedCourse = coursesData?.find((c) =>
 				c.variants.some((v) => v.id === bci.variantId),
 			);
-			
+
 			const matchedProduct = productsData?.find((p) =>
 				p.variants.some((v) => v.id === bci.variantId),
 			);
@@ -266,16 +280,35 @@ export function CartProvider({ children }: { children: ReactNode }) {
 			}
 
 			if (matchedProduct) {
-				const variant = matchedProduct.variants.find((v) => v.id === bci.variantId) || matchedProduct.variants[0];
+				const variant =
+					matchedProduct.variants.find((v) => v.id === bci.variantId) ||
+					matchedProduct.variants[0];
+				// Find the wholesale price at the product's MOQ
+				const tiers = [...(variant.priceTiers ?? [])].sort(
+					(a, b) => a.minQuantity - b.minQuantity,
+				);
+				const wholesaleTier =
+					tiers.find((t) => t.minQuantity === matchedProduct.moq) ??
+					tiers.find((t) => t.minQuantity >= matchedProduct.moq) ??
+					tiers[tiers.length - 1];
+				const isWholesale =
+					wholesaleTier && wholesaleTier.minQuantity > tiers[0].minQuantity;
+
 				return {
 					id: bci.variantId,
 					backendCartItemId: bci.id,
 					name: matchedProduct.name,
-					retailPrice: (variant.priceTiers[0]?.amount ?? bci.unitPrice) / 100,
-					wholesalePrice: variant.priceTiers[1] ? variant.priceTiers[1].amount / 100 : null,
-					moq: variant.priceTiers[1]?.minQuantity ?? 1,
+					retailPrice: (tiers[0]?.amount ?? bci.unitPrice) / 100,
+					wholesalePrice: isWholesale
+						? wholesaleTier!.amount / 100
+						: null,
+					moq: matchedProduct.moq,
 					quantity: bci.quantity,
-					size: variant.optionValues?.find((ov) => ov.optionValue?.optionType?.name?.toLowerCase() === "size")?.optionValue?.value || undefined,
+					size:
+						variant.optionValues?.find(
+							(ov) =>
+								ov.optionValue?.optionType?.name?.toLowerCase() === "size",
+						)?.optionValue?.value || undefined,
 					category: matchedProduct.category?.name,
 					kind: "PHYSICAL",
 				};
@@ -374,6 +407,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		}
 	}, [state.items, removeFromBackend]);
 
+	const resetCart = useCallback(() => {
+		dispatch({ type: "RESET_AFTER_CHECKOUT" });
+		localStorage.removeItem(CART_STORAGE_KEY);
+		const newId = rotateCartSession();
+		setSessionId(newId);
+	}, []);
+
 	const openCart = useCallback(() => dispatch({ type: "OPEN" }), []);
 	const closeCart = useCallback(() => dispatch({ type: "CLOSE" }), []);
 
@@ -389,6 +429,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 				removeItem,
 				setQty,
 				clearCart,
+				resetCart,
 				openCart,
 				closeCart,
 			}}
