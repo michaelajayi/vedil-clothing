@@ -74,14 +74,6 @@ export default function ShopPage() {
 			{/* ── New In — live from API ──────────────────────────── */}
 			<section className={styles.newIn}>
 				<ProductListClient />
-				<footer className={styles.newInFoot}>
-					<Link href="/shop/africa-my-heritage" className="btn">
-						Shop Ankara Heritage
-					</Link>
-					<Link href="/shop/ready-to-wear" className="link-arrow">
-						Ready to Wear →
-					</Link>
-				</footer>
 			</section>
 
 			{/* ── Founder Quote ────────────────────────────────────── */}

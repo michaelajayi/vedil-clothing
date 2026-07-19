@@ -1,16 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { fmtPrice } from "@/lib/products";
 import { resolveVariantId } from "@/lib/cart-utils";
 import type { ProductDisplay } from "@/lib/product-mapper";
 
 export default function ProductCard({ product }: { product: ProductDisplay }) {
+	const router = useRouter();
 	const { addItem } = useCart();
 
 	const href = `/shop/${product.category}/${product.id}`;
 	const defaultVariantId = resolveVariantId(product.variants, null);
+
+	function navigateToProduct(e: React.MouseEvent) {
+		// Don't navigate if clicking on the Add to Bag button
+		if ((e.target as HTMLElement).closest(".prod-quick")) return;
+		router.push(href);
+	}
 
 	function addToBag(e: React.MouseEvent) {
 		e.preventDefault();
@@ -33,7 +41,7 @@ export default function ProductCard({ product }: { product: ProductDisplay }) {
 			: product.gender.charAt(0).toUpperCase() + product.gender.slice(1);
 
 	return (
-		<article className="prod-card">
+		<article className="prod-card" onClick={navigateToProduct}>
 			<div className="ph prod-img">
 				<span className="ph-mono">{product.name[0]}</span>
 				<span className="ph-tag">{genderLabel}</span>

@@ -84,8 +84,11 @@ export default function ProductListClient() {
 	}
 
 	// ─── Success ──────────────────────────────────────────
-	// Show first 4 as "New In"
-	const featured = products.slice(0, 4);
+	// Show featured products as "New In" — fall back to first 4
+	const featured =
+		products.filter((p) => p.featured).length > 0
+			? products.filter((p) => p.featured)
+			: products.slice(0, 4);
 
 	return (
 		<div className="wrap">
