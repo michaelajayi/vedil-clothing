@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useProducts, useProduct } from "@/lib/queries/catalog";
 import { mapApiProduct } from "@/lib/product-mapper";
 import ProductCard from "@/components/shop/ProductCard";
+import ProductGallery from "@/components/shop/ProductGallery";
 import AddToBag from "@/components/shop/AddToBag";
 import { CATEGORY_META, fmtPrice } from "@/lib/products";
 import type { Category } from "@/lib/products";
@@ -129,10 +130,23 @@ export default function ProductDetailClient({
 				{/* ── Product layout ─────────────────────────────────── */}
 				<div className={styles.pdp}>
 					{/* Image column */}
-					<div className={`ph ${styles.pdpImage}`}>
-						<span className="ph-mono">{product.name[0]}</span>
-						<span className="ph-tag">{genderLabel}</span>
-						{product.isNew && <span className="prod-new-badge">New</span>}
+					<div className={styles.pdpImage}>
+						<ProductGallery
+							images={product.images}
+							fallback={
+								<div className="pdp-gallery">
+									<div className="pdp-gallery-viewport">
+										<div className="pdp-gallery-slide ph">
+											<span className="ph-mono">{product.name[0]}</span>
+											<span className="ph-tag">{genderLabel}</span>
+											{product.isNew && (
+												<span className="prod-new-badge">New</span>
+											)}
+										</div>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 
 					{/* Info column */}
