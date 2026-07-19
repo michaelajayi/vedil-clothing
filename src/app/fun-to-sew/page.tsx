@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import { BookOpen } from "lucide-react";
 import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 import CourseListClient from "@/components/academy/CourseListClient";
+
+// ─── Student handbook config ────────────────────────────────
+const HANDBOOK_URL =
+	"https://res.cloudinary.com/jqaitieh/image/upload/v1784469700/student-handbook_zt6pt1.pdf";
 
 export const metadata: Metadata = {
 	title: "It's Fun to Sew Academy | Vedil Clothing",
@@ -26,8 +31,8 @@ export default function AcademyPage() {
 					<p className="reveal">
 						Join hundreds of fashion enthusiasts and upgrade your skills to
 						another level. Learning how to sew at Vedil Clothing is always fun;
-						attention is paid to every student's unique learning needs. We
-						have a conducive learning environment and a sewing machine for each
+						attention is paid to every student's unique learning needs. We have
+						a conducive learning environment and a sewing machine for each
 						student.
 					</p>
 				</div>
@@ -113,6 +118,17 @@ export default function AcademyPage() {
 					</div>
 				</div>
 			</section>
+
+			{/* Student Handbook — floating button */}
+			<a
+				href={HANDBOOK_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="handbook-float"
+			>
+				<BookOpen size={17} />
+				Handbook
+			</a>
 		</main>
 	);
 }
