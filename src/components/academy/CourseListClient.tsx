@@ -1,13 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ArrowRight } from "lucide-react";
 import { useCourses } from "@/lib/queries/catalog";
 import { mapApiCourses, type CourseDisplay } from "@/lib/course-mapper";
 import EnrollPanel from "./EnrollPanel";
 
+const FORMAT_TABS = [
+	{ value: "live", label: "In-person", num: "01" },
+	{ value: "self-paced", label: "Online", num: "02" },
+] as const;
+
+const FORMAT_EMPTY_MESSAGES: Record<string, string> = {
+	live: "No in-person courses available right now. Check back soon or",
+	"self-paced": "No online courses available right now. Check back soon or",
+};
+
+const FORMAT_MAP_TO_API: Record<string, string> = {
+	live: "LIVE",
+	"self-paced": "SELF_PACED",
+};
+
 export default function CourseListClient() {
 	const { data, isLoading, isError } = useCourses();
+	const [activeTab, setActiveTab] = useState<string | null>(null);
 	const [selectedCourse, setSelectedCourse] = useState<CourseDisplay | null>(
 		null,
 	);
@@ -22,98 +38,141 @@ export default function CourseListClient() {
 		setPanelOpen(false);
 	}
 
+	const allCourses = useMemo(() => mapApiCourses(data ?? []), [data]);
+
+	const courses = useMemo(() => {
+		if (!activeTab) return allCourses;
+		const apiFormat = FORMAT_MAP_TO_API[activeTab];
+		if (!apiFormat) return allCourses;
+		return allCourses.filter((c) => c.format === apiFormat);
+	}, [allCourses, activeTab]);
+
+	// ─── Tabs ─────────────────────────────────────────────
+	const tabs = (
+		<div className="format-switcher">
+			<nav className="format-switcher-nav" aria-label="Course format">
+				<button
+					className={`format-tab${!activeTab ? " format-tab--active" : ""}`}
+					onClick={() => setActiveTab(null)}
+				>
+					<span className="format-tab-num">All</span>
+				</button>
+				{FORMAT_TABS.map(({ value, label, num }) => (
+					<button
+						key={value}
+						className={`format-tab${activeTab === value ? " format-tab--active" : ""}`}
+						onClick={() => setActiveTab(value)}
+					>
+						<span className="format-tab-num">{num}</span>
+						{label}
+					</button>
+				))}
+			</nav>
+		</div>
+	);
+
 	// ─── Loading ───────────────────────────────────────────
 	if (isLoading) {
 		return (
-			<div className="course-listing">
-				{[1, 2, 3].map((i) => (
-					<article key={i} className="course-item reveal">
-						<div className="ph course-item-img" style={{ height: 200 }}>
-							<div
-								className="skeleton-pulse"
-								style={{ width: "100%", height: "100%" }}
-							/>
-						</div>
-						<div className="course-item-body">
-							<div
-								className="skeleton-pulse"
-								style={{
-									height: "0.8rem",
-									width: "8rem",
-									marginBottom: "0.8rem",
-								}}
-							/>
-							<div
-								className="skeleton-pulse"
-								style={{
-									height: "1.5rem",
-									width: "70%",
-									marginBottom: "0.6rem",
-								}}
-							/>
-							<div
-								className="skeleton-pulse"
-								style={{ height: "3rem", width: "100%" }}
-							/>
-						</div>
-					</article>
-				))}
-			</div>
+			<>
+				{tabs}
+				<div className="course-listing">
+					{[1, 2, 3].map((i) => (
+						<article key={i} className="course-item">
+							<div className="ph course-item-img" style={{ height: 200 }}>
+								<div
+									className="skeleton-pulse"
+									style={{ width: "100%", height: "100%" }}
+								/>
+							</div>
+							<div className="course-item-body">
+								<div
+									className="skeleton-pulse"
+									style={{
+										height: "0.8rem",
+										width: "8rem",
+										marginBottom: "0.8rem",
+									}}
+								/>
+								<div
+									className="skeleton-pulse"
+									style={{
+										height: "1.5rem",
+										width: "70%",
+										marginBottom: "0.6rem",
+									}}
+								/>
+								<div
+									className="skeleton-pulse"
+									style={{ height: "3rem", width: "100%" }}
+								/>
+							</div>
+						</article>
+					))}
+				</div>
+			</>
 		);
 	}
 
 	// ─── Error ────────────────────────────────────────────
 	if (isError) {
 		return (
-			<div style={{ textAlign: "center", paddingBlock: "3rem" }}>
-				<p style={{ color: "var(--ink-soft)", marginBottom: "0.5rem" }}>
-					Could not load courses right now.
-				</p>
-				<p style={{ color: "var(--ink-soft)", fontSize: "0.85rem" }}>
-					<a
-						href="https://wa.me/2348138683171"
-						target="_blank"
-						rel="noopener noreferrer"
-						style={{ color: "var(--burgundy)" }}
-					>
-						Contact us on WhatsApp
-					</a>{" "}
-					for course information.
-				</p>
-			</div>
+			<>
+				{tabs}
+				<div style={{ textAlign: "center", paddingBlock: "3rem" }}>
+					<p style={{ color: "var(--ink-soft)", marginBottom: "0.5rem" }}>
+						Could not load courses right now.
+					</p>
+					<p style={{ color: "var(--ink-soft)", fontSize: "0.85rem" }}>
+						<a
+							href="https://wa.me/2348138683171"
+							target="_blank"
+							rel="noopener noreferrer"
+							style={{ color: "var(--burgundy)" }}
+						>
+							Contact us on WhatsApp
+						</a>{" "}
+						for course information.
+					</p>
+				</div>
+			</>
 		);
 	}
 
-	// ─── Empty / success ─────────────────────────────────
-	const courses = mapApiCourses(data ?? []);
-
+	// ─── Empty ────────────────────────────────────────────
 	if (courses.length === 0) {
+		const emptyMsg =
+			(activeTab && FORMAT_EMPTY_MESSAGES[activeTab]) ??
+			"No courses available right now. Check back soon or";
+
 		return (
-			<div style={{ textAlign: "center", paddingBlock: "3rem" }}>
-				<p style={{ color: "var(--ink-soft)" }}>
-					No courses available right now. Check back soon or{" "}
-					<a
-						href="https://wa.me/2348138683171"
-						target="_blank"
-						rel="noopener noreferrer"
-						style={{ color: "var(--burgundy)" }}
-					>
-						contact us
-					</a>{" "}
-					for upcoming sessions.
-				</p>
-			</div>
+			<>
+				{tabs}
+				<div style={{ textAlign: "center", paddingBlock: "3rem" }}>
+					<p style={{ color: "var(--ink-soft)" }}>
+						{emptyMsg}{" "}
+						<a
+							href="https://wa.me/2348138683171"
+							target="_blank"
+							rel="noopener noreferrer"
+							style={{ color: "var(--burgundy)" }}
+						>
+							contact us
+						</a>{" "}
+						for upcoming sessions.
+					</p>
+				</div>
+			</>
 		);
 	}
 
 	return (
 		<>
+			{tabs}
+
 			<div className="course-listing">
-				{courses.map((course, i) => (
-					<article
-						key={course.id}
-						className={`course-item${i % 2 !== 0 ? " alt" : ""} reveal`}
-					>
+				{courses.map((course) => (
+					<article key={course.id} className="course-item reveal">
 						<div
 							className="ph course-item-img"
 							style={{ background: course.phColor } as React.CSSProperties}

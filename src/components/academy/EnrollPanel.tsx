@@ -8,6 +8,7 @@ import {
 	useVerifyOtp,
 } from "@/lib/queries/enrollment";
 import type { CourseDisplay } from "@/lib/course-mapper";
+import { useToast } from "@/components/ui/Toast";
 
 // ─── Helpers ──────────────────────────────────────────────
 
@@ -43,36 +44,31 @@ function EnrollPanelForm({
 	const [verificationToken, setVerificationToken] = useState<string | null>(
 		null,
 	);
-	const [error, setError] = useState<string | null>(null);
+
+	const { toast } = useToast();
 
 	const sendOtp = useSendOtp();
 	const verifyOtpMutation = useVerifyOtp();
 	const enroll = useCourseEnroll();
 
-	// Reset when a mutation completes (clear transient errors)
-	const clearError = useCallback(() => setError(null), []);
-
 	// ── Step 1: Send OTP ──
 	const handleSendOtp = useCallback(async () => {
 		if (!isEmail(email)) return;
-		setError(null);
 
 		try {
 			await sendOtp.mutateAsync(email.trim());
 			setStep("verify");
 		} catch (err: unknown) {
-			setError(
-				err instanceof Error
-					? err.message
-					: "Failed to send verification code. Please try again.",
-			);
+			toast("Could not send code", {
+				description: err instanceof Error ? err.message : "Please try again.",
+				variant: "error",
+			});
 		}
-	}, [email, sendOtp]);
+	}, [email, sendOtp, toast]);
 
 	// ── Step 2: Verify OTP ──
 	const handleVerifyOtp = useCallback(async () => {
 		if (!isOtp(otp)) return;
-		setError(null);
 
 		try {
 			const result = await verifyOtpMutation.mutateAsync({
@@ -82,18 +78,19 @@ function EnrollPanelForm({
 			setVerificationToken(result.verificationToken);
 			setStep("pay");
 		} catch (err: unknown) {
-			setError(
-				err instanceof Error
-					? err.message
-					: "Invalid verification code. Please try again.",
-			);
+			toast("Verification failed", {
+				description:
+					err instanceof Error
+						? err.message
+						: "Incorrect code. Please try again.",
+				variant: "error",
+			});
 		}
-	}, [email, otp, verifyOtpMutation]);
+	}, [email, otp, verifyOtpMutation, toast]);
 
 	// ── Step 3: Pay ──
 	const handlePay = useCallback(async () => {
 		if (!verificationToken) return;
-		setError(null);
 
 		try {
 			const result = await enroll.mutateAsync({
@@ -104,18 +101,23 @@ function EnrollPanelForm({
 
 			onPaySuccess(result);
 		} catch (err: unknown) {
-			setError(
-				err instanceof Error
-					? err.message
-					: "Something went wrong. Please try again.",
-			);
+			toast("Enrollment failed", {
+				description:
+					err instanceof Error
+						? err.message
+						: "Something went wrong. Please try again.",
+				variant: "error",
+			});
+			// Reset to email step so the user can try a different address
+			setStep("email");
+			setEmail("");
+			setVerificationToken(null);
 		}
-	}, [email, verificationToken, enroll, course.variantId, onPaySuccess]);
+	}, [email, verificationToken, enroll, course.variantId, onPaySuccess, toast]);
 
 	// ── Go back to email step ──
 	const handleBack = useCallback(() => {
 		setStep("email");
-		setError(null);
 	}, []);
 
 	// ── Pending states ──
@@ -193,17 +195,12 @@ function EnrollPanelForm({
 						type="email"
 						placeholder="you@example.com"
 						value={email}
-						onChange={(e) => {
-							setEmail(e.target.value);
-							clearError();
-						}}
+						onChange={(e) => setEmail(e.target.value)}
 						autoComplete="email"
 						inputMode="email"
 						disabled={isPending}
 					/>
 				</div>
-
-				{error && <p className="enroll-error">{error}</p>}
 
 				<button
 					className="btn enroll-pay-btn"
@@ -247,10 +244,9 @@ function EnrollPanelForm({
 						placeholder="000 000"
 						maxLength={6}
 						value={otp}
-						onChange={(e) => {
-							setOtp(e.target.value.replace(/\D/g, "").slice(0, 6));
-							clearError();
-						}}
+						onChange={(e) =>
+							setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
+						}
 						disabled={isPending}
 						autoComplete="one-time-code"
 					/>
@@ -262,19 +258,13 @@ function EnrollPanelForm({
 					>
 						{verifyOtpMutation.isPending ? (
 							<>
-								<Loader
-									size={18}
-									strokeWidth={2}
-									className="enroll-spin"
-								/>
+								<Loader size={18} strokeWidth={2} className="enroll-spin" />
 								Verifying…
 							</>
 						) : (
 							"Verify code"
 						)}
 					</button>
-
-					{error && <p className="enroll-error">{error}</p>}
 
 					<button
 						className="enroll-back-btn"
@@ -307,8 +297,6 @@ function EnrollPanelForm({
 					tabIndex={-1}
 				/>
 			</div>
-
-			{error && <p className="enroll-error">{error}</p>}
 
 			<button
 				className="btn enroll-pay-btn"
