@@ -372,16 +372,16 @@ header.nav.scrolled { border-color: var(--line); }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0;
   color: #fff;
   cursor: pointer;
-  background: rgba(42,33,27,.55);
+  background: rgba(42,33,27,.30);
   border-radius: 100px;
   max-width: 52px;
   min-width: 52px;
   width: fit-content;
   height: 52px;
-  padding: 0 20px;
+  padding: 0;
   transition: max-width .45s cubic-bezier(.34, 1.56, .64, 1),
               background .35s ease,
               box-shadow .35s ease;
@@ -391,6 +391,8 @@ header.nav.scrolled { border-color: var(--line); }
 }
 .hero-arrow:hover {
   max-width: 280px;
+  padding: 0 20px;
+  gap: 10px;
   background: rgba(42,33,27,.78);
   box-shadow: 0 4px 14px rgba(0,0,0,.14);
 }
