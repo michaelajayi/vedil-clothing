@@ -1,15 +1,35 @@
 "use client";
 
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { useCallback, useEffect, useState, useRef } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+/* ─── Swipe hint (plays once on load) ─────────────────────── */
+function SwipeHint() {
+	const [show, setShow] = useState(true);
+
+	useEffect(() => {
+		const timer = setTimeout(() => setShow(false), 3000);
+		return () => clearTimeout(timer);
+	}, []);
+
+	if (!show) return null;
+
+	return (
+		<div className="hero-swipe-hint" aria-hidden="true">
+			<ChevronLeft size={16} strokeWidth={1.5} />
+			<span>Swipe</span>
+			<ChevronRight size={16} strokeWidth={1.5} />
+		</div>
+	);
+}
 
 /* ─── Slide data ────────────────────────────────────────────── */
 // TODO: Replace gradient backgrounds with real images from
 //       src/assets/images/hero/ when available.
 //       e.g. import accImg from "@/assets/images/hero/accessories.jpg";
+
+const SWIPE_THRESHOLD = 50;
 
 const slides = [
 	{
@@ -42,7 +62,7 @@ const slides = [
 		),
 		description:
 			"Curated ready-to-wear pieces that bring Lagos sophistication to your daily life. No compromises on fit or fabric.",
-		cta: { label: "Shop Ready-to-Wear", href: "/shop/rtw" },
+		cta: { label: "Shop Ready-to-Wear", href: "/shop/ready-to-wear" },
 		gradient:
 			"linear-gradient(180deg, rgba(110,31,42,.06), rgba(110,31,42,.48)), linear-gradient(125deg, #6e1f2a, #b07a3c 45%, #d8c4a3)",
 	},
@@ -69,159 +89,163 @@ const n = slides.length;
 
 /* ─── Component ─────────────────────────────────────────────── */
 export default function HeroSlider() {
-	const autoplay = Autoplay({
-		delay: 5000,
-		stopOnInteraction: false,
-		stopOnMouseEnter: true,
-	});
-	const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [autoplay]);
+	const [activeIndex, setActiveIndex] = useState(0);
+	const [isPaused, setIsPaused] = useState(false);
+	const [isDragging, setIsDragging] = useState(false);
+	const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+	const dragStartX = useRef(0);
+	const dragStartY = useRef(0);
 
-	const [selectedIndex, setSelectedIndex] = useState(0);
-	const [prevTooltip, setPrevTooltip] = useState(slides[n - 1].category);
-	const [nextTooltip, setNextTooltip] = useState(slides[1].category);
-	const [showPrevTip, setShowPrevTip] = useState(false);
-	const [showNextTip, setShowNextTip] = useState(false);
-	const tipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-	const updateTooltips = useCallback((idx: number) => {
-		setPrevTooltip(slides[(idx - 1 + n) % n].category);
-		setNextTooltip(slides[(idx + 1) % n].category);
+	const goTo = useCallback((index: number) => {
+		setActiveIndex((index + n) % n);
 	}, []);
 
-	const onSelect = useCallback(() => {
-		if (!emblaApi) return;
-		const idx = emblaApi.selectedScrollSnap();
-		setSelectedIndex(idx);
-		updateTooltips(idx);
-	}, [emblaApi, updateTooltips]);
+	const goNext = useCallback(() => {
+		goTo(activeIndex + 1);
+	}, [activeIndex, goTo]);
 
+	const goPrev = useCallback(() => {
+		goTo(activeIndex - 1);
+	}, [activeIndex, goTo]);
+
+	// ── Autoplay ─────────────────────────────────────────
 	useEffect(() => {
-		if (!emblaApi) return;
-		emblaApi.on("select", onSelect);
+		if (isPaused) return;
+		intervalRef.current = setInterval(goNext, 5000);
 		return () => {
-			emblaApi.off("select", onSelect);
+			if (intervalRef.current) clearInterval(intervalRef.current);
 		};
-	}, [emblaApi, onSelect]);
+	}, [isPaused, goNext]);
 
-	// ── Tooltip show/hide ───────────────────────────────
-	const showTooltip = (side: "prev" | "next") => {
-		if (tipTimerRef.current) clearTimeout(tipTimerRef.current);
-		if (side === "prev") {
-			setShowPrevTip(true);
-		} else {
-			setShowNextTip(true);
-		}
-	};
+	// ── Drag / Swipe handling ────────────────────────────
+	const handleDragStart = useCallback((clientX: number, clientY: number) => {
+		dragStartX.current = clientX;
+		dragStartY.current = clientY;
+		setIsDragging(true);
+	}, []);
 
-	const hideTooltip = (side: "prev" | "next") => {
-		tipTimerRef.current = setTimeout(() => {
-			if (side === "prev") {
-				setShowPrevTip(false);
-			} else {
-				setShowNextTip(false);
+	const handleDragEnd = useCallback(
+		(clientX: number, clientY: number) => {
+			setIsDragging(false);
+			const dx = clientX - dragStartX.current;
+			const dy = clientY - dragStartY.current;
+
+			if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
+				if (dx > 0) goPrev();
+				else goNext();
 			}
-		}, 300);
-	};
+		},
+		[goNext, goPrev],
+	);
+
+	const onMouseDown = useCallback(
+		(e: React.MouseEvent) => handleDragStart(e.clientX, e.clientY),
+		[handleDragStart],
+	);
+	const onMouseUp = useCallback(
+		(e: React.MouseEvent) => handleDragEnd(e.clientX, e.clientY),
+		[handleDragEnd],
+	);
+	const onMouseLeave = useCallback(() => {
+		setIsDragging(false);
+		setIsPaused(false);
+	}, []);
+	const onTouchStart = useCallback(
+		(e: React.TouchEvent) =>
+			handleDragStart(e.touches[0].clientX, e.touches[0].clientY),
+		[handleDragStart],
+	);
+	const onTouchEnd = useCallback(
+		(e: React.TouchEvent) =>
+			handleDragEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY),
+		[handleDragEnd],
+	);
+
+	const slide = slides[activeIndex];
+	const prevCategory = slides[(activeIndex - 1 + n) % n].category;
+	const nextCategory = slides[(activeIndex + 1) % n].category;
 
 	return (
-		<section className="hero hero--slider">
-			{/* ── Embla viewport + container ──────────────── */}
-			<div className="hero-slider-viewport" ref={emblaRef}>
-				<div className="hero-slider-container">
-					{slides.map((slide) => (
-						<div key={slide.id} className="hero-slider-slide">
-							{/* Background */}
-							<div
-								className="hero-slider-bg"
-								style={{ background: slide.gradient }}
-							/>
+		<section
+			className={`hero hero--slider${isDragging ? " is-dragging" : ""}`}
+			onMouseEnter={() => setIsPaused(true)}
+			onMouseLeave={onMouseLeave}
+			onMouseDown={onMouseDown}
+			onMouseUp={onMouseUp}
+			onTouchStart={onTouchStart}
+			onTouchEnd={onTouchEnd}
+		>
+			{/* Background (instantly swaps) */}
+			<div className="hero-slider-bg" style={{ background: slide.gradient }} />
 
-							{/* "Est. Lagos" badge */}
-							<div className="hero-meta" aria-hidden="true">
-								<b>Est. Lagos</b>
-								<span>Ready-to-Wear · Since 2016</span>
-							</div>
+			{/* "Est. Lagos" badge */}
+			<div className="hero-meta" aria-hidden="true">
+				<b>Est. Lagos</b>
+				<span>Ready-to-Wear · Since 2012</span>
+			</div>
 
-							{/* Content */}
-							<div className="wrap">
-								<div className="hero-content">
-									<span className="eyebrow reveal">{slide.eyebrow}</span>
-									<h1 className="reveal">{slide.headline}</h1>
-									<p className="reveal">{slide.description}</p>
-									<div className="hero-cta reveal">
-										<Link href={slide.cta.href} className="btn">
-											{slide.cta.label}
-											<ArrowRight className="arw" size={16} strokeWidth={2} />
-										</Link>
-										<Link href="/fun-to-sew" className="btn btn--ghost">
-											Explore It&rsquo;s Fun to Sew
-										</Link>
-									</div>
-								</div>
-							</div>
-						</div>
-					))}
+			{/* Content (staggered reveal on key change) */}
+			<div className="wrap">
+				<div key={slide.id} className="hero-content">
+					<span className="eyebrow hero-stagger hero-stagger--1">
+						{slide.eyebrow}
+					</span>
+					<h1 className="hero-stagger hero-stagger--2">{slide.headline}</h1>
+					<p className="hero-stagger hero-stagger--3">{slide.description}</p>
+					<div className="hero-cta hero-stagger hero-stagger--4">
+						<Link href={slide.cta.href} className="btn">
+							{slide.cta.label}
+							<ArrowRight className="arw" size={16} strokeWidth={2} />
+						</Link>
+						<Link href="/fun-to-sew" className="btn btn--ghost">
+							Explore It&rsquo;s Fun to Sew
+						</Link>
+					</div>
 				</div>
 			</div>
 
-			{/* ── Prev / Next arrows ─────────────────────── */}
+			{/* ── Arrow buttons (peel on hover) ──────────── */}
 			{n > 1 && (
 				<>
 					<button
 						type="button"
-						className="hero-slider-arrow hero-slider-arrow--prev"
-						onClick={() => emblaApi?.scrollPrev()}
-						onMouseEnter={() => showTooltip("prev")}
-						onMouseLeave={() => hideTooltip("prev")}
-						onFocus={() => showTooltip("prev")}
-						onBlur={() => hideTooltip("prev")}
-						aria-label="Previous slide"
+						className="hero-arrow hero-arrow--prev"
+						onClick={goPrev}
+						aria-label={`Previous slide: ${prevCategory}`}
 					>
-						<ChevronLeft size={24} strokeWidth={2.5} />
-						<span
-							className={`hero-arrow-tip hero-arrow-tip--prev${showPrevTip ? " is-visible" : ""}`}
-							aria-hidden="true"
-						>
-							{prevTooltip}
-						</span>
+						<ChevronLeft size={20} strokeWidth={2} />
+						<span className="hero-arrow-label">{prevCategory}</span>
 					</button>
 					<button
 						type="button"
-						className="hero-slider-arrow hero-slider-arrow--next"
-						onClick={() => emblaApi?.scrollNext()}
-						onMouseEnter={() => showTooltip("next")}
-						onMouseLeave={() => hideTooltip("next")}
-						onFocus={() => showTooltip("next")}
-						onBlur={() => hideTooltip("next")}
-						aria-label="Next slide"
+						className="hero-arrow hero-arrow--next"
+						onClick={goNext}
+						aria-label={`Next slide: ${nextCategory}`}
 					>
-						<ChevronRight size={24} strokeWidth={2.5} />
-						<span
-							className={`hero-arrow-tip hero-arrow-tip--next${showNextTip ? " is-visible" : ""}`}
-							aria-hidden="true"
-						>
-							{nextTooltip}
-						</span>
+						<span className="hero-arrow-label">{nextCategory}</span>
+						<ChevronRight size={20} strokeWidth={2} />
 					</button>
 				</>
 			)}
 
-			{/* ── Dot indicators ──────────────────────────── */}
+			{/* ── Page counter ──────────────────────────────── */}
 			{n > 1 && (
-				<div className="hero-slider-dots" role="tablist" aria-label="Slides">
-					{slides.map((slide, i) => (
-						<button
-							key={slide.id}
-							type="button"
-							role="tab"
-							aria-selected={i === selectedIndex}
-							aria-label={`Slide ${i + 1}: ${slide.category}`}
-							className={`hero-slider-dot${i === selectedIndex ? " is-active" : ""}`}
-							onClick={() => emblaApi?.scrollTo(i)}
-						/>
-					))}
-				</div>
+				<button
+					type="button"
+					className="hero-page-counter"
+					onClick={goNext}
+					aria-label={`Slide ${activeIndex + 1} of ${n}`}
+				>
+					<span className="hero-page-num">
+						{String(activeIndex + 1).padStart(2, "0")}
+					</span>
+					<span className="hero-page-sep">/</span>
+					<span className="hero-page-num">{String(n).padStart(2, "0")}</span>
+				</button>
 			)}
+
+			{/* ── Swipe hint (plays once on load) ──────────── */}
+			<SwipeHint />
 		</section>
 	);
 }
