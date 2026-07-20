@@ -43,6 +43,20 @@ export default function ProductCard({ product }: { product: ProductDisplay }) {
 	return (
 		<article className="prod-card" onClick={navigateToProduct}>
 			<div className="ph prod-img">
+				{product.imageUrl && (
+					<img
+						src={product.imageUrl}
+						alt={product.name}
+						loading="lazy"
+						style={{
+							width: "100%",
+							height: "100%",
+							objectFit: "cover",
+							position: "absolute",
+							inset: 0,
+						}}
+					/>
+				)}
 				{product.isNew && <span className="prod-new-badge">New</span>}
 				<button
 					className="prod-quick"

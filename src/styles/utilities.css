@@ -219,7 +219,7 @@
 
 /* ─── Qty control (cart drawer + cart page) ──────────────────── */
 .qty-ctrl {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	border: 1.5px solid var(--line);
 	border-radius: 100px;

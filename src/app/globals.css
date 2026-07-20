@@ -1331,13 +1331,13 @@ select:autofill {
 .cart-item-price.ws { color: var(--burgundy); }
 .cart-item-old { font-size: .72rem; text-decoration: line-through; color: var(--ink-soft); display: block; }
 .cart-item-footer { display: flex; align-items: center; justify-content: space-between; margin-top: .65rem; }
-.qty-ctrl { display: flex; align-items: center; border: 1.5px solid var(--line); border-radius: 100px; overflow: hidden; }
+.qty-ctrl { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 100px; overflow: hidden; }
 .qty-btn { width: 32px; height: 32px; display: grid; place-items: center; font-size: 1.15rem; transition: background .2s; }
 .qty-btn:hover { background: var(--paper); }
 .qty-num { font-size: .9rem; font-weight: 600; min-width: 26px; text-align: center; }
 .cart-remove { font-size: .8rem; color: var(--ink-soft); transition: color .2s; background: none; border: none; cursor: pointer; font: inherit; padding: 0; }
 .cart-remove:hover { color: var(--burgundy); }
-.cart-moq-tip { font-size: .74rem; color: var(--gold); margin-top: .4rem; }
+.cart-moq-tip { font-size: .74rem; color: var(--gold); margin-top: .4rem; line-height: 1.4; }
 
 .cart-empty {
   display: flex; flex-direction: column; align-items: center;
@@ -1371,6 +1371,7 @@ select:autofill {
 .cart-table .cell-price .ws-label { font-size: .7rem; display: block; font-family: var(--font-body, sans-serif); font-weight: 400; color: var(--gold); }
 .cart-table .remove-btn { color: var(--ink-soft); transition: color .2s; }
 .cart-table .remove-btn:hover { color: var(--burgundy); }
+.cart-table .moq-tip { font-size: .75rem; color: var(--gold); margin-top: .35rem; line-height: 1.4; }
 
 /* Mobile-only wrappers hidden on desktop */
 .cart-table .product-price-row { display: none; }
@@ -1472,13 +1473,7 @@ select:autofill {
     display: none !important;
   }
 
-  /* Moq tip */
-  .cart-table .moq-tip {
-    font-size: .75rem;
-    color: var(--gold);
-    margin-top: .35rem;
-    line-height: 1.4;
-  }
+  
 }
 
 .order-summary {
