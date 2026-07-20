@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { useCourses } from "@/lib/queries/catalog";
 import { mapApiCourses, type CourseDisplay } from "@/lib/course-mapper";
 import EnrollPanel from "@/components/academy/EnrollPanel";
+import ImageMedia from "@/components/ui/ImageMedia";
 
 // ─── Helpers ──────────────────────────────────────────────
 
@@ -119,9 +120,7 @@ export default function AcademySection() {
 							<span className="chip">Certificate on completion</span>
 						</div>
 					</div>
-					<div className="ph reveal" aria-hidden="true">
-						<span className="ph-tag">Studio image</span>
-					</div>
+					<ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784498008/garment_factory__if1jvz.webp" alt="It's Fun to Sew academy" className="reveal" />
 				</div>
 
 				{/* Course grid */}

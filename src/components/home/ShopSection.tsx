@@ -15,7 +15,7 @@ export default function ShopSection() {
 
         <div className="cat-grid">
           <article className="cat-card heritage reveal">
-            <div className="ph"><span className="ph-mono">A</span><span className="ph-tag">Africa My Heritage · Image</span></div>
+            <div className="ph" style={{ backgroundImage: "url(https://res.cloudinary.com/jqaitieh/image/upload/v1784491341/homepage_section_two_accessories_zopl7p.webp)", backgroundSize: "cover", backgroundPosition: "center" }} />
             <div className="body">
               <h3>Africa My Heritage</h3>
               <p className="sub">Ankara · African prints</p>
@@ -24,7 +24,7 @@ export default function ShopSection() {
           </article>
 
           <article className="cat-card rtw reveal">
-            <div className="ph"><span className="ph-mono">R</span><span className="ph-tag">Ready to Wear · Image</span></div>
+            <div className="ph" style={{ backgroundImage: "url(https://res.cloudinary.com/jqaitieh/image/upload/v1784490649/homepage_section_two_ready_to_wear_image_fpa54a.webp)", backgroundSize: "cover", backgroundPosition: "center" }} />
             <div className="body">
               <h3>Ready to Wear</h3>
               <p className="sub">Everyday dressing, elevated</p>
@@ -33,7 +33,7 @@ export default function ShopSection() {
           </article>
 
           <article className="cat-card acc reveal">
-            <div className="ph"><span className="ph-mono">Ac</span><span className="ph-tag">Accessories · Image</span></div>
+            <div className="ph" style={{ backgroundImage: "url(https://res.cloudinary.com/jqaitieh/image/upload/v1784489040/wholesale_intro_homagepage_sfcfc6.webp)", backgroundSize: "cover", backgroundPosition: "center" }} />
             <div className="body">
               <h3>Accessories</h3>
               <p className="sub">The finishing touch</p>

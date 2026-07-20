@@ -13,10 +13,11 @@ function SwipeHint() {
 		return () => clearTimeout(timer);
 	}, []);
 
-	if (!show) return null;
-
 	return (
-		<div className="hero-swipe-hint" aria-hidden="true">
+		<div
+			className={`hero-swipe-hint${show ? "" : " hero-swipe-hint--hidden"}`}
+			aria-hidden="true"
+		>
 			<ChevronLeft size={16} strokeWidth={1.5} />
 			<span>Swipe</span>
 			<ChevronRight size={16} strokeWidth={1.5} />
@@ -25,9 +26,8 @@ function SwipeHint() {
 }
 
 /* ─── Slide data ────────────────────────────────────────────── */
-// TODO: Replace gradient backgrounds with real images from
-//       src/assets/images/hero/ when available.
-//       e.g. import accImg from "@/assets/images/hero/accessories.jpg";
+// Cloudinary header images — replacing gradient backgrounds
+const CLOUD_BASE = "https://res.cloudinary.com/jqaitieh/image/upload";
 
 const SWIPE_THRESHOLD = 50;
 
@@ -47,7 +47,7 @@ const slides = [
 			"Handcrafted bags, jewelry, and accents rooted in African artistry. Statement pieces that start conversations.",
 		cta: { label: "Shop Accessories", href: "/shop/accessories" },
 		gradient:
-			"linear-gradient(180deg, rgba(42,33,27,.10), rgba(42,33,27,.55)), linear-gradient(125deg, #7c5a3d, #b89a6f 45%, #d8c4a3)",
+			`linear-gradient(180deg, rgba(42,33,27,.22), rgba(42,33,27,.55)), url(${CLOUD_BASE}/v1784489035/header_image_accessories_gzufhr.jpg) center/cover`,
 	},
 	{
 		id: "rtw",
@@ -64,7 +64,7 @@ const slides = [
 			"Curated ready-to-wear pieces that bring Lagos sophistication to your daily life. No compromises on fit or fabric.",
 		cta: { label: "Shop Ready-to-Wear", href: "/shop/ready-to-wear" },
 		gradient:
-			"linear-gradient(180deg, rgba(110,31,42,.06), rgba(110,31,42,.48)), linear-gradient(125deg, #6e1f2a, #b07a3c 45%, #d8c4a3)",
+			`linear-gradient(180deg, rgba(110,31,42,.22), rgba(110,31,42,.48)), url(${CLOUD_BASE}/v1784489038/header_image_ready_to_wear_s2w5da.webp) center/cover`,
 	},
 	{
 		id: "heritage",
@@ -81,7 +81,7 @@ const slides = [
 			"Ready-to-wear for the whole family, a sewing school for the curious, and a garment factory built for brands. Where craft meets everyday elegance.",
 		cta: { label: "Shop Now", href: "/shop" },
 		gradient:
-			"linear-gradient(180deg, rgba(42,33,27,.08), rgba(42,33,27,.52)), linear-gradient(125deg, #4a3526, #8a6a2f 40%, #c2a35e)",
+			`linear-gradient(180deg, rgba(42,33,27,.22), rgba(42,33,27,.52)), url(${CLOUD_BASE}/v1784489036/header_image_african_my_heritage_ustiap.jpg) center/cover`,
 	},
 ];
 
@@ -228,6 +228,9 @@ export default function HeroSlider() {
 				</>
 			)}
 
+			{/* ── Swipe hint (top-center, plays once on load) ── */}
+			<SwipeHint />
+
 			{/* ── Page counter ──────────────────────────────── */}
 			{n > 1 && (
 				<button
@@ -244,8 +247,7 @@ export default function HeroSlider() {
 				</button>
 			)}
 
-			{/* ── Swipe hint (plays once on load) ──────────── */}
-			<SwipeHint />
+
 		</section>
 	);
 }

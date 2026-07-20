@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import ImageMedia from "@/components/ui/ImageMedia";
 
 export default function FactorySection() {
   return (
     <section id="factory">
       <div className="wrap">
         <div className="factory reveal">
-          <div className="ph" aria-hidden="true">
-            <span className="ph-tag" style={{ left: "auto", right: 16, bottom: 16 }}>Factory image</span>
-          </div>
+          <ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489036/garment_factory_main_image_zj8l7c.webp" alt="Vedil garment factory" objectPosition="70% 50%" />
           <div className="inner">
             <span className="eyebrow">Vedil Garment Factory</span>
             <h2>Custom orders &amp; <em>bulk manufacturing.</em></h2>
