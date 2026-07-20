@@ -180,6 +180,7 @@ export default function CourseListClient() {
 								alt={course.title}
 								className="course-item-img"
 								aspectRatio="5/4"
+								objectPosition="top"
 								hoverable={false}
 							/>
 						) : (

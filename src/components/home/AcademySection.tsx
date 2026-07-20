@@ -120,7 +120,11 @@ export default function AcademySection() {
 							<span className="chip">Certificate on completion</span>
 						</div>
 					</div>
-					<ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784498008/garment_factory__if1jvz.webp" alt="It's Fun to Sew academy" className="reveal" />
+					<ImageMedia
+						src="https://res.cloudinary.com/jqaitieh/image/upload/v1784498008/garment_factory__if1jvz.webp"
+						alt="It's Fun to Sew academy"
+						className="reveal"
+					/>
 				</div>
 
 				{/* Course grid */}
@@ -160,12 +164,22 @@ export default function AcademySection() {
 					) : (
 						featured.map((course) => (
 							<article key={course.id} className="course-card reveal">
-								<div
-									className="ph"
-									style={{ background: course.phColor } as React.CSSProperties}
-								>
-									<span className="ph-tag">{course.title}</span>
-								</div>
+								{course.image ? (
+									<ImageMedia
+										src={course.image}
+										alt={course.title}
+										aspectRatio="16/10"
+										objectPosition="top"
+										hoverable={false}
+									/>
+								) : (
+									<div
+										className="ph"
+										style={
+											{ background: course.phColor } as React.CSSProperties
+										}
+									/>
+								)}
 								<div className="course-body">
 									<span className="course-format">
 										{course.formatLabel} &middot; {course.duration}
