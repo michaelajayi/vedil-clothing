@@ -46,8 +46,7 @@ const slides = [
 		description:
 			"Handcrafted bags, jewelry, and accents rooted in African artistry. Statement pieces that start conversations.",
 		cta: { label: "Shop Accessories", href: "/shop/accessories" },
-		gradient:
-			`linear-gradient(180deg, rgba(42,33,27,.22), rgba(42,33,27,.55)), url(${CLOUD_BASE}/v1784489035/header_image_accessories_gzufhr.jpg) center/cover`,
+		gradient: `linear-gradient(180deg, rgba(42,33,27,.38), rgba(42,33,27,.60)), url(${CLOUD_BASE}/v1784489035/header_image_accessories_gzufhr.jpg) center/cover`,
 	},
 	{
 		id: "rtw",
@@ -63,8 +62,7 @@ const slides = [
 		description:
 			"Curated ready-to-wear pieces that bring Lagos sophistication to your daily life. No compromises on fit or fabric.",
 		cta: { label: "Shop Ready-to-Wear", href: "/shop/ready-to-wear" },
-		gradient:
-			`linear-gradient(180deg, rgba(110,31,42,.22), rgba(110,31,42,.48)), url(${CLOUD_BASE}/v1784489038/header_image_ready_to_wear_s2w5da.webp) center/cover`,
+		gradient: `linear-gradient(180deg, rgba(42,33,27,.38), rgba(42,33,27,.60)), url(${CLOUD_BASE}/v1784489038/header_image_ready_to_wear_s2w5da.webp) center/cover`,
 	},
 	{
 		id: "heritage",
@@ -80,8 +78,7 @@ const slides = [
 		description:
 			"Ready-to-wear for the whole family, a sewing school for the curious, and a garment factory built for brands. Where craft meets everyday elegance.",
 		cta: { label: "Shop Now", href: "/shop" },
-		gradient:
-			`linear-gradient(180deg, rgba(42,33,27,.22), rgba(42,33,27,.52)), url(${CLOUD_BASE}/v1784489036/header_image_african_my_heritage_ustiap.jpg) center/cover`,
+		gradient: `linear-gradient(180deg, rgba(42,33,27,.38), rgba(42,33,27,.60)), url(${CLOUD_BASE}/v1784542161/header_image_african_my_heritage_ustiap_ewunzw.jpg) center/cover`,
 	},
 ];
 
@@ -246,8 +243,6 @@ export default function HeroSlider() {
 					<span className="hero-page-num">{String(n).padStart(2, "0")}</span>
 				</button>
 			)}
-
-
 		</section>
 	);
 }

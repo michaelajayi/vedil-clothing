@@ -13,10 +13,11 @@ export default function Footer() {
 				<div className="foot-top">
 					<div className="foot-brand">
 						<div className="logo">
-							Ve<b>dil</b>
-							<span className="dot" style={{ color: "var(--gold)" }}>
-								.
-							</span>
+							<img
+								src="https://res.cloudinary.com/jqaitieh/image/upload/v1784491169/logo_p1utgu.png"
+								alt="Vedil Clothing"
+								className="logo-img"
+							/>
 						</div>
 						<div className="foot-contact">
 							<FooterContact />
@@ -45,7 +46,7 @@ export default function Footer() {
 						<h4>Learn &amp; Make</h4>
 						<ul>
 							<li>
-								<Link href="/fun-to-sew">It's Fun to Sew</Link>
+								<Link href="/fun-to-sew">It&apos;s Fun to Sew</Link>
 							</li>
 							<li>
 								<Link href="/fun-to-sew#in-person">In-person Classes</Link>

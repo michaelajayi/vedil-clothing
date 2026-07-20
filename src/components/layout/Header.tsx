@@ -33,8 +33,11 @@ export default function Header() {
 			<header className="nav" ref={headerRef} id="nav">
 				<div className="wrap nav-inner">
 					<Link href="/" className="logo" aria-label="Vedil Clothing home">
-						Ve<b>dil</b>
-						<span className="dot">.</span>
+						<img
+							src="https://res.cloudinary.com/jqaitieh/image/upload/v1784491169/logo_p1utgu.png"
+							alt="Vedil Clothing"
+							className="logo-img"
+						/>
 					</Link>
 
 					<ul className="nav-links">
@@ -106,7 +109,7 @@ export default function Header() {
 						</li>
 						<li>
 							<Link href="/fun-to-sew" className="nav-item">
-								It's Fun to Sew
+								It&apos;s Fun to Sew
 							</Link>
 						</li>
 						<li>
@@ -181,7 +184,7 @@ export default function Header() {
 					About
 				</Link>
 				<Link href="/fun-to-sew" onClick={() => setMenuOpen(false)}>
-					It's Fun to Sew
+					It&apos;s Fun to Sew
 				</Link>
 				<Link href="/garment-factory" onClick={() => setMenuOpen(false)}>
 					Garment Factory
