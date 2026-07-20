@@ -282,6 +282,7 @@ header.nav.scrolled { border-color: var(--line); }
   font-size: clamp(1.02rem, 1.6vw, 1.22rem);
   max-width: 540px; color: rgba(255,255,255,.9);
   margin-bottom: 2rem;
+  text-shadow: 0 1px 8px rgba(0,0,0,.4);
 }
 .hero-cta { display: flex; flex-wrap: wrap; gap: .9rem; }
 .hero .btn--ghost { --fg: #fff; border-color: rgba(255,255,255,.45); }
@@ -324,11 +325,20 @@ header.nav.scrolled { border-color: var(--line); }
   content: '';
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to top, black 25%, transparent 65%);
-  mask-image: linear-gradient(to top, black 25%, transparent 65%);
+  /* Subtle dark gradient at bottom — text area */
+  background: linear-gradient(
+    to top,
+    rgba(42,33,27,.70) 0%,
+    rgba(42,33,27,.35) 35%,
+    transparent 60%
+  );
+  /* Light blur to soften image details behind text */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  /* Mask keeps the top portion of the image clean */
+  -webkit-mask-image: linear-gradient(to top, black 50%, transparent 75%);
+  mask-image: linear-gradient(to top, black 50%, transparent 75%);
 }
 .hero--slider .hero-content { position: relative; z-index: 2; }
 .hero--slider .hero-meta { z-index: 2; }
