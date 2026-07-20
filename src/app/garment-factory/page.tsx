@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 import FactoryForm from "@/components/factory/FactoryForm";
+import ImageMedia from "@/components/ui/ImageMedia";
 
 export const metadata: Metadata = {
   title: "Garment Factory | Vedil Clothing",
@@ -60,10 +61,7 @@ export default function GarmentFactoryPage() {
                 </svg>
               </a>
             </div>
-            <div className="ph reveal" style={{ background: "linear-gradient(150deg,#7d6347,#c4a070)" } as React.CSSProperties}>
-              <span className="ph-tag">Bulk production floor</span>
-              <span className="ph-mono">B</span>
-            </div>
+            <ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784498008/garment_factory__if1jvz.webp" alt="Bulk production floor" reveal />
           </div>
         </div>
       </section>
@@ -139,10 +137,7 @@ export default function GarmentFactoryPage() {
                 </svg>
               </a>
             </div>
-            <div className="ph reveal" style={{ background: "linear-gradient(150deg,#6e1f2a,#a8404d)" } as React.CSSProperties}>
-              <span className="ph-tag">Custom order in progress</span>
-              <span className="ph-mono">C</span>
-            </div>
+            <ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489037/garment_factory_intro_image_homepage_wagazk.webp" alt="Custom order in progress" reveal />
           </div>
         </div>
       </section>
@@ -191,10 +186,7 @@ export default function GarmentFactoryPage() {
       <section style={{ background: "var(--paper)", borderRadius: "36px" }}>
         <div className="wrap" style={{ paddingBlock: "clamp(3rem,6vw,5rem)" }}>
           <div className="service-split">
-            <div className="ph reveal" style={{ background: "linear-gradient(150deg,#2a211b,#5a4636)" } as React.CSSProperties}>
-              <span className="ph-tag">Wholesale catalogue</span>
-              <span className="ph-mono">W</span>
-            </div>
+            <ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489039/wholesale_image_vugwrm.webp" alt="Wholesale catalogue" reveal />
             <div>
               <span className="eyebrow reveal">Retail partners</span>
               <h2 className="reveal" style={{ fontSize: "clamp(1.9rem,3.8vw,2.8rem)", marginBlock: "1rem 1.1rem" }}>

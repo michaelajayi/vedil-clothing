@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Truck, Gift, Award, Heart } from "lucide-react";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
+import ImageMedia from "@/components/ui/ImageMedia";
 
 export const metadata: Metadata = {
 	title: "About Us | Vedil Clothing",
@@ -36,14 +37,8 @@ export default function AboutPage() {
 				<div className="wrap">
 					<div className="about-story">
 						<div className="about-photos reveal">
-							<div className="ph about-photo-main">
-								<span className="ph-mono">V</span>
-								<span className="ph-tag">Founder, Vivian Duru</span>
-							</div>
-							<div className="ph about-photo-float">
-								<span className="ph-mono">✦</span>
-								<span className="ph-tag">Studio, Lagos</span>
-							</div>
+							<ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489036/about_page_vivian_owner_main_image_kudxph.webp" alt="Founder, Vivian Duru" className="about-photo-main" />
+							<ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489038/about_page_vivian_owner_supporting_image_fzjkiz.webp" alt="Studio, Lagos" className="about-photo-float" />
 						</div>
 
 						<div>
@@ -185,7 +180,7 @@ export default function AboutPage() {
 			<section>
 				<div className="wrap">
 					<div className="made-measure">
-						<div className="ph" aria-hidden />
+						<ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489036/garment_factory_main_image_zj8l7c.webp" alt="Vedil garment factory" />
 						<div className="inner">
 							<span
 								className="eyebrow reveal"

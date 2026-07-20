@@ -3,6 +3,7 @@ import { BookOpen } from "lucide-react";
 import { WhatsappIcon } from "@/components/ui/BrandIcons";
 import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 import CourseListClient from "@/components/academy/CourseListClient";
+import ImageMedia from "@/components/ui/ImageMedia";
 
 // ─── Student handbook config ────────────────────────────────
 const HANDBOOK_URL =
@@ -71,10 +72,7 @@ export default function AcademyPage() {
 								<span className="chip">Hands-on from day one</span>
 							</div>
 						</div>
-						<div className="ph reveal">
-							<span className="ph-tag">It's Fun to Sew studio</span>
-							<span className="ph-mono">A</span>
-						</div>
+						<ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489035/its_fun_to_sew_owner_image_vivian_main_image_oxtduc.webp" alt="It's Fun to Sew — Vivian Duru" reveal />
 					</div>
 				</div>
 			</section>
