@@ -107,35 +107,35 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .link-arrow:hover { gap: .8rem; border-color: var(--burgundy); }
 
-/* ─── Image placeholders ────────────────────────────────────── */
 .ph {
   position: relative;
   background: linear-gradient(135deg, var(--sand), var(--paper) 70%);
   overflow: hidden;
   isolation: isolate;
 }
-.ph::before {
-  content: "";
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(60% 70% at 30% 20%, rgba(255,255,255,.55), transparent 60%),
-    repeating-linear-gradient(45deg, rgba(42,33,27,.035) 0 2px, transparent 2px 9px);
-  mix-blend-mode: multiply;
+
+/* ─── Image Media ───────────────────────────────────────────── */
+.img-media {
+  border-radius: var(--r);
+  background-size: cover;
 }
-.ph .ph-tag {
-  position: absolute; left: 16px; bottom: 14px;
-  font-size: .64rem; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--ink-soft); font-weight: 600;
-  background: rgba(251,246,238,.78);
-  padding: .35rem .65rem; border-radius: 100px;
-  backdrop-filter: blur(4px);
+
+/* Background layer — scales on hover for zoom effect */
+.img-media::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  background-repeat: no-repeat;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+  z-index: 0;
 }
-.ph .ph-mono {
-  position: absolute; inset: 0; display: grid; place-items: center;
-  font-family: var(--font-display, "Fraunces"), serif;
-  font-size: clamp(2.2rem, 7vw, 4.4rem);
-  color: rgba(42,33,27,.16); font-weight: 500; font-style: italic;
-  user-select: none;
+
+.img-media--hover:hover::before {
+  transform: scale(1.06);
 }
 
 /* ─── Nav ───────────────────────────────────────────────────── */
@@ -263,7 +263,6 @@ header.nav.scrolled { border-color: var(--line); }
     linear-gradient(180deg, rgba(42,33,27,.05), rgba(42,33,27,.62)),
     linear-gradient(125deg, #7c5a3d, #b89a6f 45%, #d8c4a3);
 }
-.hero .ph::before { mix-blend-mode: overlay; opacity: .5; }
 .hero-content {
   position: relative; z-index: 2;
   padding-block: clamp(2.5rem, 7vw, 5.5rem);
@@ -320,14 +319,13 @@ header.nav.scrolled { border-color: var(--line); }
   overflow: hidden;
   transition: opacity .45s ease;
 }
-.hero-slider-bg::before {
-  content: "";
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(60% 70% at 30% 20%, rgba(255,255,255,.15), transparent 60%),
-    repeating-linear-gradient(45deg, rgba(42,33,27,.035) 0 2px, transparent 2px 9px);
-  mix-blend-mode: overlay;
-  opacity: .5;
+.hero-slider-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  pointer-events: none;
 }
 .hero--slider .hero-content { position: relative; z-index: 2; }
 .hero--slider .hero-meta { z-index: 2; }
@@ -524,6 +522,8 @@ section { padding-block: clamp(4rem, 8vw, 7rem); }
 .cat-card::after {
   content: ""; position: absolute; inset: 0; z-index: -1;
   background: linear-gradient(180deg, transparent 35%, rgba(42,33,27,.72));
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 }
 .cat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
 .cat-card:hover .ph { transform: scale(1.06); }
@@ -560,7 +560,7 @@ section { padding-block: clamp(4rem, 8vw, 7rem); }
 .academy { background: var(--paper); border-radius: 36px; }
 .academy .wrap { padding-block: clamp(3rem,6vw,5rem); }
 .academy-top { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 3rem; }
-.academy-top .ph { border-radius: var(--r); aspect-ratio: 5/4; background: linear-gradient(150deg, #c9a86f, #efe3cb); box-shadow: var(--shadow); }
+.academy-top .ph { border-radius: var(--r); aspect-ratio: 5/4; background: linear-gradient(150deg, #c9a86f, #efe3cb); background-size: cover; box-shadow: var(--shadow); }
 .academy h2 { font-size: clamp(2rem,4.5vw,3.2rem); margin: 1rem 0 1rem; }
 .academy h2 em { font-style: italic; color: var(--burgundy); font-weight: 400; }
 .academy-top p { color: var(--ink-soft); font-size: 1.06rem; margin-bottom: 1.6rem; }
