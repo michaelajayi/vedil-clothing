@@ -2115,6 +2115,53 @@ select:autofill {
   border-color: var(--ink);
 }
 
+/* ─── New In heading (editorial header) ────────────────────── */
+.new-in-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.new-in-title {
+  font-family: var(--font-display), serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 600;
+  line-height: .9;
+  letter-spacing: -.04em;
+  margin-bottom: .6rem;
+}
+
+.new-in-title em {
+  font-style: italic;
+  color: var(--burgundy);
+}
+
+.new-in-meta {
+  font-size: .78rem;
+  color: var(--ink-soft);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ─── New In skeleton (loading state) ───────────────────────── */
+.new-in-grid-skeleton {
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+
+.new-in-head-skeleton {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
 /* ─── New In grid (editorial 2-column) ──────────────────────── */
 .new-in-grid {
   display: grid;
