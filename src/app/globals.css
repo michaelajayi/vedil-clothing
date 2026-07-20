@@ -324,9 +324,11 @@ header.nav.scrolled { border-color: var(--line); }
   content: '';
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(to top, black 25%, transparent 65%);
+  mask-image: linear-gradient(to top, black 25%, transparent 65%);
 }
 .hero--slider .hero-content { position: relative; z-index: 2; }
 .hero--slider .hero-meta { z-index: 2; }

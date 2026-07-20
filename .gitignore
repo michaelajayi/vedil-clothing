@@ -15,6 +15,7 @@
 /test-results/
 /playwright-report/
 /tests/screenshots/
+/screenshots/
 
 # scratch
 shop-preview.html
