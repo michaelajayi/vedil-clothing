@@ -136,10 +136,17 @@ export interface ApiProductDetail extends ApiProductListItem {
 
 export type DeliveryMode = "SELF_PACED" | "LIVE" | "HYBRID";
 
+export interface ApiFeeBreakdownItem {
+	label: string;
+	amount: number;
+}
+
 export interface ApiCourseProfile {
 	id: string;
+	productId: string;
 	instructorName: string;
 	durationText: string;
+	feeBreakdown: ApiFeeBreakdownItem[];
 	deliveryMode: DeliveryMode;
 	accessDurationDays: number | null;
 	startsAt: string | null;

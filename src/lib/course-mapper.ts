@@ -5,6 +5,12 @@
 
 import type { ApiCourseListItem } from "@/types/api";
 
+export interface FeeBreakdownItem {
+	label: string;
+	amount: number;
+	formatted: string;
+}
+
 export interface CourseDisplay {
 	id: string;
 	slug: string;
@@ -14,12 +20,12 @@ export interface CourseDisplay {
 	format: string;
 	/** Label for display: "LIVE" → "In-person", "SELF_PACED" → "Online" */
 	formatLabel: string;
-	/** Naira — from default variant's first price tier */
+	/** Total fee in Naira — sum of fee breakdown */
 	tuition: number;
-	/** Full tuition as formatted string (includes the fee breakdown) */
+	/** Total fee as formatted Naira string */
 	tuitionFormatted: string;
-	registrationFormatted: string;
-	certificateFormatted: string;
+	/** Itemised fee breakdown from the API */
+	feeBreakdown: FeeBreakdownItem[];
 	instructorName: string;
 	phColor: string;
 	variantId: string;
@@ -39,9 +45,10 @@ const PH_COLORS = [
 
 /**
  * Map a single course from the API response to the frontend display type.
- * Pricing: the API uses variant + priceTier model (kobo).
- * We use the single fee (tuition) since the registration/certificate
- * breakdown is deferred per the integration plan.
+ * Pricing: the API returns a feeBreakdown array on courseProfile
+ * (each item in kobo). We sum these for the total, and also derive
+ * the total from the default variant's first price tier as a fallback
+ * when no fee breakdown is available.
  */
 export function mapApiCourse(
 	api: ApiCourseListItem,
@@ -50,15 +57,28 @@ export function mapApiCourse(
 	const defaultVariant =
 		api.variants.find((v) => v.isDefault) ?? api.variants[0];
 	const priceTiers = defaultVariant?.priceTiers ?? [];
-	const tuitionKobo = priceTiers.length > 0 ? priceTiers[0].amount : 0;
-	const tuitionNaira = tuitionKobo / 100;
 
 	const deliveryMode = api.courseProfile?.deliveryMode ?? "SELF_PACED";
 	const duration = api.courseProfile?.durationText ?? "TBD";
 
-	// The integration plan defers registration fee breakdown.
-	// For now, the single tuition covers everything.
-	const formattedTuition = `₦${tuitionNaira.toLocaleString("en-NG")}`;
+	// ── Fee breakdown from API ──
+	const rawBreakdown = api.courseProfile?.feeBreakdown ?? [];
+	const feeBreakdown: FeeBreakdownItem[] = rawBreakdown.map((item) => ({
+		label: item.label,
+		amount: item.amount / 100,
+		formatted: `₦${(item.amount / 100).toLocaleString("en-NG")}`,
+	}));
+
+	// ── Total fee ──
+	// Prefer fee breakdown sum, fall back to variant price tier.
+	const totalNaira =
+		feeBreakdown.length > 0
+			? feeBreakdown.reduce((sum, item) => sum + item.amount, 0)
+			: priceTiers.length > 0
+				? priceTiers[0].amount / 100
+				: 0;
+
+	const formattedTotal = `₦${totalNaira.toLocaleString("en-NG")}`;
 
 	return {
 		id: api.id,
@@ -68,10 +88,9 @@ export function mapApiCourse(
 		duration,
 		format: deliveryMode,
 		formatLabel: FORMAT_MAP[deliveryMode] ?? deliveryMode,
-		tuition: tuitionNaira,
-		tuitionFormatted: formattedTuition,
-		registrationFormatted: `Included in ${formattedTuition}`,
-		certificateFormatted: "Included",
+		tuition: totalNaira,
+		tuitionFormatted: formattedTotal,
+		feeBreakdown,
 		instructorName: api.courseProfile?.instructorName ?? "It's Fun to Sew",
 		phColor: PH_COLORS[index % PH_COLORS.length],
 		variantId: defaultVariant?.id ?? "",

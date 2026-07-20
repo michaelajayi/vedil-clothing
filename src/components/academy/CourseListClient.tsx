@@ -184,18 +184,12 @@ export default function CourseListClient() {
 							<h3>{course.title}</h3>
 							<p className="course-item-desc">{course.description}</p>
 							<div className="course-fees-table">
-								<div className="fee-row">
-									<span>Registration</span>
-									<strong>{course.registrationFormatted}</strong>
-								</div>
-								<div className="fee-row">
-									<span>Tuition</span>
-									<strong>{course.tuitionFormatted}</strong>
-								</div>
-								<div className="fee-row">
-									<span>Certificate</span>
-									<strong>{course.certificateFormatted}</strong>
-								</div>
+								{course.feeBreakdown.map((fee) => (
+									<div key={fee.label} className="fee-row">
+										<span>{fee.label}</span>
+										<strong>{fee.formatted}</strong>
+									</div>
+								))}
 								<div className="fee-row">
 									<span>Duration</span>
 									<strong>{course.duration}</strong>

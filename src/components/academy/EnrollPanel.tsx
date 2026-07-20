@@ -141,18 +141,12 @@ function EnrollPanelForm({
 
 			<div className="enroll-breakdown">
 				<p className="enroll-breakdown-heading">Fee Breakdown</p>
-				<div className="enroll-breakdown-row">
-					<span>Registration</span>
-					<strong>{course.registrationFormatted}</strong>
-				</div>
-				<div className="enroll-breakdown-row">
-					<span>Tuition</span>
-					<strong>{course.tuitionFormatted}</strong>
-				</div>
-				<div className="enroll-breakdown-row">
-					<span>Certificate</span>
-					<strong>{course.certificateFormatted}</strong>
-				</div>
+				{course.feeBreakdown.map((fee) => (
+					<div key={fee.label} className="enroll-breakdown-row">
+						<span>{fee.label}</span>
+						<strong>{fee.formatted}</strong>
+					</div>
+				))}
 				<div className="enroll-breakdown-row">
 					<span>Duration</span>
 					<strong>{course.duration}</strong>
