@@ -137,8 +137,6 @@ export default function ProductDetailClient({
 								<div className="pdp-gallery">
 									<div className="pdp-gallery-viewport">
 										<div className="pdp-gallery-slide ph">
-											<span className="ph-mono">{product.name[0]}</span>
-											<span className="ph-tag">{genderLabel}</span>
 											{product.isNew && (
 												<span className="prod-new-badge">New</span>
 											)}

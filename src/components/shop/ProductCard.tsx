@@ -43,8 +43,6 @@ export default function ProductCard({ product }: { product: ProductDisplay }) {
 	return (
 		<article className="prod-card" onClick={navigateToProduct}>
 			<div className="ph prod-img">
-				<span className="ph-mono">{product.name[0]}</span>
-				<span className="ph-tag">{genderLabel}</span>
 				{product.isNew && <span className="prod-new-badge">New</span>}
 				<button
 					className="prod-quick"

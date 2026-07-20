@@ -4,9 +4,7 @@ import { ArrowRight } from "lucide-react";
 export default function Hero() {
 	return (
 		<section className="hero" style={{ padding: 0 }}>
-			<div className="ph" aria-hidden="true">
-				<span className="ph-tag">Lifestyle image</span>
-			</div>
+			<div className="ph" aria-hidden="true" />
 			<div className="hero-meta reveal">
 				<b>Est. Lagos</b>
 				<span>Ready-to-Wear · Since 2012</span>

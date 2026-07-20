@@ -176,9 +176,7 @@ export default function CourseListClient() {
 						<div
 							className="ph course-item-img"
 							style={{ background: course.phColor } as React.CSSProperties}
-						>
-							<span className="ph-tag">{course.title}</span>
-						</div>
+						/>
 						<div className="course-item-body">
 							<span className="course-duration-badge">
 								{course.formatLabel} · {course.duration}
