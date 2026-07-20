@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { ArrowRight } from "lucide-react";
 import { useCourses } from "@/lib/queries/catalog";
 import { mapApiCourses, type CourseDisplay } from "@/lib/course-mapper";
+import ImageMedia from "@/components/ui/ImageMedia";
 import EnrollPanel from "./EnrollPanel";
 
 const FORMAT_TABS = [
@@ -173,10 +174,20 @@ export default function CourseListClient() {
 			<div className="course-listing">
 				{courses.map((course) => (
 					<article key={course.id} className="course-item reveal">
-						<div
-							className="ph course-item-img"
-							style={{ background: course.phColor } as React.CSSProperties}
-						/>
+						{course.image ? (
+							<ImageMedia
+								src={course.image}
+								alt={course.title}
+								className="course-item-img"
+								aspectRatio="5/4"
+								hoverable={false}
+							/>
+						) : (
+							<div
+								className="ph course-item-img"
+								style={{ background: course.phColor } as React.CSSProperties}
+							/>
+						)}
 						<div className="course-item-body">
 							<span className="course-duration-badge">
 								{course.formatLabel} · {course.duration}

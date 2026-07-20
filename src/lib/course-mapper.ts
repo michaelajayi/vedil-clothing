@@ -29,6 +29,8 @@ export interface CourseDisplay {
 	instructorName: string;
 	phColor: string;
 	variantId: string;
+	/** URL of the primary (or first) course image, if any */
+	image: string | null;
 }
 
 const FORMAT_MAP: Record<string, string> = {
@@ -80,6 +82,12 @@ export function mapApiCourse(
 
 	const formattedTotal = `₦${totalNaira.toLocaleString("en-NG")}`;
 
+	// ── Image ──
+	// Pick the primary image if available, otherwise the first image
+	const primaryImage =
+		api.images.find((img) => img.isPrimary) ?? api.images[0] ?? null;
+	const image = primaryImage?.file?.url ?? null;
+
 	return {
 		id: api.id,
 		slug: api.slug,
@@ -94,6 +102,7 @@ export function mapApiCourse(
 		instructorName: api.courseProfile?.instructorName ?? "It's Fun to Sew",
 		phColor: PH_COLORS[index % PH_COLORS.length],
 		variantId: defaultVariant?.id ?? "",
+		image,
 	};
 }
 
