@@ -183,39 +183,39 @@ export default function GarmentFactoryPage() {
       </section>
 
       {/* Wholesale */}
-      <section style={{ background: "var(--paper)", borderRadius: "36px" }}>
-        <div className="wrap" style={{ paddingBlock: "clamp(3rem,6vw,5rem)" }}>
-          <div className="service-split">
-            <ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489039/wholesale_image_vugwrm.webp" alt="Wholesale catalogue" reveal />
-            <div>
-              <span className="eyebrow reveal">Retail partners</span>
-              <h2 className="reveal" style={{ fontSize: "clamp(1.9rem,3.8vw,2.8rem)", marginBlock: "1rem 1.1rem" }}>
-                Wholesale
-              </h2>
-              <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "1.4rem" }}>
-                Vedil Clothing's wholesale programme offers boutiques, department stores,
-                and online retailers high-quality, timeless apparel and accessories. Our
-                catalogue, available with a minimum order of 40 pieces, featuring outfits
-                offering great fit, comfort, durability, and versatility, with both wholesale
-                and retail prices listed for profitable margins.
-              </p>
-              <ul className="benefits-list reveal">
-                <li>Minimum order: 40 pieces (mix designs to reach MOQ)</li>
-                <li>Both wholesale and retail prices listed</li>
-                <li>Custom branding at additional cost</li>
-                <li>Introductory offer: mix designs on first order</li>
-                <li>Flexible payment options</li>
-              </ul>
-              <a href="#quote" className="btn reveal">
-                Request Wholesale Catalogue
-                <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* <section style={{ background: "var(--paper)", borderRadius: "36px" }}> */}
+      {/*   <div className="wrap" style={{ paddingBlock: "clamp(3rem,6vw,5rem)" }}> */}
+      {/*     <div className="service-split"> */}
+      {/*       <ImageMedia src="https://res.cloudinary.com/jqaitieh/image/upload/v1784489039/wholesale_image_vugwrm.webp" alt="Wholesale catalogue" reveal /> */}
+      {/*       <div> */}
+      {/*         <span className="eyebrow reveal">Retail partners</span> */}
+      {/*         <h2 className="reveal" style={{ fontSize: "clamp(1.9rem,3.8vw,2.8rem)", marginBlock: "1rem 1.1rem" }}> */}
+      {/*           Wholesale */}
+      {/*         </h2> */}
+      {/*         <p className="reveal" style={{ color: "var(--ink-soft)", fontSize: "1.05rem", marginBottom: "1.4rem" }}> */}
+      {/*           Vedil Clothing's wholesale programme offers boutiques, department stores, */}
+      {/*           and online retailers high-quality, timeless apparel and accessories. Our */}
+      {/*           catalogue, available with a minimum order of 40 pieces, featuring outfits */}
+      {/*           offering great fit, comfort, durability, and versatility, with both wholesale */}
+      {/*           and retail prices listed for profitable margins. */}
+      {/*         </p> */}
+      {/*         <ul className="benefits-list reveal"> */}
+      {/*           <li>Minimum order: 40 pieces (mix designs to reach MOQ)</li> */}
+      {/*           <li>Both wholesale and retail prices listed</li> */}
+      {/*           <li>Custom branding at additional cost</li> */}
+      {/*           <li>Introductory offer: mix designs on first order</li> */}
+      {/*           <li>Flexible payment options</li> */}
+      {/*         </ul> */}
+      {/*         <a href="#quote" className="btn reveal"> */}
+      {/*           Request Wholesale Catalogue */}
+      {/*           <svg className="arw" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"> */}
+      {/*             <path d="M5 12h14M13 5l7 7-7 7" /> */}
+      {/*           </svg> */}
+      {/*         </a> */}
+      {/*       </div> */}
+      {/*     </div> */}
+      {/*   </div> */}
+      {/* </section> */}
 
       {/* Inquiry form */}
       <section id="quote">

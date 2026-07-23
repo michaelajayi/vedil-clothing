@@ -184,7 +184,7 @@ export default function Header() {
 					About
 				</Link>
 				<Link href="/fun-to-sew" onClick={() => setMenuOpen(false)}>
-					It&apos;s Fun to Sew
+					ItsFunToSew
 				</Link>
 				<Link href="/garment-factory" onClick={() => setMenuOpen(false)}>
 					Garment Factory
