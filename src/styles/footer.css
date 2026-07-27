@@ -69,6 +69,9 @@ footer .wrap {
 	margin-bottom: 1.1rem;
 	font-weight: 700;
 }
+.foot-col-h4-sub {
+	margin-top: 1.8rem;
+}
 .foot-col ul {
 	list-style: none;
 	display: grid;
