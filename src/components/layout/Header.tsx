@@ -108,8 +108,13 @@ export default function Header() {
 							</Link>
 						</li>
 						<li>
+							<Link href="/runway" className="nav-item">
+								Runway
+							</Link>
+						</li>
+						<li>
 							<Link href="/fun-to-sew" className="nav-item">
-								It's Fun to Sew
+								It&apos;s Fun to Sew
 							</Link>
 						</li>
 						<li>
@@ -182,6 +187,9 @@ export default function Header() {
 				</div>
 				<Link href="/about" onClick={() => setMenuOpen(false)}>
 					About
+				</Link>
+				<Link href="/runway" onClick={() => setMenuOpen(false)}>
+					Runway
 				</Link>
 				<Link href="/fun-to-sew" onClick={() => setMenuOpen(false)}>
 					ItsFunToSew

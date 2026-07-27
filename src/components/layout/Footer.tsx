@@ -73,6 +73,9 @@ export default function Footer() {
 								<Link href="/about">About Us</Link>
 							</li>
 							<li>
+								<Link href="/runway">Runway</Link>
+							</li>
+							<li>
 								<Link href="/contact">Contact</Link>
 							</li>
 							<li>
