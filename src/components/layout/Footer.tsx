@@ -43,19 +43,25 @@ export default function Footer() {
 					</div>
 
 					<div className="foot-col">
-						<h4>Learn &amp; Make</h4>
+						<h4>It&apos;s Fun to Sew</h4>
 						<ul>
-							<li>
-								<Link href="/fun-to-sew">It&apos;s Fun to Sew</Link>
-							</li>
 							<li>
 								<Link href="/fun-to-sew#in-person">In-person Classes</Link>
 							</li>
 							<li>
 								<Link href="/fun-to-sew#online">Online Courses</Link>
 							</li>
+						</ul>
+					</div>
+
+					<div className="foot-col">
+						<h4>Garment Factory</h4>
+						<ul>
 							<li>
-								<Link href="/garment-factory">Garment Factory</Link>
+								<Link href="/garment-factory">Factory Services</Link>
+							</li>
+							<li>
+								<Link href="/garment-factory#quote">Request a Quote</Link>
 							</li>
 						</ul>
 					</div>
@@ -71,9 +77,6 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link href="/faq">FAQ</Link>
-							</li>
-							<li>
-								<Link href="/garment-factory#quote">Request a Quote</Link>
 							</li>
 						</ul>
 					</div>

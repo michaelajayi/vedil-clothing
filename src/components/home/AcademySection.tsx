@@ -102,7 +102,7 @@ export default function AcademySection() {
 			<div className="wrap">
 				<div className="academy-top">
 					<div>
-						<span className="eyebrow reveal">It&apos;s Fun to Sew</span>
+						<span className="eyebrow reveal">It's Fun to Sew</span>
 						<h2 className="reveal">
 							Learn to sew, the <em>joyful</em> way.
 						</h2>

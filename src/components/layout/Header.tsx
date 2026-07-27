@@ -109,7 +109,7 @@ export default function Header() {
 						</li>
 						<li>
 							<Link href="/fun-to-sew" className="nav-item">
-								It&apos;s Fun to Sew
+								It's Fun to Sew
 							</Link>
 						</li>
 						<li>

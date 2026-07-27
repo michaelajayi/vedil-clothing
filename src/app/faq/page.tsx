@@ -7,7 +7,7 @@ import FaqAccordion, { type FaqGroup } from "@/components/faq/FaqAccordion";
 export const metadata: Metadata = {
 	title: "FAQ | Vedil Clothing",
 	description:
-		"Answers to common questions about the Vedil Clothing shop, It&apos;s Fun to Sew, and our garment factory — shipping, enrollment, pricing, and more.",
+		"Answers to common questions about the Vedil Clothing shop, It's Fun to Sew, and our garment factory — shipping, enrollment, pricing, and more.",
 };
 
 const faqs: FaqGroup[] = [
@@ -45,11 +45,11 @@ const faqs: FaqGroup[] = [
 			},
 			{
 				q: "Do you deliver outside Lagos?",
-				a: "Yes. We ship nationwide via DHL and other reputable courier services. Delivery fees and timelines vary by location and will be shown at checkout. You can also self-pickup from our Okota studio or arrange your own dispatch rider.",
+				a: "Yes. We ship worldwide via DHL and other reputable courier services. Delivery fees and timelines vary by location and will be shown at checkout. You can also self-pickup from our Okota studio or arrange your own dispatch rider.",
 			},
 			{
 				q: "What is wholesale pricing and how does it work?",
-				a: "Every product in our shop has both a retail price and a wholesale price. The wholesale price applies automatically once your order quantity meets the minimum order quantity (MOQ) for that product — typically 6 pieces. This makes us a great option for resellers and market traders.",
+				a: "Every product in our shop has both a retail price and a wholesale price. The wholesale price applies automatically once your order quantity meets the minimum order quantity (MOQ) for that product — typically 12 pieces. This makes us a great option for resellers and market traders.",
 			},
 			{
 				q: "What is your return or exchange policy?",
@@ -58,7 +58,7 @@ const faqs: FaqGroup[] = [
 		],
 	},
 	{
-		heading: "It&apos;s Fun to Sew",
+		heading: "It's Fun to Sew",
 		items: [
 			{
 				q: "Do I need sewing experience to join the academy?",
@@ -166,7 +166,7 @@ export default function FaqPage() {
 						<span className="eyebrow reveal">Still need help?</span>
 						<h2 className="reveal">We&apos;re always happy to assist.</h2>
 						<p className="reveal">
-							Reach out directly on WhatsApp — it&apos;s the fastest way to get
+							Reach out directly on WhatsApp — it's the fastest way to get
 							a response from our team.
 						</p>
 					</div>
