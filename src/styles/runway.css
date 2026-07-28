@@ -639,31 +639,23 @@
 		padding-inline: 0;
 	}
 
-	.runway-page-hero .wrap {
-		width: 100%;
-	}
-
 	.rt2-card-grid {
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1rem;
-		padding-inline: 0;
+		padding-inline: 1.25rem;
 	}
 
 	.rt2-detail {
-		padding-inline: 0;
+		padding-inline: 1.25rem;
 	}
 }
 
 /* ─── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 760px) {
-	.runway-page-hero .wrap {
-		width: 100%;
-	}
-
 	.rt2-card-grid {
 		grid-template-columns: 1fr;
 		gap: 1rem;
-		padding: 1.5rem 0;
+		padding: 1.5rem 1.25rem 0;
 	}
 
 	.rt2-card {
@@ -688,7 +680,7 @@
 	}
 
 	.rt2-detail {
-		padding: 1.5rem 0 3rem;
+		padding: 1.5rem 1.25rem 3rem;
 	}
 
 	.runway-lightbox-wrapper {
