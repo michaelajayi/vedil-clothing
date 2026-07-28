@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   RUNWAY PAGE — Hero, Events, Gallery & Lightbox
+   RUNWAY PAGE — Shared Media & Lightbox Styles
    ═══════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════
@@ -37,232 +37,8 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LAYOUT — Sidebar Nav + Event Sections
+   MEDIA ITEM — shared by RunwayMediaItem
    ═══════════════════════════════════════════════════════════════ */
-
-.runway-layout {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	gap: 0;
-	max-width: 1280px;
-	margin: 0 auto;
-	padding: 0;
-}
-
-/* ─── Sticky event nav (sidebar) ────────────────────────────── */
-.runway-event-nav {
-	position: sticky;
-	top: 100px;
-	align-self: start;
-	width: 80px;
-	padding: 2rem 0 2rem 1.5rem;
-	z-index: 5;
-	border-right: 1px solid var(--line);
-}
-
-.runway-event-nav-inner {
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-}
-
-.runway-event-nav-label {
-	font-size: 0.6rem;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	font-weight: 700;
-	color: var(--ink-soft);
-	margin-bottom: 0.25rem;
-	padding-left: 0.25rem;
-}
-
-.runway-event-nav-btn {
-	display: block;
-	width: 100%;
-	text-align: left;
-	padding: 0.35rem 0.5rem;
-	border: none;
-	background: none;
-	cursor: pointer;
-	font-family: var(--font-display, "Fraunces"), serif;
-	font-size: 1.1rem;
-	color: var(--ink-soft);
-	transition:
-		color 0.3s,
-		font-weight 0.3s;
-	border-left: 2px solid transparent;
-	line-height: 1.2;
-}
-
-.runway-event-nav-btn:hover {
-	color: var(--ink);
-}
-
-.runway-event-nav-btn.active {
-	color: var(--ink);
-	font-weight: 600;
-	border-left-color: var(--burgundy);
-}
-
-.runway-event-nav-btn:focus-visible {
-	outline: 2px solid var(--gold);
-	outline-offset: 2px;
-}
-
-/* ─── Event sections container ──────────────────────────────── */
-.runway-sections {
-	min-width: 0;
-	padding-right: 1.5rem;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   EVENT SECTION
-   ═══════════════════════════════════════════════════════════════ */
-
-.runway-event-section {
-	padding-block: 2.5rem 3rem;
-	border-bottom: 1px solid var(--line);
-	scroll-margin-top: 80px;
-}
-
-.runway-event-section:last-child {
-	border-bottom: none;
-}
-
-/* ─── Event header ──────────────────────────────────────────── */
-.runway-event-header {
-	margin-bottom: 1.5rem;
-}
-
-.runway-event-year {
-	display: inline-block;
-	font-size: 0.7rem;
-	letter-spacing: 0.15em;
-	text-transform: uppercase;
-	font-weight: 700;
-	color: var(--burgundy);
-	margin-bottom: 0.25rem;
-}
-
-.runway-event-name {
-	font-size: clamp(1.6rem, 3vw, 2.4rem);
-	font-family: var(--font-display, "Fraunces"), serif;
-	font-weight: 600;
-	color: var(--ink);
-	margin-bottom: 0.15rem;
-	line-height: 1.2;
-}
-
-.runway-event-subtitle {
-	font-size: 0.88rem;
-	color: var(--ink-soft);
-	font-weight: 400;
-}
-
-/* ─── Collection tabs ───────────────────────────────────────── */
-.runway-collection-tabs {
-	display: flex;
-	gap: 0.25rem;
-	margin-bottom: 1.5rem;
-	border-bottom: 1px solid var(--line);
-	padding-bottom: 0;
-}
-
-.runway-collection-tab {
-	position: relative;
-	padding: 0.65rem 1.2rem;
-	border: none;
-	background: none;
-	cursor: pointer;
-	font-family: var(--font-body, "Hanken Grotesk"), sans-serif;
-	font-size: 0.82rem;
-	font-weight: 500;
-	color: var(--ink-soft);
-	transition:
-		color 0.25s,
-		background 0.25s;
-	border-radius: var(--r) var(--r) 0 0;
-}
-
-.runway-collection-tab:hover {
-	color: var(--ink);
-	background: rgba(42, 33, 27, 0.04);
-}
-
-.runway-collection-tab.active {
-	color: var(--ink);
-	font-weight: 600;
-}
-
-.runway-collection-tab.active::after {
-	content: "";
-	position: absolute;
-	bottom: -1px;
-	left: 0;
-	right: 0;
-	height: 2px;
-	background: var(--burgundy);
-}
-
-.runway-collection-tab:focus-visible {
-	outline: 2px solid var(--gold);
-	outline-offset: 2px;
-}
-
-/* ─── Collection hero ───────────────────────────────────────── */
-.runway-collection-hero {
-	margin-bottom: 1.5rem;
-}
-
-.runway-collection-name {
-	font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-	font-family: var(--font-display, "Fraunces"), serif;
-	font-weight: 500;
-	color: var(--ink);
-	margin-bottom: 0.75rem;
-	line-height: 1.3;
-}
-
-.runway-collection-desc {
-	font-size: 0.95rem;
-	color: var(--ink);
-	line-height: 1.7;
-}
-
-.runway-collection-desc p {
-	margin-bottom: 0.85rem;
-}
-
-.runway-collection-desc p:last-child {
-	margin-bottom: 0;
-}
-
-/* ─── Empty collection placeholder ──────────────────────────── */
-.runway-empty-collection {
-	padding: 3rem 1.5rem;
-	text-align: center;
-	color: var(--ink-soft);
-	font-size: 0.95rem;
-	border: 1px dashed var(--line);
-	border-radius: var(--r);
-	background: var(--paper);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   GALLERY — CSS Columns Masonry
-   Pinterest-style: items flow into columns, each at its natural
-   aspect ratio. Landscape items are short, portrait items are
-   tall, squares are square — they pack together naturally.
-   ═══════════════════════════════════════════════════════════════ */
-
-.runway-gallery {
-	padding-block: 0.5rem 1.5rem;
-}
-
-.runway-masonry {
-	column-count: 2;
-	column-gap: 0.75rem;
-}
 
 .runway-masonry-item {
 	break-inside: avoid;
@@ -279,28 +55,23 @@
 	box-shadow: var(--shadow);
 }
 
-/* ─── Gallery item media ──────────────────────────────────── */
 .runway-masonry-item img,
 .runway-masonry-item video {
 	width: 100%;
 	display: block;
 }
 
-/* When aspect-ratio is explicitly set on images, fill the container */
 .runway-masonry-item img[data-ratio="fixed"] {
 	height: 100%;
 	object-fit: cover;
 }
 
-/* Videos: maintain aspect ratio, show full frame without cropping.
-   Use a dark background for any letterbox bars. */
 .runway-masonry-item video {
 	height: 100%;
 	object-fit: contain;
 	background: #111;
 }
 
-/* Subtle hover scale — same as img-media--hover pattern */
 .runway-masonry-item img,
 .runway-masonry-item video {
 	transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -312,7 +83,6 @@
 	transform: scale(1.04);
 }
 
-/* Subtle bottom gradient on hover */
 .runway-masonry-item::before {
 	content: "";
 	position: absolute;
@@ -366,7 +136,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   LIGHTBOX
+   LIGHTBOX — shared by RunwayLightbox
    ═══════════════════════════════════════════════════════════════ */
 
 .runway-lightbox {
@@ -389,7 +159,6 @@
 	visibility: visible;
 }
 
-/* Inner wrapper — centers media */
 .runway-lightbox-wrapper {
 	position: relative;
 	display: flex;
@@ -400,7 +169,6 @@
 	padding: 60px 70px;
 }
 
-/* Media container — constrains size and preserves aspect ratio */
 .runway-lightbox-media {
 	position: relative;
 	max-width: 100%;
@@ -419,7 +187,6 @@
 	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
 }
 
-/* ─── Lightbox navigation ───────────────────────────────────── */
 .runway-lightbox-nav {
 	position: absolute;
 	top: 50%;
@@ -462,7 +229,6 @@
 	height: 22px;
 }
 
-/* ─── Close button ──────────────────────────────────────────── */
 .runway-lightbox-close {
 	position: absolute;
 	top: 14px;
@@ -497,7 +263,6 @@
 	height: 20px;
 }
 
-/* ─── Counter ───────────────────────────────────────────────── */
 .runway-lightbox-counter {
 	position: absolute;
 	bottom: 20px;
@@ -510,7 +275,6 @@
 	pointer-events: none;
 }
 
-/* ─── Fullscreen button ─────────────────────────────────────── */
 .runway-lightbox-fs {
 	position: absolute;
 	bottom: 16px;
@@ -546,32 +310,385 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   NEW ZIMMERMANN-STYLE LAYOUT
+   ── Campaign cards → click into event detail + gallery
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Card Grid ────────────────────────────────────────────── */
+.rt2-card-grid {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 2.5rem 1.5rem 4rem;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+}
+
+/* ─── Campaign Card ────────────────────────────────────────── */
+.rt2-card {
+	position: relative;
+	border-radius: var(--r);
+	overflow: hidden;
+	cursor: pointer;
+	background: var(--paper);
+	aspect-ratio: 3 / 4;
+	transition:
+		box-shadow 0.4s,
+		transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.rt2-card:hover {
+	box-shadow: var(--shadow);
+	transform: translateY(-4px);
+}
+
+.rt2-card:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 2px;
+}
+
+.rt2-card-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.rt2-card:hover .rt2-card-image {
+	transform: scale(1.05);
+}
+
+.rt2-card-overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		180deg,
+		transparent 50%,
+		rgba(42, 33, 27, 0.72) 100%
+	);
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 1.5rem;
+	transition: background 0.4s;
+}
+
+.rt2-card:hover .rt2-card-overlay {
+	background: linear-gradient(
+		180deg,
+		transparent 40%,
+		rgba(42, 33, 27, 0.85) 100%
+	);
+}
+
+.rt2-card-year {
+	font-size: 0.7rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: var(--gold);
+	margin-bottom: 0.25rem;
+}
+
+.rt2-card-name {
+	font-size: clamp(1.05rem, 2vw, 1.35rem);
+	font-family: var(--font-display, "Fraunces"), serif;
+	font-weight: 600;
+	color: #fff;
+	line-height: 1.2;
+	margin-bottom: 0.2rem;
+}
+
+.rt2-card-subtitle {
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.65);
+	font-weight: 400;
+}
+
+.rt2-card-cta {
+	display: inline-block;
+	margin-top: 0.75rem;
+	font-size: 0.75rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #fff;
+	border-bottom: 1px solid var(--gold);
+	padding-bottom: 2px;
+	opacity: 0;
+	transform: translateY(4px);
+	transition:
+		opacity 0.3s,
+		transform 0.3s;
+}
+
+.rt2-card:hover .rt2-card-cta {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* ─── Empty Card ────────────────────────────────────────────── */
+.rt2-card--empty {
+	cursor: default;
+	border: 1px solid var(--line);
+}
+
+.rt2-card--empty:hover {
+	transform: none;
+	box-shadow: none;
+}
+
+.rt2-card-empty-content {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem;
+	text-align: center;
+	color: var(--ink-soft);
+}
+
+.rt2-card-empty-icon {
+	font-size: 2rem;
+	margin-bottom: 0.5rem;
+	opacity: 0.25;
+	color: var(--ink);
+}
+
+.rt2-card-empty-content .rt2-card-year {
+	color: var(--ink-soft);
+}
+
+.rt2-card-empty-content .rt2-card-name {
+	color: var(--ink);
+	font-weight: 500;
+	margin-bottom: 0.5rem;
+}
+
+.rt2-card-empty-label {
+	font-size: 0.82rem;
+	font-style: italic;
+	color: var(--ink-soft);
+}
+
+/* ─── Detail View ──────────────────────────────────────────── */
+.rt2-detail {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 2rem 1.5rem 4rem;
+}
+
+/* ─── Back button (pill badge) ──────────────────────────────── */
+.rt2-detail-back {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	margin-bottom: 1.25rem;
+	padding: 0.3rem 0.7rem 0.3rem 0.5rem;
+	border: 1px solid var(--line);
+	border-radius: 100px;
+	background: var(--paper);
+	cursor: pointer;
+	font-family: var(--font-body, "Hanken Grotesk"), sans-serif;
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: var(--ink-soft);
+	transition:
+		background 0.25s,
+		color 0.25s,
+		border-color 0.25s;
+	white-space: nowrap;
+}
+
+.rt2-detail-back:hover {
+	background: var(--cream);
+	color: var(--ink);
+	border-color: var(--ink-soft);
+}
+
+.rt2-detail-back:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 2px;
+}
+
+.rt2-detail-back svg {
+	width: 14px;
+	height: 14px;
+}
+
+/* ─── Detail event header ──────────────────────────────────── */
+.rt2-detail-header {
+	margin-bottom: 2rem;
+}
+
+.rt2-detail-year {
+	display: inline-block;
+	font-size: 0.7rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: var(--burgundy);
+	margin-bottom: 0.25rem;
+}
+
+.rt2-detail-name {
+	font-size: clamp(1.6rem, 3vw, 2.4rem);
+	font-family: var(--font-display, "Fraunces"), serif;
+	font-weight: 600;
+	color: var(--ink);
+	margin-bottom: 0.15rem;
+	line-height: 1.2;
+}
+
+.rt2-detail-subtitle {
+	font-size: 0.88rem;
+	color: var(--ink-soft);
+	font-weight: 400;
+}
+
+/* ─── Detail collection block ──────────────────────────────── */
+.rt2-detail-collection {
+	margin-bottom: 2.5rem;
+}
+
+.rt2-detail-collection:last-child {
+	margin-bottom: 0;
+}
+
+.rt2-detail-col-header {
+	margin-bottom: 1rem;
+}
+
+.rt2-detail-col-name {
+	font-size: clamp(1.1rem, 2vw, 1.5rem);
+	font-family: var(--font-display, "Fraunces"), serif;
+	font-weight: 500;
+	color: var(--ink);
+	margin-bottom: 0.5rem;
+	line-height: 1.3;
+}
+
+.rt2-detail-col-desc {
+	font-size: 0.95rem;
+	color: var(--ink);
+	line-height: 1.7;
+	column-count: 2;
+	column-gap: 2rem;
+}
+
+.rt2-detail-col-desc p {
+	margin-bottom: 0.85rem;
+	break-inside: avoid;
+}
+
+.rt2-detail-col-desc p:last-child {
+	margin-bottom: 0;
+}
+
+/* ─── Gallery section heading ──────────────────────────────── */
+.rt2-gallery-section {
+	margin-top: 1.5rem;
+}
+
+.rt2-gallery-label {
+	display: block;
+	font-size: 0.65rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: var(--ink-soft);
+	margin-bottom: 0.75rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid var(--line);
+}
+
+/* ─── Detail grid ──────────────────────────────────────────── */
+.rt2-detail-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.75rem;
+}
+
+.rt2-detail-grid .runway-masonry-item {
+	margin-bottom: 0;
+	break-inside: auto;
+}
+
+/* ─── Detail empty state ───────────────────────────────────── */
+.rt2-detail-empty {
+	padding: 0.5rem 0;
+}
+
+.rt2-detail-empty p {
+	font-size: 0.9rem;
+	color: var(--ink-soft);
+	font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Tablet: hide sidebar nav, full-width events ──────────── */
+/* ─── Tablet ────────────────────────────────────────────────── */
 @media (max-width: 1023px) {
-	.runway-layout {
-		grid-template-columns: 1fr;
-	}
-
-	.runway-event-nav {
-		display: none;
-	}
-
-	.runway-sections {
-		padding-right: 0;
-	}
-
 	.runway-page-hero {
+		padding-inline: 0;
+	}
+
+	.runway-page-hero .wrap {
+		width: 100%;
+	}
+
+	.rt2-card-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+		padding-inline: 0;
+	}
+
+	.rt2-detail {
 		padding-inline: 0;
 	}
 }
 
-/* ─── Mobile: single column gallery ─────────────────────────── */
+/* ─── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 760px) {
-	.runway-masonry {
+	.runway-page-hero .wrap {
+		width: 100%;
+	}
+
+	.rt2-card-grid {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		padding: 1.5rem 0;
+	}
+
+	.rt2-card {
+		aspect-ratio: 16 / 9;
+	}
+
+	.rt2-card-overlay {
+		padding: 1rem;
+	}
+
+	.rt2-card-cta {
+		opacity: 1;
+		transform: none;
+	}
+
+	.rt2-detail-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.rt2-detail-col-desc {
 		column-count: 1;
+	}
+
+	.rt2-detail {
+		padding: 1.5rem 0 3rem;
 	}
 
 	.runway-lightbox-wrapper {
@@ -608,22 +725,6 @@
 		font-size: 0.75rem;
 		bottom: 14px;
 	}
-
-	.runway-event-section {
-		padding-block: 2rem 2rem;
-	}
-
-	.runway-collection-tabs {
-		overflow-x: auto;
-		-webkit-overflow-scrolling: touch;
-		gap: 0;
-	}
-
-	.runway-collection-tab {
-		white-space: nowrap;
-		padding: 0.6rem 1rem;
-		font-size: 0.78rem;
-	}
 }
 
 /* ─── Reduced motion ────────────────────────────────────────── */
@@ -644,5 +745,30 @@
 
 	.runway-lightbox {
 		transition: none;
+	}
+
+	.rt2-card {
+		transition: none;
+	}
+
+	.rt2-card:hover {
+		transform: none;
+	}
+
+	.rt2-card-image {
+		transition: none;
+	}
+
+	.rt2-card:hover .rt2-card-image {
+		transform: none;
+	}
+
+	.rt2-card-cta {
+		transition: none;
+	}
+
+	.rt2-card:hover .rt2-card-cta {
+		opacity: 1;
+		transform: none;
 	}
 }

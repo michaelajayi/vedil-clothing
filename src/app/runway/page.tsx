@@ -24,13 +24,12 @@ export default function RunwayPage() {
 					</h1>
 					<p className="runway-page-hero-text reveal">
 						A journey through Vedil Clothing&apos;s runway shows and fashion
-						events — from Africa Fashion Week Nigeria to Epic Fashion Week and
-						beyond.
+						events — past and present.
 					</p>
 				</div>
 			</section>
 
-			{/* ── Events — rendered on the client ── */}
+			{/* ── Events: card grid → detail drill-in ── */}
 			<RunwayClient events={runwayEvents} />
 		</main>
 	);
