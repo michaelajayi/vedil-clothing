@@ -26,6 +26,7 @@ export default function ProductCard({ product }: { product: ProductDisplay }) {
 		if (!defaultVariantId) return;
 		addItem({
 			id: defaultVariantId,
+			productId: product.id,
 			name: product.name,
 			retailPrice: product.retailPrice,
 			wholesalePrice: product.wholesalePrice,

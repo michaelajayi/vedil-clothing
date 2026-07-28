@@ -1,77 +1,95 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { fmtPrice } from "@/lib/products";
-import { resolveVariantId } from "@/lib/cart-utils";
+import { resolveVariantIdByOptions } from "@/lib/cart-utils";
 import type { ProductDisplay } from "@/lib/product-mapper";
+
+/**
+ * Build a map of option type name → selected value from the option groups.
+ * Initializes the first option in each group as the default selection.
+ */
+function initSelections(
+	groups: { name: string; values: string[] }[],
+): Record<string, string> {
+	const selections: Record<string, string> = {};
+	for (const group of groups) {
+		if (group.values.length > 0) {
+			selections[group.name] = group.values[0];
+		}
+	}
+	return selections;
+}
 
 export default function AddToBag({ product }: { product: ProductDisplay }) {
 	const { addItem } = useCart();
-	const hasSizes = !!product.sizes?.length;
-	const [selectedSize, setSelectedSize] = useState<string | null>(
-		hasSizes ? null : "one-size",
+	const groups = product.optionGroups;
+	const [selections, setSelections] = useState<Record<string, string>>(
+		initSelections(groups),
 	);
 	const [added, setAdded] = useState(false);
 
-	const defaultVariantId = useMemo(
-		() => resolveVariantId(product.variants, null),
-		[product.variants],
+	const variantId = useMemo(
+		() => resolveVariantIdByOptions(product.variants, selections),
+		[product.variants, selections],
 	);
 
-	function handleAdd() {
-		const size = selectedSize === "one-size" ? null : selectedSize;
-		const variantId = resolveVariantId(product.variants, size);
+	const allSelected = groups.every((g) => selections[g.name] != null);
 
+	const handleAdd = useCallback(() => {
 		if (!variantId) return;
 
 		addItem({
 			id: variantId,
+			productId: product.id,
 			name: product.name,
 			retailPrice: product.retailPrice,
 			wholesalePrice: product.wholesalePrice,
 			moq: product.moq,
 			category: product.category,
-			size: size ?? undefined,
+			options: { ...selections },
+			size: selections["Size"] ?? undefined,
 			kind: "PHYSICAL",
 		});
 		setAdded(true);
 		setTimeout(() => setAdded(false), 1800);
-	}
+	}, [variantId, product, selections, addItem]);
 
 	return (
 		<div className="atb">
-			{hasSizes && (
-				<div className="atb-sizes">
-					<p className="atb-size-label">Size</p>
+			{/* ── Option chip rows ──────────────────────────────── */}
+			{groups.map((group) => (
+				<div key={group.name} className="atb-sizes">
+					<p className="atb-size-label">{group.name}</p>
 					<div className="atb-chips">
-						{product.sizes!.map((s) => (
+						{group.values.map((value) => (
 							<button
-								key={s}
-								className={`size-chip${selectedSize === s ? " size-chip--active" : ""}`}
-								onClick={() => setSelectedSize(s)}
-								aria-pressed={selectedSize === s}
+								key={value}
+								className={`size-chip${selections[group.name] === value ? " size-chip--active" : ""}`}
+								onClick={() =>
+									setSelections((prev) => ({ ...prev, [group.name]: value }))
+								}
+								aria-pressed={selections[group.name] === value}
 							>
-								{s}
+								{value}
 							</button>
 						))}
 					</div>
 				</div>
-			)}
+			))}
 
+			{/* ── Add to Bag button ────────────────────────────── */}
 			<button
 				className={`btn atb-btn${added ? " atb-btn--added" : ""}`}
 				onClick={handleAdd}
-				disabled={!selectedSize || !defaultVariantId}
-				aria-disabled={!selectedSize || !defaultVariantId}
+				disabled={!allSelected || !variantId}
+				aria-disabled={!allSelected || !variantId}
 			>
-				{added
-					? "Added ✓"
-					: hasSizes && !selectedSize
-						? "Select a size"
-						: "Add to Bag"}
+				{added ? "Added ✓" : !allSelected ? "Select all options" : "Add to Bag"}
 			</button>
 
+			{/* ── Wholesale hint ───────────────────────────────── */}
 			{product.wholesalePrice > 0 && (
 				<p className="atb-ws-note">
 					Buy {product.moq}+ units for wholesale pricing —{" "}

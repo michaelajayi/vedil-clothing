@@ -36,6 +36,39 @@ export function resolveVariantId(
 }
 
 /**
+ * Find the best variant ID by matching ALL selected option types.
+ *
+ * For example, if the user selected { Size: "XL", Color: "Red" },
+ * this returns the variant whose optionValues match both.
+ *
+ * Falls back to the default variant (or first) when no options selected.
+ */
+export function resolveVariantIdByOptions(
+	variants: ApiVariant[],
+	selectedOptions: Record<string, string>,
+): string | null {
+	if (!variants.length) return null;
+
+	const entries = Object.entries(selectedOptions);
+
+	if (entries.length === 0) {
+		return variants.find((v) => v.isDefault)?.id ?? variants[0]?.id ?? null;
+	}
+
+	const matched = variants.find((v) =>
+		entries.every(([type, value]) =>
+			v.optionValues?.some(
+				(ov) =>
+					ov.optionValue?.optionType?.name === type &&
+					ov.optionValue?.value === value,
+			),
+		),
+	);
+
+	return matched?.id ?? null;
+}
+
+/**
  * Product lookup keyed by variantId — built from a product list.
  * Used to enrich backend cart items with product display info.
  */

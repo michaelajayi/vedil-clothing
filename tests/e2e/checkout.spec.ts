@@ -31,6 +31,7 @@ test.describe("checkout flow", () => {
 				id: "d6b1fef3-f38b-4525-83b8-0fbedcfd2232",
 				backendCartItemId: "__pending__",
 				name: "Vedil Signature Tee",
+				productId: "f8f56ea8-a7d1-4bd8-af26-ebe8a5ce42fd",
 				retailPrice: 70000,
 				wholesalePrice: 0,
 				moq: 1,

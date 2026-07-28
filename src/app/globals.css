@@ -1375,6 +1375,8 @@ select:autofill {
 .cart-table .product-cell { display: flex; align-items: center; gap: 1rem; }
 .cart-table .product-thumb { width: 76px; height: 76px; border-radius: 10px; background: var(--paper); overflow: hidden; flex-shrink: 0; }
 .cart-table .product-name { font-weight: 600; font-size: .95rem; }
+.cart-table .product-name-link { text-decoration: none; color: inherit; }
+.cart-table .product-name-link:hover { text-decoration: underline; }
 .cart-table .product-size { font-size: .8rem; color: var(--ink-soft); }
 .cart-table .cell-price { font-family: var(--font-display, "Fraunces"), serif; font-size: 1rem; }
 .cart-table .cell-price.ws { color: var(--burgundy); }

@@ -4,6 +4,17 @@ import Link from "next/link";
 import { ShoppingBag, X, ArrowRight } from "lucide-react";
 import { useCart, effectivePrice, fmtPrice } from "@/contexts/CartContext";
 
+/**
+ * Render a formatted list of selected variant options,
+ * e.g. "Size: XL, Color: Red"
+ */
+function formatOptions(options?: Record<string, string>): string | null {
+	if (!options) return null;
+	const entries = Object.entries(options);
+	if (entries.length === 0) return null;
+	return entries.map(([key, val]) => `${key}: ${val}`).join(", ");
+}
+
 export default function CartPage() {
 	const { items, subtotal, removeItem, setQty, clearCart } = useCart();
 
@@ -79,10 +90,23 @@ export default function CartPage() {
 														aria-hidden="true"
 													/>
 													<div>
-														<p className="product-name">{item.name}</p>
-														{item.size && (
-															<p className="product-size">Size: {item.size}</p>
+														{item.productId && item.category ? (
+															<Link
+																href={`/shop/${item.category}/${item.productId}`}
+																className="product-name-link"
+															>
+																<p className="product-name">{item.name}</p>
+															</Link>
+														) : (
+															<p className="product-name">{item.name}</p>
 														)}
+														{/* Show all selected options */}
+														{(() => {
+															const opts = formatOptions(item.options);
+															return opts ? (
+																<p className="product-size">{opts}</p>
+															) : null;
+														})()}
 														<div className="product-price-row">
 															<span
 																className={`cell-price${isWholesale ? " ws" : ""}`}
@@ -199,7 +223,14 @@ export default function CartPage() {
 								<div className="summary-row" key={item.id}>
 									<span>
 										{item.name}
-										{item.size ? ` (${item.size})` : ""}
+										{(() => {
+											const opts = formatOptions(item.options);
+											return opts
+												? ` (${opts})`
+												: item.size
+													? ` (${item.size})`
+													: "";
+										})()}
 										{" ×"}
 										{item.quantity}
 									</span>

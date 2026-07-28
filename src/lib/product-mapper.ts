@@ -33,6 +33,8 @@ export interface ProductDisplay {
 	featured?: boolean;
 	/** Extracted from variant optionValues where optionType name is "Size" */
 	sizes?: string[];
+	/** All variant option groups — size, color, etc. — for generic chip rendering */
+	optionGroups: OptionGroup[];
 	/** Full variants for potential client-side switching */
 	variants: ApiVariant[];
 	/** Primary image URL or null */
@@ -57,10 +59,7 @@ interface PriceInfo {
 	wholesaleMinQty: number | null;
 }
 
-function extractPrices(
-	variants: ApiVariant[],
-	productMoq: number,
-): PriceInfo {
+function extractPrices(variants: ApiVariant[], productMoq: number): PriceInfo {
 	const defaultVariant = variants.find((v) => v.isDefault) ?? variants[0];
 
 	if (!defaultVariant || !defaultVariant.priceTiers.length) {
@@ -96,14 +95,45 @@ function extractPrices(
 	return {
 		retailPriceNaira,
 		retailMinQty,
-		wholesalePriceNaira: isWholesale
-			? wholesaleTier!.amount / 100
-			: null,
+		wholesalePriceNaira: isWholesale ? wholesaleTier!.amount / 100 : null,
 		wholesaleMinQty: isWholesale ? wholesaleTier!.minQuantity : null,
 	};
 }
 
+// ─── Option groups extraction (generic) ─────────────────
+// Extracts ALL unique option type × value pairs from variants,
+// grouped by option type name. This handles Size, Color,
+// Material, or any future option type the backend sends.
+
+export interface OptionGroup {
+	name: string;
+	values: string[];
+}
+
+function extractOptionGroups(variants: ApiVariant[]): OptionGroup[] {
+	const groups = new Map<string, Set<string>>();
+
+	for (const variant of variants) {
+		for (const ov of variant.optionValues ?? []) {
+			const typeName = ov.optionValue?.optionType?.name;
+			const value = ov.optionValue?.value;
+			if (typeName && value) {
+				if (!groups.has(typeName)) {
+					groups.set(typeName, new Set());
+				}
+				groups.get(typeName)!.add(value);
+			}
+		}
+	}
+
+	return Array.from(groups.entries()).map(([name, values]) => ({
+		name,
+		values: Array.from(values).sort(),
+	}));
+}
+
 // ─── Size extraction ────────────────────────────────────
+// Kept for backward compat; callers should prefer optionGroups.
 
 function extractSizes(variants: ApiVariant[]): string[] {
 	const sizeSet = new Set<string>();
@@ -193,6 +223,7 @@ export function mapApiProduct(api: ApiProductListItem): ProductDisplay {
 		isNew,
 		featured,
 		sizes: extractSizes(api.variants),
+		optionGroups: extractOptionGroups(api.variants),
 		variants: api.variants,
 		imageUrl: api.images?.[0]?.file?.url ?? null,
 		images: (api.images ?? []).map((img) => ({

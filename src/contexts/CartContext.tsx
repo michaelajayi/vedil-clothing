@@ -24,11 +24,15 @@ export type CartItem = {
 	/** Backend cart item ID, needed for update/delete mutations */
 	backendCartItemId?: string;
 	name: string;
+	/** Product ID for linking back to the product detail page from cart */
+	productId?: string;
 	retailPrice: number;
 	wholesalePrice: number | null;
 	moq: number;
 	quantity: number;
 	size?: string;
+	/** All selected variant options, e.g. { Size: "XL", Color: "Red" } */
+	options?: Record<string, string>;
 	category?: string;
 	kind?: "PHYSICAL" | "COURSE";
 };
@@ -271,6 +275,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 					id: bci.variantId,
 					backendCartItemId: bci.id,
 					name: matchedCourse.name,
+					productId: matchedCourse.id,
 					retailPrice: bci.unitPrice / 100,
 					wholesalePrice: null,
 					moq: 1,
@@ -294,21 +299,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
 				const isWholesale =
 					wholesaleTier && wholesaleTier.minQuantity > tiers[0].minQuantity;
 
+				// Extract all selected option values for this variant
+				const options: Record<string, string> = {};
+				for (const ov of variant.optionValues ?? []) {
+					const typeName = ov.optionValue?.optionType?.name;
+					const value = ov.optionValue?.value;
+					if (typeName && value) {
+						options[typeName] = value;
+					}
+				}
+
 				return {
 					id: bci.variantId,
 					backendCartItemId: bci.id,
 					name: matchedProduct.name,
+					productId: matchedProduct.id,
 					retailPrice: (tiers[0]?.amount ?? bci.unitPrice) / 100,
-					wholesalePrice: isWholesale
-						? wholesaleTier!.amount / 100
-						: null,
+					wholesalePrice: isWholesale ? wholesaleTier!.amount / 100 : null,
 					moq: matchedProduct.moq,
 					quantity: bci.quantity,
-					size:
-						variant.optionValues?.find(
-							(ov) =>
-								ov.optionValue?.optionType?.name?.toLowerCase() === "size",
-						)?.optionValue?.value || undefined,
+					options,
+					size: options["Size"] ?? undefined,
 					category: matchedProduct.category?.name,
 					kind: "PHYSICAL",
 				};
