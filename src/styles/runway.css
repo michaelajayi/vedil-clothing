@@ -1,76 +1,251 @@
 /* ═══════════════════════════════════════════════════════════════
-   RUNWAY PAGE — Gallery, Lightbox & Hero
+   RUNWAY PAGE — Hero, Events, Gallery & Lightbox
    ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Hero ──────────────────────────────────────────────────── */
-.runway-hero {
+/* ═══════════════════════════════════════════════════════════════
+   PAGE HERO
+   ═══════════════════════════════════════════════════════════════ */
+
+.runway-page-hero {
 	padding-block: clamp(2.5rem, 5vw, 4rem);
+	padding-inline: 80px 1.5rem;
 	border-bottom: 1px solid var(--line);
 }
 
-.runway-hero .eyebrow {
+.runway-page-hero .eyebrow {
 	margin-bottom: 1.2rem;
 }
 
-.runway-hero h1 {
+.runway-page-hero h1 {
 	font-size: clamp(2.4rem, 5vw, 4rem);
 	max-width: 720px;
 	margin-bottom: 1.4rem;
 }
 
-.runway-hero h1 em {
+.runway-page-hero h1 em {
 	font-style: italic;
 	color: var(--burgundy);
 	font-weight: 400;
 }
 
-.runway-hero-body {
-	display: grid;
-	grid-template-columns: 1fr min(300px, 28%);
-	gap: clamp(1.5rem, 3vw, 3rem);
-	align-items: start;
-}
-
-.runway-hero-text {
+.runway-page-hero-text {
 	font-size: 1rem;
 	color: var(--ink);
 	line-height: 1.7;
-}
-
-.runway-hero-text p {
-	margin-bottom: 1rem;
-}
-
-.runway-hero-text p:last-child {
+	max-width: 600px;
 	margin-bottom: 0;
 }
 
-.runway-hero-meta {
-	background: var(--paper);
-	border-radius: var(--r);
-	padding: 1.4rem 1.6rem;
-	border: 1px solid var(--line);
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT — Sidebar Nav + Event Sections
+   ═══════════════════════════════════════════════════════════════ */
+
+.runway-layout {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0;
 }
 
-.runway-hero-meta .meta-label {
-	font-size: 0.65rem;
+/* ─── Sticky event nav (sidebar) ────────────────────────────── */
+.runway-event-nav {
+	position: sticky;
+	top: 100px;
+	align-self: start;
+	width: 80px;
+	padding: 2rem 0 2rem 1.5rem;
+	z-index: 5;
+	border-right: 1px solid var(--line);
+}
+
+.runway-event-nav-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.runway-event-nav-label {
+	font-size: 0.6rem;
 	letter-spacing: 0.2em;
 	text-transform: uppercase;
 	font-weight: 700;
 	color: var(--ink-soft);
-	margin-bottom: 0.35rem;
+	margin-bottom: 0.25rem;
+	padding-left: 0.25rem;
 }
 
-.runway-hero-meta p {
-	font-size: 0.92rem;
+.runway-event-nav-btn {
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 0.35rem 0.5rem;
+	border: none;
+	background: none;
+	cursor: pointer;
+	font-family: var(--font-display, "Fraunces"), serif;
+	font-size: 1.1rem;
+	color: var(--ink-soft);
+	transition:
+		color 0.3s,
+		font-weight 0.3s;
+	border-left: 2px solid transparent;
+	line-height: 1.2;
+}
+
+.runway-event-nav-btn:hover {
 	color: var(--ink);
-	line-height: 1.5;
 }
 
-@media (max-width: 680px) {
-	.runway-hero-body {
-		grid-template-columns: 1fr;
-	}
+.runway-event-nav-btn.active {
+	color: var(--ink);
+	font-weight: 600;
+	border-left-color: var(--burgundy);
+}
+
+.runway-event-nav-btn:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 2px;
+}
+
+/* ─── Event sections container ──────────────────────────────── */
+.runway-sections {
+	min-width: 0;
+	padding-right: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EVENT SECTION
+   ═══════════════════════════════════════════════════════════════ */
+
+.runway-event-section {
+	padding-block: 2.5rem 3rem;
+	border-bottom: 1px solid var(--line);
+	scroll-margin-top: 80px;
+}
+
+.runway-event-section:last-child {
+	border-bottom: none;
+}
+
+/* ─── Event header ──────────────────────────────────────────── */
+.runway-event-header {
+	margin-bottom: 1.5rem;
+}
+
+.runway-event-year {
+	display: inline-block;
+	font-size: 0.7rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: var(--burgundy);
+	margin-bottom: 0.25rem;
+}
+
+.runway-event-name {
+	font-size: clamp(1.6rem, 3vw, 2.4rem);
+	font-family: var(--font-display, "Fraunces"), serif;
+	font-weight: 600;
+	color: var(--ink);
+	margin-bottom: 0.15rem;
+	line-height: 1.2;
+}
+
+.runway-event-subtitle {
+	font-size: 0.88rem;
+	color: var(--ink-soft);
+	font-weight: 400;
+}
+
+/* ─── Collection tabs ───────────────────────────────────────── */
+.runway-collection-tabs {
+	display: flex;
+	gap: 0.25rem;
+	margin-bottom: 1.5rem;
+	border-bottom: 1px solid var(--line);
+	padding-bottom: 0;
+}
+
+.runway-collection-tab {
+	position: relative;
+	padding: 0.65rem 1.2rem;
+	border: none;
+	background: none;
+	cursor: pointer;
+	font-family: var(--font-body, "Hanken Grotesk"), sans-serif;
+	font-size: 0.82rem;
+	font-weight: 500;
+	color: var(--ink-soft);
+	transition:
+		color 0.25s,
+		background 0.25s;
+	border-radius: var(--r) var(--r) 0 0;
+}
+
+.runway-collection-tab:hover {
+	color: var(--ink);
+	background: rgba(42, 33, 27, 0.04);
+}
+
+.runway-collection-tab.active {
+	color: var(--ink);
+	font-weight: 600;
+}
+
+.runway-collection-tab.active::after {
+	content: "";
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: var(--burgundy);
+}
+
+.runway-collection-tab:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 2px;
+}
+
+/* ─── Collection hero ───────────────────────────────────────── */
+.runway-collection-hero {
+	margin-bottom: 1.5rem;
+}
+
+.runway-collection-name {
+	font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+	font-family: var(--font-display, "Fraunces"), serif;
+	font-weight: 500;
+	color: var(--ink);
+	margin-bottom: 0.75rem;
+	line-height: 1.3;
+}
+
+.runway-collection-desc {
+	font-size: 0.95rem;
+	color: var(--ink);
+	line-height: 1.7;
+}
+
+.runway-collection-desc p {
+	margin-bottom: 0.85rem;
+}
+
+.runway-collection-desc p:last-child {
+	margin-bottom: 0;
+}
+
+/* ─── Empty collection placeholder ──────────────────────────── */
+.runway-empty-collection {
+	padding: 3rem 1.5rem;
+	text-align: center;
+	color: var(--ink-soft);
+	font-size: 0.95rem;
+	border: 1px dashed var(--line);
+	border-radius: var(--r);
+	background: var(--paper);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -81,7 +256,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 .runway-gallery {
-	padding-block: 1.5rem 2.5rem;
+	padding-block: 0.5rem 1.5rem;
 }
 
 .runway-masonry {
@@ -111,11 +286,18 @@
 	display: block;
 }
 
-/* When aspect-ratio is explicitly set, fill the container */
-.runway-masonry-item img[data-ratio="fixed"],
-.runway-masonry-item video {
+/* When aspect-ratio is explicitly set on images, fill the container */
+.runway-masonry-item img[data-ratio="fixed"] {
 	height: 100%;
 	object-fit: cover;
+}
+
+/* Videos: maintain aspect ratio, show full frame without cropping.
+   Use a dark background for any letterbox bars. */
+.runway-masonry-item video {
+	height: 100%;
+	object-fit: contain;
+	background: #111;
 }
 
 /* Subtle hover scale — same as img-media--hover pattern */
@@ -181,13 +363,6 @@
 	width: 20px;
 	height: 20px;
 	margin-left: 2px;
-}
-
-/* ─── Mobile: single column ─────────────────────────────────── */
-@media (max-width: 760px) {
-	.runway-masonry {
-		column-count: 1;
-	}
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -370,8 +545,35 @@
 	height: 18px;
 }
 
-/* ─── Lightbox mobile ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Tablet: hide sidebar nav, full-width events ──────────── */
+@media (max-width: 1023px) {
+	.runway-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.runway-event-nav {
+		display: none;
+	}
+
+	.runway-sections {
+		padding-right: 0;
+	}
+
+	.runway-page-hero {
+		padding-inline: 0;
+	}
+}
+
+/* ─── Mobile: single column gallery ─────────────────────────── */
 @media (max-width: 760px) {
+	.runway-masonry {
+		column-count: 1;
+	}
+
 	.runway-lightbox-wrapper {
 		padding: 50px 12px;
 	}
@@ -405,6 +607,22 @@
 	.runway-lightbox-counter {
 		font-size: 0.75rem;
 		bottom: 14px;
+	}
+
+	.runway-event-section {
+		padding-block: 2rem 2rem;
+	}
+
+	.runway-collection-tabs {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		gap: 0;
+	}
+
+	.runway-collection-tab {
+		white-space: nowrap;
+		padding: 0.6rem 1rem;
+		font-size: 0.78rem;
 	}
 }
 
