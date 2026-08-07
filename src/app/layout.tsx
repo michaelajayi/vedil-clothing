@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import CartDrawer from "@/components/layout/CartDrawer";
+import { AnnouncementModal } from "@/components/ui/AnnouncementModal";
 import { CartProvider } from "@/contexts/CartContext";
 import { ToastProvider } from "@/components/ui/Toast";
 import { Providers } from "@/components/Providers";
@@ -49,6 +50,7 @@ export default function RootLayout({
 							<Footer />
 							<WhatsAppFloat />
 							<CartDrawer />
+							<AnnouncementModal />
 						</ToastProvider>
 					</CartProvider>
 				</Providers>
