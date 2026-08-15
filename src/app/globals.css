@@ -1572,13 +1572,19 @@ select:autofill {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .announcement-content {
+    animation: none;
+  }
+}
+
 .announcement-close-button {
   position: absolute;
   top: 14px;
   right: 14px;
   z-index: 2;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -1594,45 +1600,24 @@ select:autofill {
 
 .announcement-image-wrap {
   width: 100%;
+  max-height: 300px;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--paper);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
 }
 
 .announcement-image-wrap:first-child {
-  border-radius: 0;
+  border-radius: 0; /* full-bleed: flush with the dialog's top edge */
 }
 
 .announcement-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
-}
-
-.announcement-tag-date {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  padding: 1.5rem 1.8rem 0;
-}
-
-.announcement-new-tag {
-  font-size: .65rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--burgundy);
-  padding: .18rem .5rem;
-  border-radius: 4px;
-}
-
-.announcement-date {
-  font-size: .78rem;
-  color: var(--ink-soft);
-  font-weight: 500;
 }
 
 .announcement-headline {
@@ -1688,9 +1673,6 @@ select:autofill {
   }
   .announcement-image-wrap {
     border-radius: 0;
-  }
-  .announcement-tag-date {
-    padding: 1.2rem 1.4rem 0;
   }
   .announcement-headline {
     padding: .6rem 1.4rem 0;
