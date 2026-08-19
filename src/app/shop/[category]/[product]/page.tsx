@@ -4,6 +4,7 @@ import ScrollRevealInit from "@/components/home/ScrollRevealInit";
 import ProductDetailClient from "@/components/shop/ProductDetailClient";
 import { isValidCategory } from "@/lib/products";
 import type { Category } from "@/lib/products";
+import "@/styles/size-chart.css";
 
 type Props = {
 	params: Promise<{ category: string; product: string }>;
@@ -25,10 +26,7 @@ export default async function ProductPage({ params }: Props) {
 	return (
 		<main>
 			<ScrollRevealInit />
-			<ProductDetailClient
-				productId={productId}
-				category={category as Category}
-			/>
+			<ProductDetailClient productId={productId} category={category as Category} />
 		</main>
 	);
 }

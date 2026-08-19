@@ -6,6 +6,8 @@ import { mapApiProduct } from "@/lib/product-mapper";
 import ProductCard from "@/components/shop/ProductCard";
 import ProductGallery from "@/components/shop/ProductGallery";
 import AddToBag from "@/components/shop/AddToBag";
+import { SizeChartDialog } from "@/components/shop/SizeChartDialog";
+import { resolveSizeChart } from "@/lib/size-charts";
 import { CATEGORY_META, fmtPrice } from "@/lib/products";
 import type { Category } from "@/lib/products";
 import styles from "@/app/shop/[category]/[product]/page.module.css";
@@ -102,8 +104,8 @@ export default function ProductDetailClient({
 
 	// ─── Success ──────────────────────────────────────────
 	const product = mapApiProduct(apiProduct);
-	const meta =
-		CATEGORY_META[product.category] ?? CATEGORY_META["ready-to-wear"];
+	const sizeChart = resolveSizeChart(product);
+	const meta = CATEGORY_META[product.category] ?? CATEGORY_META["ready-to-wear"];
 
 	const allList = (listData ?? []).map(mapApiProduct);
 	const related = allList
@@ -137,9 +139,7 @@ export default function ProductDetailClient({
 								<div className="pdp-gallery">
 									<div className="pdp-gallery-viewport">
 										<div className="pdp-gallery-slide ph">
-											{product.isNew && (
-												<span className="prod-new-badge">New</span>
-											)}
+											{product.isNew && <span className="prod-new-badge">New</span>}
 										</div>
 									</div>
 								</div>
@@ -164,7 +164,10 @@ export default function ProductDetailClient({
 							)}
 						</div>
 
-						<AddToBag product={product} />
+						<AddToBag
+							product={product}
+							sizeGuide={sizeChart ? <SizeChartDialog chart={sizeChart} /> : undefined}
+						/>
 
 						{product.description && (
 							<div className={styles.pdpDesc}>

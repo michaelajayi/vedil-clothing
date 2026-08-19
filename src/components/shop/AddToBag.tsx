@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import type { ReactNode } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { fmtPrice } from "@/lib/products";
 import { resolveVariantIdByOptions } from "@/lib/cart-utils";
@@ -22,7 +23,14 @@ function initSelections(
 	return selections;
 }
 
-export default function AddToBag({ product }: { product: ProductDisplay }) {
+export default function AddToBag({
+	product,
+	sizeGuide,
+}: {
+	product: ProductDisplay;
+	/** Optional size-chart trigger, rendered next to the Size option label. */
+	sizeGuide?: ReactNode;
+}) {
 	const { addItem } = useCart();
 	const groups = product.optionGroups;
 	const [selections, setSelections] = useState<Record<string, string>>(
@@ -61,7 +69,10 @@ export default function AddToBag({ product }: { product: ProductDisplay }) {
 			{/* ── Option chip rows ──────────────────────────────── */}
 			{groups.map((group) => (
 				<div key={group.name} className="atb-sizes">
-					<p className="atb-size-label">{group.name}</p>
+					<div className="atb-size-row">
+						<p className="atb-size-label">{group.name}</p>
+						{group.name.toLowerCase() === "size" && sizeGuide}
+					</div>
 					<div className="atb-chips">
 						{group.values.map((value) => (
 							<button
